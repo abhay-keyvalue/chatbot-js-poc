@@ -129,7 +129,7 @@
                 }
 
                 .chat-display::-webkit-scrollbar {
-                    width: 2px;
+                    width: 5px;
                 }
                   
                 .chat-display::-webkit-scrollbar-thumb {
@@ -146,32 +146,34 @@
                     margin: 8px 0;
                     align-items: flex-end;
                 }
-        
+
                 .message-container.right {
                     justify-content: flex-end;
                 }
-        
+                
                 .message-bubble {
                     max-width: 70%;
                     padding: 12px 18px;
                     border-radius: 15px;
                     white-space: pre-wrap;
                     font-size: 14px;
+                    word-break: break-word; 
+                    flex-shrink: 1;
                 }
-        
+                
                 .message-container.right .message-bubble {
                     background-color: ${this.theme.buttonColor};
                     color: white;
                     border-bottom-right-radius: 0;
                 }
-        
+                
                 .message-container.left .message-bubble {
                     background-color: #e0e0e0;
                     color: ${this.theme.textColor};
                     border-bottom-left-radius: 0;
                     display: flex;
                     align-items: center;
-                }
+                }       
 
                 .profile-image {
                     width: 24px;
@@ -323,19 +325,22 @@
 
     async getBotResponse(userMessage) {
       try {
-        const response = await fetch("https://api.chatbot.com/message", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${this.apiKey}`,
-          },
-          body: JSON.stringify({
-            message: userMessage,
-            agentType: this.agentType,
-          }),
-        });
+        const response = await fetch(
+          `https://api-inference.huggingface.co/models/${this.agentType}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${this.apiKey}`,
+            },
+            body: JSON.stringify({
+              inputs: userMessage,
+            }),
+          }
+        );
         const data = await response.json();
-        return data.reply || "I'm sorry, I don't understand that.";
+        const botMessage = data?.length>0 && data[0].generated_text;
+        return botMessage || "I'm sorry, I don't understand that.";
       } catch (error) {
         console.error("Error:", error);
         return "Error occurred. Please try again.";
