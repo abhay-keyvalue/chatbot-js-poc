@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+      "jsx": "react",
       "noImplicitAny": true,
       "sourceMap": false,
       "declaration": true,
@@ -14,6 +15,7 @@
       "moduleResolution": "node",
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
-      "lib": ["ES2017", "dom"]
+      "lib": ["ES2017", "dom"],
+      "jsxFactory": "React.createElement"
     }
 }
