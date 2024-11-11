@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "noImplicitAny": true,
+      "sourceMap": false,
+      "declaration": true,
+      "allowSyntheticDefaultImports": true,
+      "strictNullChecks": true,
+      "rootDir": "src",
+      "target": "es5",
+      "module": "esnext",
+      "outDir": "dist",
+      "strict": true,
+      "esModuleInterop": true,
+      "moduleResolution": "node",
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "lib": ["ES2017", "dom"]
+    }
+}
