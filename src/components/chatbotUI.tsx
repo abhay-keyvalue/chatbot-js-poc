@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'preact/hooks';
 
 interface Message {
   text: string;
@@ -14,7 +14,7 @@ interface ChatBotUIProps {
   onSendMessage?: (message: string) => Promise<string>;
 }
 
-const ChatBotUI: React.FC<ChatBotUIProps> = ({ theme={}, onSendMessage=()=> null }) => {
+const ChatBotUI = ({ theme = {}, onSendMessage = () => Promise.resolve('') }: ChatBotUIProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -25,9 +25,15 @@ const ChatBotUI: React.FC<ChatBotUIProps> = ({ theme={}, onSendMessage=()=> null
     const userMessage = { text: input, isBot: false };
 
     setMessages([...messages, userMessage]);
-
     setInput('');
-    await onSendMessage(input);
+    const botResponse = await onSendMessage(input);
+
+    if (botResponse) 
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: botResponse, isBot: true }
+      ]);
+    
   };
 
   return (
@@ -48,7 +54,7 @@ const ChatBotUI: React.FC<ChatBotUIProps> = ({ theme={}, onSendMessage=()=> null
           style={{ width: '60px', height: '60px', borderRadius: '50%' }}
         />
       </div>
-      {/* Chat Window */}
+      
       {isOpen && (
         <div
           style={{
@@ -68,7 +74,6 @@ const ChatBotUI: React.FC<ChatBotUIProps> = ({ theme={}, onSendMessage=()=> null
             zIndex: 1000
           }}
         >
-          {/* Header */}
           <div
             style={{
               backgroundColor: theme.buttonColor,
@@ -84,7 +89,6 @@ const ChatBotUI: React.FC<ChatBotUIProps> = ({ theme={}, onSendMessage=()=> null
             <button onClick={() => setIsOpen(false)}>✕</button>
           </div>
 
-          {/* Chat Display */}
           <div style={{ flex: 1, padding: '15px', overflowY: 'auto', backgroundColor: '#ffffff' }}>
             {messages.map((msg, index) => (
               <div
@@ -110,7 +114,6 @@ const ChatBotUI: React.FC<ChatBotUIProps> = ({ theme={}, onSendMessage=()=> null
             ))}
           </div>
 
-          {/* Input */}
           <div
             style={{
               display: 'flex',
@@ -122,7 +125,7 @@ const ChatBotUI: React.FC<ChatBotUIProps> = ({ theme={}, onSendMessage=()=> null
             <input
               type='text'
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => setInput(e.currentTarget.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               style={{ flex: 1, padding: '8px', borderRadius: '25px', border: '1px solid #ddd' }}
             />

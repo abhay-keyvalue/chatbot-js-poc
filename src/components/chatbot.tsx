@@ -1,26 +1,24 @@
 // src/ChatBot.ts
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'preact';
 import ChatBotUI from './chatbotUI';
 
 type Theme = {
-    buttonColor?: string;
-    chatWindowColor?: string;
-    textColor?: string;
-}
+  buttonColor?: string;
+  chatWindowColor?: string;
+  textColor?: string;
+};
 
 type ChatBotOptions = {
-    apiKey: string;
-    agentType: string;
-    theme?: Theme;
-}
+  apiKey: string;
+  agentType: string;
+  theme?: Theme;
+};
 
 export class ChatBot {
   private theme: Theme;
   private apiKey: string;
   private agentType: string;
   constructor({ apiKey, agentType, theme = {} }: ChatBotOptions) {
-    this.loadStyles();
     this.initUI();
     const defaultTheme = {
       buttonColor: '#25314B',
@@ -33,38 +31,13 @@ export class ChatBot {
     this.agentType = agentType;
   }
 
-  private loadStyles(): void {
-    const style = document.createElement("style");
-
-    style.innerHTML = `.chatbot-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      background-color: red;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-      transition: transform 0.3s ease;
-    }`;
-    document.head.appendChild(style);
-  }
-
   private initUI(): void {
     const container = document.createElement('div');
 
     document.body.appendChild(container);
 
     // Render the ChatButton component into the container
-    ReactDOM.render(
-      <ChatBotUI theme={this.theme} onSendMessage={this.getBotResponse}/>,
-      container
-    );
+    render(<ChatBotUI theme={this.theme} onSendMessage={this.getBotResponse} />, container);
   }
 
   private async getBotResponse(userMessage: string): Promise<string> {

@@ -16,8 +16,8 @@ export default {
       name: 'Milestone',
       sourcemap: false,
       globals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
+        preact: 'preact',
+        'preact/compat': 'preactCompat'
       }
     },
     {
@@ -26,21 +26,32 @@ export default {
       name: 'Milestone',
       sourcemap: false,
       globals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
+        preact: 'preact',
+        'preact/compat': 'preactCompat'
       }
     }
   ],
-  external: ['react', 'react-dom'],
+  external: ['preact', 'preact/compat'],
   plugins: [
-    resolve(),
+    resolve({
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      moduleDirectories: ['node_modules']
+    }),
     commonjs(),
     json(),
     typescript({
       tsconfig: './tsconfig.json',
     }),
     babel({
-      presets: ['@babel/preset-react', '@babel/preset-env'],
+      presets: [
+        [
+          '@babel/preset-env',
+          { targets: '> 0.25%, not dead' }
+        ]
+      ],
+      plugins: [
+        ['@babel/plugin-transform-react-jsx', { pragma: 'h' }] // Configure JSX for Preact
+      ],
       babelHelpers: 'bundled',
       exclude: 'node_modules/**'
     }),
