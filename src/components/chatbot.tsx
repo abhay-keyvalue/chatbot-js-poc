@@ -1,7 +1,7 @@
 // src/ChatBot.ts
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ChatBotUI from './ChatbotUI';
+import ChatBotUI from './chatbotUI';
 
 type Theme = {
     buttonColor?: string;

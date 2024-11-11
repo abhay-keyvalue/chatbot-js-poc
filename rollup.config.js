@@ -8,7 +8,7 @@ import postcss from 'rollup-plugin-postcss';
 import babel from '@rollup/plugin-babel';
 
 export default {
-  input: 'src/Milestone.ts',
+  input: 'src/index.ts',
   output: [
     {
       file: 'example/dist/esm/Milestone.js',
