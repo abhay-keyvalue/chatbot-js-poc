@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useMemo, useState } from 'preact/hooks';
 
 interface Message {
   text: string;
@@ -11,28 +11,82 @@ interface ChatBotUIProps {
     chatWindowColor?: string;
     textColor?: string;
   };
-  onSendMessage?: (message: string) => Promise<string>;
+  config?: {
+    apiKey: string;
+    agentType: string;
+  };
 }
 
 const ChatBotUI = ({
-  theme = { buttonColor: 'blue', chatWindowColor: 'white', textColor: 'white' },
-  onSendMessage = () => Promise.resolve('')
+  theme = { buttonColor: 'blue', chatWindowColor: 'white', textColor: 'white' }
 }: ChatBotUIProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [currentMessage, setCurrentMessage] = useState('');
   const [input, setInput] = useState('');
+  const [streaming, setStreaming] = useState(false);
 
   const handleSendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() && streaming) return;
 
     const userMessage = { text: input, isBot: false };
 
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     setInput('');
-    const botResponse = await onSendMessage(input);
-    setMessages((prevMessages) => [...prevMessages, { text: botResponse, isBot: true }]);
+    await getBotResponse(input);
   };
+
+  const getBotResponse = async (userMessage: string): Promise<any> => {
+    console.log('User message:', userMessage);
+    const streamUrl = 'https://51a3-103-138-236-18.ngrok-free.app/sse-endpoint';
+
+    try {
+      const eventSource = new EventSource(streamUrl);
+      let message = '';
+
+      setStreaming(true);
+      eventSource.onmessage = (event) => {
+        // Process each new chunk of text received
+        const eventText = event?.data || '';
+
+        console.log('Event:', eventText);
+
+        if (eventText === '[DONE]') {
+          console.log('All data received');
+          setMessages((prevMessages) => [...prevMessages, { text: message, isBot: true }]);
+          setCurrentMessage('');
+          eventSource.close();
+          setStreaming(false);
+        } else {
+          if (eventText?.length > 0) {
+            message = message + ' ' + eventText;
+            setCurrentMessage(message);
+          }
+        }
+
+        return eventText;
+      };
+
+      eventSource.onerror = () => {
+        // Handle error and close the stream
+        eventSource.close();
+        setCurrentMessage('');
+        setStreaming(false);
+
+        return "I'm sorry, I don't understand that.";
+      };
+    } catch (error) {
+      console.error('Error:', error);
+
+      return 'Error occurred. Please try again.';
+    }
+  };
+
+  const updatedMessages = useMemo(() => {
+    if (currentMessage?.length > 0) return [...messages, { text: currentMessage, isBot: true }];
+    else return messages;
+  }, [messages, currentMessage]);
 
   return (
     <div>
@@ -88,7 +142,7 @@ const ChatBotUI = ({
           </div>
 
           <div style={{ flex: 1, padding: '15px', overflowY: 'auto', backgroundColor: '#ffffff' }}>
-            {messages.map((msg, index) => (
+            {updatedMessages?.map((msg, index) => (
               <div
                 key={index}
                 style={{

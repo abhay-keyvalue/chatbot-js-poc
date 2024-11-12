@@ -1,4 +1,3 @@
-
 export const API_DOMAIN = 'https://api-inference.huggingface.co/models/';
 
 export enum HttpMethodOptions {
@@ -20,5 +19,11 @@ export const ErrorMap = {
   INVALID_CREDENTIALS: {
     code: 'INVALID_CREDENTIALS',
     message: 'Failed to authenticate given credentials'
-  },
+  }
+};
+
+export const DEFAULT_THEME = {
+  buttonColor: '#25314B',
+  chatWindowColor: '#ffffff',
+  textColor: '#333'
 };
