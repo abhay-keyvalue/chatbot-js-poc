@@ -56,7 +56,6 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
         const eventText = event?.data || '' || userMessage; // TO DO: userMessage to be removed
 
         if (eventText === '[DONE]') {
-          console.log('eventText', eventText);
           setMessages((prevMessages) => [...prevMessages, { text: message, isBot: true }]);
           setCurrentMessage('');
           eventSource.close();
