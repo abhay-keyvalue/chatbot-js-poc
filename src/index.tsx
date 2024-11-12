@@ -1,6 +1,5 @@
-// src/ChatBot.ts
 import { render } from 'preact';
-import ChatBotUI from './chatbotUI';
+import ChatBotUI from './components/chatbotUI';
 
 type Theme = {
   buttonColor?: string;
@@ -18,6 +17,7 @@ export class ChatBot {
   private theme: Theme;
   private apiKey: string;
   private agentType: string;
+
   constructor({ apiKey, agentType, theme = {} }: ChatBotOptions) {
     this.initUI();
     const defaultTheme = {
@@ -36,11 +36,13 @@ export class ChatBot {
 
     document.body.appendChild(container);
 
-    // Render the ChatButton component into the container
-    render(<ChatBotUI theme={this.theme} onSendMessage={this.getBotResponse} />, container);
+    render(
+      <ChatBotUI theme={this.theme} onSendMessage={this.getBotResponse.bind(this)} />,
+      container
+    );
   }
 
-  private async getBotResponse(userMessage: string): Promise<string> {
+  private getBotResponse = async (userMessage: string): Promise<string> => {
     try {
       const response = await fetch(
         `https://api-inference.huggingface.co/models/${this.agentType}`,
@@ -61,7 +63,7 @@ export class ChatBot {
 
       return 'Error occurred. Please try again.';
     }
-  }
+  };
 }
 
 if (window) (window as any).ChatBot = ChatBot;
