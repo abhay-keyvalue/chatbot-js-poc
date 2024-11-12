@@ -53,7 +53,7 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
 
       setStreaming(true);
       eventSource.onmessage = (event) => {
-        const eventText = event?.data || '' || userMessage; // TO DO: To be removed
+        const eventText = event?.data || '' || userMessage; // TO DO: userMessage to be removed
 
         if (eventText === '[DONE]') {
           setMessages((prevMessages) => [...prevMessages, { text: message, isBot: true }]);
