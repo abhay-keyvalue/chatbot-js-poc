@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'preact/hooks';
 
-import { DEFAULT_THEME } from '../../constants/generic';
+import { API_DOMAIN, DEFAULT_THEME } from '../../constants/generic';
 
 interface Message {
   text: string;
@@ -45,7 +45,7 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
   };
 
   const getBotResponse = async (userMessage: string): Promise<void> => {
-    const streamUrl = 'https://51a3-103-138-236-18.ngrok-free.app/sse-endpoint';
+    const streamUrl = API_DOMAIN;
 
     try {
       const eventSource = new EventSource(streamUrl);
