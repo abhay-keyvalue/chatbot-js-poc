@@ -1,4 +1,4 @@
-export const API_DOMAIN = 'https://api-inference.huggingface.co/models/';
+export const API_DOMAIN = 'https://51a3-103-138-236-18.ngrok-free.app/sse-endpoint';
 
 export enum HttpMethodOptions {
   GET = 'GET',

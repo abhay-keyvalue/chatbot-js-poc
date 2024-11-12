@@ -1,11 +1,11 @@
+import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import image from '@rollup/plugin-image';
-import resolve from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
 import json from '@rollup/plugin-json';
+import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
+import typescript from '@rollup/plugin-typescript';
 import postcss from 'rollup-plugin-postcss';
-import babel from '@rollup/plugin-babel';
 
 export default {
   input: 'src/index.tsx',
@@ -40,15 +40,10 @@ export default {
     commonjs(),
     json(),
     typescript({
-      tsconfig: './tsconfig.json',
+      tsconfig: './tsconfig.json'
     }),
     babel({
-      presets: [
-        [
-          '@babel/preset-env',
-          { targets: '> 0.25%, not dead' }
-        ]
-      ],
+      presets: [['@babel/preset-env', { targets: '> 0.25%, not dead' }]],
       plugins: [
         ['@babel/plugin-transform-react-jsx', { pragma: 'h' }] // Configure JSX for Preact
       ],

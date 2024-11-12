@@ -3,25 +3,24 @@ module.exports = {
     browser: true,
     es2021: true
   },
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
-  overrides: [
-    {
-      env: {
-        node: true
-      },
-      files: ['.eslintrc.{js,cjs}'],
-      parserOptions: {
-        sourceType: 'script'
-      }
+  settings: {
+    react: {
+      pragma: 'h',
+      version: 'detect'
     }
+  },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:preact/recommended'
   ],
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module'
-  },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'preact', 'import'],
   rules: {
+    'react/jsx-no-bind': 'off',
+    'react/jsx-indent': ['error', 2],
+    'react/jsx-indent-props': ['error', 2],
+    'brace-style': ['error', '1tbs', { allowSingleLine: true }],
     'no-plusplus': 'off',
     'comma-dangle': ['off'],
     'import/no-extraneous-dependencies': 'off',
@@ -62,10 +61,34 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-spaced-func': 'off',
     '@typescript-eslint/consistent-type-imports': 'error',
-    indent: ["error", 2, { "SwitchCase": 1}],
+    indent: ['error', 2, { SwitchCase: 1 }],
     curly: ['error', 'multi', 'consistent'],
     'no-confusing-arrow': 'off',
     'nonblock-statement-body-position': 'off',
-    '@typescript-eslint/no-explicit-any': 'off'
+    '@typescript-eslint/no-explicit-any': 'warn',
+    'sort-imports': ['error', { ignoreCase: true, ignoreDeclarationSort: true }],
+    'import/order': [
+      'error',
+      {
+        groups: [['external', 'builtin'], 'internal', ['sibling', 'parent'], 'index'],
+        pathGroups: [
+          {
+            pattern: '@(preact)',
+            group: 'external',
+            position: 'before'
+          },
+          {
+            pattern: '@src/**',
+            group: 'internal'
+          }
+        ],
+        pathGroupsExcludedImportTypes: ['internal', 'preact'],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true
+        }
+      }
+    ]
   }
 };

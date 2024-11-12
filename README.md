@@ -13,16 +13,17 @@ A simple, customizable JavaScript SDK for integrating a chatbot widget into your
 To use the ChatBot SDK, include the SDK script in your HTML file:
 
 ```html
-  <script src="path/to/ChatBot.js"></script>
+<script src="path/to/ChatBot.js"></script>
 ```
 
 ## Usage
+
 Initialize the ChatBot with configuration options:
 
 ```js
 const chatbot = new ChatBot({
-  apiKey: "YOUR_API_KEY", // Required: API key for authentication.
-  agentType: "YOUR_AGENT_TYPE", // Required: Agent type for the bot.
+  apiKey: 'YOUR_API_KEY', // Required: API key for authentication.
+  agentType: 'YOUR_AGENT_TYPE', // Required: Agent type for the bot.
   theme: {
     buttonColor: '#3498db', // Optional: Color of the chat button.
     chatWindowColor: '#f5f5f5', // Optional: Background color of the chat window.
@@ -32,24 +33,24 @@ const chatbot = new ChatBot({
 ```
 
 ## Configuration Options
+
 Configure your chatbot with below options.
 
-| Option        | Type   | Description                                                     |
-|---------------|--------|-----------------------------------------------------------------|
-| `apiKey`      | String | **Required**: Your API key for authenticating the chatbot API.  |
-| `agentType`   | String | **Required**: Type of chatbot agent to use (e.g., `chatbot`, `assistant`). |
-| `theme`       | Object | **Optional**: Customize the appearance of the chatbot. See details below. |
-
+| Option      | Type   | Description                                                                |
+| ----------- | ------ | -------------------------------------------------------------------------- |
+| `apiKey`    | String | **Required**: Your API key for authenticating the chatbot API.             |
+| `agentType` | String | **Required**: Type of chatbot agent to use (e.g., `chatbot`, `assistant`). |
+| `theme`     | Object | **Optional**: Customize the appearance of the chatbot. See details below.  |
 
 ### Theme Configuration
 
 Customize the chat's appearance using the theme option:
 
-| Property           | Type   | Default Value  | Description                                                     |
-|--------------------|--------|----------------|-----------------------------------------------------------------|
-| `buttonColor`      | String | `#25314B`      | The color of the chatbot button.                               |
-| `chatWindowColor`  | String | `#ffffff`      | The background color of the chat window.                       |
-| `textColor`        | String | `#333333`      | The color of the text displayed in the chat window.             |
+| Property          | Type   | Default Value | Description                                         |
+| ----------------- | ------ | ------------- | --------------------------------------------------- |
+| `buttonColor`     | String | `#25314B`     | The color of the chatbot button.                    |
+| `chatWindowColor` | String | `#ffffff`     | The background color of the chat window.            |
+| `textColor`       | String | `#333333`     | The color of the text displayed in the chat window. |
 
 Example:
 
@@ -62,22 +63,27 @@ theme: {
 ```
 
 ### Methods
+
 #### toggleChatWindow
+
 Toggles the visibility of the chat window.
 
 ```js
 chatbot.toggleChatWindow();
 ```
+
 #### clearMessages
+
 Clears chat history and resets the welcome message.
+
 ```js
 chatbot.clearMessages();
 ```
 
-
 ### Adding Custom Messages
+
 To add custom messages, use appendMessage:
 
 ```js
-chatbot.appendMessage("Bot", "Welcome to the chat!", "left");
+chatbot.appendMessage('Bot', 'Welcome to the chat!', 'left');
 ```

@@ -11,6 +11,5 @@
   "arrowParens": "always",
   "useTabs": false,
   "quoteProps": "as-needed",
-  "vueIndentScriptAndStyle": false,
-  "braceStyle": "stroustrup"
+  "vueIndentScriptAndStyle": false
 }

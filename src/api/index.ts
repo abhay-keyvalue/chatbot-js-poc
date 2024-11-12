@@ -1,4 +1,10 @@
-export async function callApi(url: string, method = 'POST', options: any = {}) {
+type Options = {
+  apiKey?: string;
+  userMessage?: string;
+  agentType?: string;
+};
+
+export async function callApi(url: string, method = 'POST', options: Options = {}) {
   const { apiKey, userMessage, agentType } = options;
 
   try {
