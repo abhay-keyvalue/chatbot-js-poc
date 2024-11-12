@@ -14,7 +14,10 @@ interface ChatBotUIProps {
   onSendMessage?: (message: string) => Promise<string>;
 }
 
-const ChatBotUI = ({ theme = {}, onSendMessage = () => Promise.resolve('') }: ChatBotUIProps) => {
+const ChatBotUI = ({
+  theme = { buttonColor: 'blue', chatWindowColor: 'white', textColor: 'white' },
+  onSendMessage = () => Promise.resolve('')
+}: ChatBotUIProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -24,16 +27,11 @@ const ChatBotUI = ({ theme = {}, onSendMessage = () => Promise.resolve('') }: Ch
 
     const userMessage = { text: input, isBot: false };
 
-    setMessages([...messages, userMessage]);
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
+
     setInput('');
     const botResponse = await onSendMessage(input);
-
-    if (botResponse) 
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: botResponse, isBot: true }
-      ]);
-    
+    setMessages((prevMessages) => [...prevMessages, { text: botResponse, isBot: true }]);
   };
 
   return (
@@ -54,7 +52,7 @@ const ChatBotUI = ({ theme = {}, onSendMessage = () => Promise.resolve('') }: Ch
           style={{ width: '60px', height: '60px', borderRadius: '50%' }}
         />
       </div>
-      
+
       {isOpen && (
         <div
           style={{
@@ -102,7 +100,7 @@ const ChatBotUI = ({ theme = {}, onSendMessage = () => Promise.resolve('') }: Ch
                 <div
                   style={{
                     backgroundColor: msg.isBot ? '#e0e0e0' : theme.buttonColor,
-                    color: msg.isBot ? theme.textColor : 'white',
+                    color: msg.isBot ? 'black' : theme.textColor,
                     padding: '10px',
                     borderRadius: '15px',
                     maxWidth: '70%'
