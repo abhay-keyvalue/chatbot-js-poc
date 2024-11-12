@@ -115,7 +115,7 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
           </div>
 
           <div style={styles.chatMessages}>
-            {updatedMessages.map((msg, index) => (
+            {updatedMessages?.map((msg, index) => (
               <div
                 key={index}
                 style={{
