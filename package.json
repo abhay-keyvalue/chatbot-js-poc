@@ -65,6 +65,7 @@
   },
   "dependencies": {
     "@microsoft/fetch-event-source": "^2.0.1",
+    "marked": "^15.0.0",
     "preact": "^10.24.3",
     "promise-polyfill": "^8.3.0",
     "tslib": "^2.6.2",

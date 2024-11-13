@@ -17,6 +17,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'preact', 'import'],
   rules: {
+    'react/no-danger': 'off',
     'jsx-quotes': 'off',
     'react/jsx-no-bind': 'off',
     'react/jsx-indent': ['error', 2],

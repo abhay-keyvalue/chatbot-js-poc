@@ -1,4 +1,6 @@
+import { marked } from 'marked';
 import { useMemo, useState } from 'preact/hooks';
+
 import './styles.css';
 
 import { getBotResponse } from '../../api';
@@ -35,8 +37,16 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
       setCurrentMessage('');
       setStreaming(false);
     } else if (eventText?.length > 0) {
-      newMessage = newMessage + ' ' + eventText;
-      setCurrentMessage(newMessage);
+      try {
+        const botText = JSON.parse(eventText);
+
+        if (botText.type === 'markdown' && botText.text) {
+          newMessage = newMessage + botText.text;
+          setCurrentMessage(newMessage);
+        }
+      } catch (error) {
+        console.log('error in parse', error);
+      }
     }
   };
 
@@ -113,9 +123,8 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
                     backgroundColor: msg.isBot ? '#e0e0e0' : theme.buttonColor,
                     color: msg.isBot ? theme.textColor : '#fff'
                   }}
-                >
-                  {msg.text}
-                </div>
+                  dangerouslySetInnerHTML={{ __html: marked(msg.text) as string }}
+                />
               </div>
             ))}
           </div>
@@ -124,7 +133,7 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
             <input
               type='text'
               value={input}
-              onChange={onChangeInput}
+              onInput={onChangeInput}
               onKeyPress={handleKeyDown}
               className='input-field'
               placeholder='Message...'
