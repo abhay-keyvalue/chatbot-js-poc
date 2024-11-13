@@ -1,5 +1,5 @@
 import { marked } from 'marked';
-import { useMemo, useState } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 
 import './styles.css';
 
@@ -13,23 +13,26 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
+  const [currentEvent, setCurrentEvent] = useState('');
   const [input, setInput] = useState('');
   const [streaming, setStreaming] = useState(false);
 
   const handleSendMessage = async () => {
-    if (input.trim()?.length > 0 && streaming) return;
+    if (input.trim()?.length > 0 && !streaming) {
+      const userMessage = { text: input, isBot: false };
 
-    const userMessage = { text: input, isBot: false };
-
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
-    setInput('');
-    setStreaming(true);
-    await getBotResponse(input, onStreamMessage, onStreamMessageError);
+      setMessages((prevMessages) => [...prevMessages, userMessage]);
+      setInput('');
+      setStreaming(true);
+      await getBotResponse(input, onStreamMessage, onStreamMessageError);
+    }
   };
 
   const onStreamMessage = (messageData: { data: string; event: string }) => {
     const eventText = messageData?.data || '';
     const event = messageData?.event || '';
+
+    if (event.length > 0) setCurrentEvent(event);
 
     if (event === 'end') {
       setMessages((prevMessages) => [...prevMessages, { text: newMessage, isBot: true }]);
@@ -63,12 +66,6 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
     ]);
   };
 
-  const updatedMessages = useMemo(() => {
-    if (currentMessage?.length > 0) return [...messages, { text: currentMessage, isBot: true }];
-
-    return messages;
-  }, [messages, currentMessage]);
-
   const toggleChatWindow = () => {
     setIsOpen(!isOpen);
   };
@@ -80,6 +77,30 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter') handleSendMessage();
   };
+
+  const renderChatBubble = (msg: Message, index: number) => (
+    <div
+      key={index}
+      className={`chat-message-container ${msg.isBot ? 'chat-message-bot' : 'chat-message-user'}`}
+    >
+      <div
+        className='chat-message'
+        style={{
+          backgroundColor: msg.isBot ? '#e0e0e0' : theme.buttonColor,
+          color: msg.isBot ? theme.textColor : '#fff'
+        }}
+      >
+        {currentEvent?.length > 0 && index === -1 && (
+          <div className='event-title'>{`${currentEvent}...`}</div>
+        )}
+        {msg.isBot ? (
+          <div dangerouslySetInnerHTML={{ __html: marked(msg.text) as string }} />
+        ) : (
+          msg.text
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <div>
@@ -94,62 +115,47 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
           className='chat-circle-icon'
         />
       </div>
-
-      {isOpen && (
-        <div className='chat-window'>
-          <div className='chat-header'>
-            <img
-              src='https://cdn-icons-png.flaticon.com/128/18221/18221591.png'
-              alt='Bot'
-              className='header-image'
-              width={30}
-              height={30}
-            />
-            <span>ChatBot</span>
-            <div className='close-icon' onClick={toggleChatWindow}>
-              X
-            </div>
-          </div>
-
-          <div className='chat-display'>
-            {updatedMessages?.map((msg, index) => (
-              <div
-                key={index}
-                className={`chat-message-container ${msg.isBot ? 'chat-message-bot' : 'chat-message-user'}`}
-              >
-                <div
-                  className='chat-message'
-                  style={{
-                    backgroundColor: msg.isBot ? '#e0e0e0' : theme.buttonColor,
-                    color: msg.isBot ? theme.textColor : '#fff'
-                  }}
-                  dangerouslySetInnerHTML={{ __html: marked(msg.text) as string }}
-                />
-              </div>
-            ))}
-          </div>
-
-          <div className='chat-input-container'>
-            <input
-              type='text'
-              value={input}
-              onInput={onChangeInput}
-              onKeyPress={handleKeyDown}
-              className='input-field'
-              placeholder='Message...'
-            />
-            <button className='send-button' onClick={handleSendMessage}>
-              <img
-                src='https://cdn-icons-png.flaticon.com/128/14025/14025522.png'
-                alt='Send'
-                className='send-icon'
-                width={32}
-                height={32}
-              />
-            </button>
+      <div className={`chat-window ${isOpen && 'open'}`}>
+        <div className='chat-header'>
+          <img
+            src='https://cdn-icons-png.flaticon.com/128/18221/18221591.png'
+            alt='Bot'
+            className='header-image'
+            width={30}
+            height={30}
+          />
+          <span>ChatBot</span>
+          <div className='close-icon' onClick={toggleChatWindow}>
+            X
           </div>
         </div>
-      )}
+
+        <div className='chat-display'>
+          {messages?.map((msg, index) => renderChatBubble(msg, index))}
+          {currentMessage?.length > 0 &&
+            renderChatBubble({ text: currentMessage, isBot: true }, -1)}
+        </div>
+
+        <div className='chat-input-container'>
+          <input
+            type='text'
+            value={input}
+            onChange={onChangeInput}
+            onKeyPress={handleKeyDown}
+            className='input-field'
+            placeholder='Message...'
+          />
+          <button className='send-button' onClick={handleSendMessage}>
+            <img
+              src='https://cdn-icons-png.flaticon.com/128/14025/14025522.png'
+              alt='Send'
+              className='send-icon'
+              width={32}
+              height={32}
+            />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

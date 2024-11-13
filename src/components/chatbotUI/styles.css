@@ -37,6 +37,24 @@
   display: flex;
   flex-direction: column;
   z-index: 1000;
+  transform-origin: bottom right;
+  transform: scale(0);
+  opacity: 0;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.chat-window.open {
+  transform: scale(1);
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .chat-window {
+    width: 90%;
+    bottom: 90px;
+  }
 }
 
 .chat-header {
@@ -122,4 +140,10 @@
   align-items: center;
   background-color: #25314b;
   border: none;
+}
+
+.event-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
 }
