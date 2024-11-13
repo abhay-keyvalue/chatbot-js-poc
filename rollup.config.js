@@ -14,24 +14,15 @@ export default {
       file: 'example/dist/esm/Milestone.js',
       format: 'esm',
       name: 'Milestone',
-      sourcemap: false,
-      globals: {
-        preact: 'preact',
-        'preact/compat': 'preactCompat'
-      }
+      sourcemap: false
     },
     {
       file: 'example/dist/umd/Milestone.js',
       format: 'umd',
       name: 'Milestone',
-      sourcemap: false,
-      globals: {
-        preact: 'preact',
-        'preact/compat': 'preactCompat'
-      }
+      sourcemap: false
     }
   ],
-  external: ['preact', 'preact/compat'],
   plugins: [
     resolve({
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -44,9 +35,7 @@ export default {
     }),
     babel({
       presets: [['@babel/preset-env', { targets: '> 0.25%, not dead' }]],
-      plugins: [
-        ['@babel/plugin-transform-react-jsx', { pragma: 'h' }] // Configure JSX for Preact
-      ],
+      plugins: [['@babel/plugin-transform-react-jsx', { pragma: 'h' }]],
       babelHelpers: 'bundled',
       exclude: 'node_modules/**'
     }),

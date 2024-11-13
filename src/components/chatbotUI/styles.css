@@ -2,12 +2,21 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .chat-icon {
-  width: 60px;
-  height: 60px;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
   border-radius: 50%;
 }
 
@@ -33,6 +42,14 @@
   font-weight: 600;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.close-icon {
+  cursor: pointer;
+  color: #fff;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -79,6 +96,7 @@
 .send-button {
   margin-left: 10px;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .send-icon {

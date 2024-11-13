@@ -9,3 +9,20 @@ export type ChatBotOptions = {
   agentType: string;
   theme?: Theme;
 };
+
+export interface Message {
+  text: string;
+  isBot: boolean;
+}
+
+export interface ChatBotUIProps {
+  theme?: {
+    buttonColor?: string;
+    chatWindowColor?: string;
+    textColor?: string;
+  };
+  config?: {
+    apiKey: string;
+    agentType: string;
+  };
+}

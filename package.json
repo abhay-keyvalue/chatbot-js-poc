@@ -64,6 +64,7 @@
     "typescript": "5.5.3"
   },
   "dependencies": {
+    "@microsoft/fetch-event-source": "^2.0.1",
     "preact": "^10.24.3",
     "promise-polyfill": "^8.3.0",
     "tslib": "^2.6.2",

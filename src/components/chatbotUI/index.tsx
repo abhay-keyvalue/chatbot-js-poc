@@ -1,24 +1,11 @@
 import { useMemo, useState } from 'preact/hooks';
 import './styles.css';
 
-import { API_DOMAIN, DEFAULT_THEME } from '../../constants/generic';
+import { getBotResponse } from '../../api';
+import { DEFAULT_THEME } from '../../constants/generic';
+import type { ChatBotUIProps, Message } from '../../types';
 
-interface Message {
-  text: string;
-  isBot: boolean;
-}
-
-interface ChatBotUIProps {
-  theme?: {
-    buttonColor?: string;
-    chatWindowColor?: string;
-    textColor?: string;
-  };
-  config?: {
-    apiKey: string;
-    agentType: string;
-  };
-}
+let newMessage = '';
 
 const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,14 +15,35 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
   const [streaming, setStreaming] = useState(false);
 
   const handleSendMessage = async () => {
-    if (!input.trim() && streaming) return;
+    if (input.trim()?.length > 0 && streaming) return;
 
     const userMessage = { text: input, isBot: false };
 
     setMessages((prevMessages) => [...prevMessages, userMessage]);
-
     setInput('');
-    await getBotResponse(input);
+    setStreaming(true);
+    await getBotResponse(input, onStreamMessage, onStreamMessageError);
+  };
+
+  const onStreamMessage = (messageData: { data: string; event: string }) => {
+    const eventText = messageData?.data || '';
+    const event = messageData?.event || '';
+
+    if (event === 'end') {
+      setMessages((prevMessages) => [...prevMessages, { text: newMessage, isBot: true }]);
+      newMessage = '';
+      setCurrentMessage('');
+      setStreaming(false);
+    } else if (eventText?.length > 0) {
+      newMessage = newMessage + ' ' + eventText;
+      setCurrentMessage(newMessage);
+    }
+  };
+
+  const onStreamMessageError = () => {
+    setCurrentMessage('');
+    setStreaming(false);
+    pushErrorMessage();
   };
 
   const pushErrorMessage = () => {
@@ -43,39 +51,6 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
       ...prevMessages,
       { text: 'Error occurred. Please try again.', isBot: true }
     ]);
-  };
-
-  const getBotResponse = async (userMessage: string): Promise<void> => {
-    const streamUrl = API_DOMAIN;
-
-    try {
-      const eventSource = new EventSource(streamUrl);
-      let message = '';
-
-      setStreaming(true);
-      eventSource.onmessage = (event) => {
-        const eventText = event?.data || '' || userMessage;
-
-        if (eventText === '[DONE]') {
-          setMessages((prevMessages) => [...prevMessages, { text: message, isBot: true }]);
-          setCurrentMessage('');
-          eventSource.close();
-          setStreaming(false);
-        } else if (eventText?.length > 0) {
-          message = message + ' ' + eventText;
-          setCurrentMessage(message);
-        }
-      };
-
-      eventSource.onerror = () => {
-        eventSource.close();
-        setCurrentMessage('');
-        setStreaming(false);
-        pushErrorMessage();
-      };
-    } catch (error) {
-      pushErrorMessage();
-    }
   };
 
   const updatedMessages = useMemo(() => {
@@ -114,7 +89,9 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
         <div className='chat-window' style={{ backgroundColor: theme.chatWindowColor }}>
           <div className='chat-header' style={{ backgroundColor: theme.buttonColor }}>
             <span>ChatBot</span>
-            <button onClick={toggleChatWindow}>✕</button>
+            <div className='close-icon' onClick={toggleChatWindow}>
+              X
+            </div>
           </div>
 
           <div className='chat-messages'>
@@ -127,7 +104,7 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
                   className='chat-message'
                   style={{
                     backgroundColor: msg.isBot ? '#e0e0e0' : theme.buttonColor,
-                    color: msg.isBot ? 'black' : theme.textColor
+                    color: msg.isBot ? theme.textColor : '#fff'
                   }}
                 >
                   {msg.text}
@@ -144,17 +121,13 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
               onKeyPress={handleKeyDown}
               className='input-field'
             />
-            <button
-              onClick={handleSendMessage}
-              className='send-button'
-              style={{ backgroundColor: theme.buttonColor }}
-            >
+            <div onClick={handleSendMessage} className='send-button'>
               <img
                 src='https://cdn-icons-png.flaticon.com/128/14025/14025522.png'
                 alt='Send'
                 className='send-icon'
               />
-            </button>
+            </div>
           </div>
         </div>
       )}
