@@ -131,7 +131,11 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
         </div>
 
         <div className='chat-display'>
-          {messages?.map((msg, index) => renderChatBubble(msg, index))}
+          {messages?.length == 0 ? (
+            <div className='start-conversation'>Start a conversation!</div>
+          ) : (
+            messages?.map((msg, index) => renderChatBubble(msg, index))
+          )}
           {currentMessage?.length > 0 &&
             renderChatBubble({ text: currentMessage, isBot: true }, -1)}
         </div>
