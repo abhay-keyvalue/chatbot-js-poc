@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'preact/hooks';
+import './styles.css';
 
 import { API_DOMAIN, DEFAULT_THEME } from '../../constants/generic';
 
@@ -53,7 +54,7 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
 
       setStreaming(true);
       eventSource.onmessage = (event) => {
-        const eventText = event?.data || '' || userMessage; // TO DO: to be removed
+        const eventText = event?.data || '' || userMessage;
 
         if (eventText === '[DONE]') {
           setMessages((prevMessages) => [...prevMessages, { text: message, isBot: true }]);
@@ -86,6 +87,7 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
   const toggleChatWindow = () => {
     setIsOpen(!isOpen);
   };
+
   const onChangeInput = (e: any) => {
     setInput(e.target.value);
   };
@@ -97,35 +99,33 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
   return (
     <div>
       <div
-        style={{ ...styles.chatButton, backgroundColor: theme.buttonColor }}
+        className='chat-button'
+        style={{ backgroundColor: theme.buttonColor }}
         onClick={toggleChatWindow}
       >
         <img
           src='https://cdn-icons-png.flaticon.com/128/18221/18221591.png'
           alt='Chat'
-          style={styles.chatIcon}
+          className='chat-icon'
         />
       </div>
 
       {isOpen && (
-        <div style={{ ...styles.chatWindow, backgroundColor: theme.chatWindowColor }}>
-          <div style={{ ...styles.chatHeader, backgroundColor: theme.buttonColor }}>
+        <div className='chat-window' style={{ backgroundColor: theme.chatWindowColor }}>
+          <div className='chat-header' style={{ backgroundColor: theme.buttonColor }}>
             <span>ChatBot</span>
             <button onClick={toggleChatWindow}>✕</button>
           </div>
 
-          <div style={styles.chatMessages}>
+          <div className='chat-messages'>
             {updatedMessages?.map((msg, index) => (
               <div
                 key={index}
-                style={{
-                  ...styles.chatMessageContainer,
-                  ...(msg.isBot ? styles.chatMessageBot : styles.chatMessageUser)
-                }}
+                className={`chat-message-container ${msg.isBot ? 'chat-message-bot' : 'chat-message-user'}`}
               >
                 <div
+                  className='chat-message'
                   style={{
-                    ...styles.chatMessage,
                     backgroundColor: msg.isBot ? '#e0e0e0' : theme.buttonColor,
                     color: msg.isBot ? 'black' : theme.textColor
                   }}
@@ -136,22 +136,23 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
             ))}
           </div>
 
-          <div style={styles.inputContainer}>
+          <div className='input-container'>
             <input
               type='text'
               value={input}
               onChange={onChangeInput}
               onKeyPress={handleKeyDown}
-              style={styles.inputField}
+              className='input-field'
             />
             <button
               onClick={handleSendMessage}
-              style={{ ...styles.sendButton, backgroundColor: theme.buttonColor }}
+              className='send-button'
+              style={{ backgroundColor: theme.buttonColor }}
             >
               <img
                 src='https://cdn-icons-png.flaticon.com/128/14025/14025522.png'
                 alt='Send'
-                style={styles.sendIcon}
+                className='send-icon'
               />
             </button>
           </div>
@@ -159,84 +160,6 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
       )}
     </div>
   );
-};
-
-const styles = {
-  chatButton: {
-    position: 'fixed',
-    bottom: '20px',
-    right: '20px',
-    cursor: 'pointer'
-  },
-  chatIcon: {
-    width: '60px',
-    height: '60px',
-    borderRadius: '50%'
-  },
-  chatWindow: {
-    position: 'fixed',
-    bottom: '90px',
-    right: '20px',
-    width: '100%',
-    maxWidth: '400px',
-    height: '70%',
-    maxHeight: '600px',
-    borderRadius: '15px',
-    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
-    overflow: 'hidden',
-    display: 'flex',
-    flexDirection: 'column',
-    zIndex: 1000
-  },
-  chatHeader: {
-    padding: '15px',
-    color: 'white',
-    fontWeight: 600,
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  chatMessages: {
-    flex: 1,
-    padding: '15px',
-    overflowY: 'auto',
-    backgroundColor: '#ffffff'
-  },
-  chatMessageContainer: {
-    display: 'flex',
-    margin: '8px 0'
-  },
-  chatMessageBot: {
-    justifyContent: 'flex-start'
-  },
-  chatMessageUser: {
-    justifyContent: 'flex-end'
-  },
-  chatMessage: {
-    padding: '10px',
-    borderRadius: '15px',
-    maxWidth: '70%'
-  },
-  inputContainer: {
-    display: 'flex',
-    padding: '10px',
-    alignItems: 'center',
-    borderTop: '1px solid #ddd'
-  },
-  inputField: {
-    flex: 1,
-    padding: '8px',
-    borderRadius: '25px',
-    border: '1px solid #ddd'
-  },
-  sendButton: {
-    marginLeft: '10px',
-    borderRadius: '50%'
-  },
-  sendIcon: {
-    width: '32px',
-    height: '32px'
-  }
 };
 
 export default ChatBotUI;
