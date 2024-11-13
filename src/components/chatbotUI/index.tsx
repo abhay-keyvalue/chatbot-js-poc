@@ -74,27 +74,34 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
   return (
     <div>
       <div
-        className='chat-button'
+        className='chatbot-button'
         style={{ backgroundColor: theme.buttonColor }}
         onClick={toggleChatWindow}
       >
         <img
           src='https://cdn-icons-png.flaticon.com/128/18221/18221591.png'
           alt='Chat'
-          className='chat-icon'
+          className='chat-circle-icon'
         />
       </div>
 
       {isOpen && (
-        <div className='chat-window' style={{ backgroundColor: theme.chatWindowColor }}>
-          <div className='chat-header' style={{ backgroundColor: theme.buttonColor }}>
+        <div className='chat-window'>
+          <div className='chat-header'>
+            <img
+              src='https://cdn-icons-png.flaticon.com/128/18221/18221591.png'
+              alt='Bot'
+              className='header-image'
+              width={30}
+              height={30}
+            />
             <span>ChatBot</span>
             <div className='close-icon' onClick={toggleChatWindow}>
               X
             </div>
           </div>
 
-          <div className='chat-messages'>
+          <div className='chat-display'>
             {updatedMessages?.map((msg, index) => (
               <div
                 key={index}
@@ -113,21 +120,24 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
             ))}
           </div>
 
-          <div className='input-container'>
+          <div className='chat-input-container'>
             <input
               type='text'
               value={input}
               onChange={onChangeInput}
               onKeyPress={handleKeyDown}
               className='input-field'
+              placeholder='Message...'
             />
-            <div onClick={handleSendMessage} className='send-button'>
+            <button className='send-button' onClick={handleSendMessage}>
               <img
                 src='https://cdn-icons-png.flaticon.com/128/14025/14025522.png'
                 alt='Send'
                 className='send-icon'
+                width={32}
+                height={32}
               />
-            </div>
+            </button>
           </div>
         </div>
       )}

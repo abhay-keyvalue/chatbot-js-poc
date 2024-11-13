@@ -1,23 +1,25 @@
-.chat-button {
+.chatbot-button {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 45px;
-  height: 45px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  padding: 10px;
+  width: 60px;
+  height: 60px;
+  background-color: #25314b;
   border-radius: 50%;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  transition: transform 0.3s ease;
 }
 
-.chat-icon {
+.chat-circle-icon {
   width: 30px;
   height: 30px;
-  font-size: 20px;
   border-radius: 50%;
+  margin: auto;
 }
 
 .chat-window {
@@ -28,6 +30,7 @@
   max-width: 400px;
   height: 70%;
   max-height: 600px;
+  background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   overflow: hidden;
@@ -38,11 +41,15 @@
 
 .chat-header {
   padding: 15px;
+  background-color: #25314b;
   color: white;
+  font-size: 18px;
   font-weight: 600;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
 }
 
 .close-icon {
@@ -53,11 +60,12 @@
   align-items: center;
 }
 
-.chat-messages {
+.chat-display {
   flex: 1;
   padding: 15px;
   overflow-y: auto;
   background-color: #ffffff;
+  font-size: 15px;
 }
 
 .chat-message-container {
@@ -79,27 +87,39 @@
   max-width: 70%;
 }
 
-.input-container {
+.chat-input-container {
   display: flex;
-  padding: 10px;
+  padding: 4px;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  margin: 15px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #ddd;
 }
 
 .input-field {
-  flex: 1;
-  padding: 8px;
+  border: 1px solid transparent;
   border-radius: 25px;
-  border: 1px solid #ddd;
+}
+
+.chat-input-container input {
+  flex: 1;
+  padding: 10px;
+  border: 0px solid transparent;
+  font-size: 14px;
+  outline: none;
 }
 
 .send-button {
-  margin-left: 10px;
-  border-radius: 50%;
   cursor: pointer;
-}
-
-.send-icon {
   width: 32px;
   height: 32px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #25314b;
+  border: none;
 }
