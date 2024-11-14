@@ -1,10 +1,11 @@
 import { marked } from 'marked';
-import { useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 
 import './styles.css';
 
 import { getBotResponse } from '../../api';
 import { DEFAULT_THEME } from '../../constants/generic';
+import { useOutsideClickAlerter } from '../../hooks/useOutsideClickAlerter';
 import type { ChatBotUIProps, Message } from '../../types';
 
 let newMessage = '';
@@ -16,6 +17,21 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
   const [currentEvent, setCurrentEvent] = useState('');
   const [input, setInput] = useState('');
   const [streaming, setStreaming] = useState(false);
+
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const chatBotWindowRef = useRef<HTMLDivElement>(null);
+  const chatBotButtonRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, currentMessage]);
+
+  useOutsideClickAlerter(chatBotWindowRef, () => setIsOpen(false), chatBotButtonRef);
+
+  const scrollToBottom = () => {
+    if (chatContainerRef.current)
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+  };
 
   const handleSendMessage = async () => {
     if (input.trim()?.length > 0 && !streaming) {
@@ -108,6 +124,7 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
         className='chatbot-button'
         style={{ backgroundColor: theme.buttonColor }}
         onClick={toggleChatWindow}
+        ref={chatBotButtonRef}
       >
         <img
           src='https://cdn-icons-png.flaticon.com/128/18221/18221591.png'
@@ -115,7 +132,7 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
           className='chat-circle-icon'
         />
       </div>
-      <div className={`chat-window ${isOpen && 'open'}`}>
+      <div className={`chat-window ${isOpen && 'open'}`} ref={chatBotWindowRef}>
         <div className='chat-header'>
           <img
             src='https://cdn-icons-png.flaticon.com/128/18221/18221591.png'
@@ -130,8 +147,12 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
           </div>
         </div>
 
-        <div className='chat-display'>
-          {messages?.map((msg, index) => renderChatBubble(msg, index))}
+        <div className='chat-display' ref={chatContainerRef}>
+          {messages?.length == 0 ? (
+            <div className='start-conversation'>Start a conversation!</div>
+          ) : (
+            messages?.map((msg, index) => renderChatBubble(msg, index))
+          )}
           {currentMessage?.length > 0 &&
             renderChatBubble({ text: currentMessage, isBot: true }, -1)}
         </div>
