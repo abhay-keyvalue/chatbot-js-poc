@@ -1,12 +1,12 @@
 import { marked } from 'marked';
 import { useEffect, useRef, useState } from 'preact/hooks';
 
-import './styles.css';
+import { getBotResponse } from '@api';
+import { DEFAULT_THEME } from '@constants/generic';
+import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
+import type { ChatBotUIProps, Message } from '@types';
 
-import { getBotResponse } from '../../api';
-import { DEFAULT_THEME } from '../../constants/generic';
-import { useOutsideClickAlerter } from '../../hooks/useOutsideClickAlerter';
-import type { ChatBotUIProps, Message } from '../../types';
+import './styles.css';
 
 let newMessage = '';
 

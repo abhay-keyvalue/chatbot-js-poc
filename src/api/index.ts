@@ -1,6 +1,6 @@
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 
-import { API_DOMAIN } from '../constants/generic';
+import { API_DOMAIN } from '@constants/generic';
 
 type Options = {
   apiKey?: string;

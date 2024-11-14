@@ -1,5 +1,4 @@
 import type Preact from 'preact';
-
 import { useEffect } from 'preact/hooks';
 
 export const useOutsideClickAlerter = (
