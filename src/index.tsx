@@ -1,8 +1,9 @@
 import { render } from 'preact';
 
-import ChatBotUI from './components/chatbotUI';
-import { DEFAULT_THEME } from './constants/generic';
-import type { ChatBotOptions, Theme } from './types';
+import ChatBotUI from '@components/chatbotUI';
+import { DEFAULT_THEME } from '@constants/generic';
+import type { ChatBotOptions, Theme } from '@types';
+
 export class ChatBot {
   private theme: Theme;
   private apiKey: string;

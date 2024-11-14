@@ -75,14 +75,30 @@ module.exports = {
         groups: [['external', 'builtin'], 'internal', ['sibling', 'parent'], 'index'],
         pathGroups: [
           {
-            pattern: '@(preact)',
+            pattern: '@preact/*',
             group: 'external',
             position: 'before'
           },
           {
-            pattern: '@src/**',
+            pattern: '@api',
             group: 'internal'
-          }
+          },
+          {
+            pattern: '@components/**',
+            group: 'internal'
+          },
+          {
+            pattern: '@constants/*',
+            group: 'internal'
+          },
+          {
+            pattern: '@hooks/*',
+            group: 'internal'
+          },
+          {
+            pattern: '@types',
+            group: 'internal'
+          },
         ],
         pathGroupsExcludedImportTypes: ['internal', 'preact'],
         'newlines-between': 'always',
