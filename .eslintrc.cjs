@@ -99,6 +99,10 @@ module.exports = {
             pattern: '@types',
             group: 'internal'
           },
+          {
+            pattern: '@utils',
+            group: 'internal'
+          },
         ],
         pathGroupsExcludedImportTypes: ['internal', 'preact'],
         'newlines-between': 'always',

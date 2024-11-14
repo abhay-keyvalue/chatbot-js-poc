@@ -10,6 +10,16 @@ export type ChatBotOptions = {
   theme?: Theme;
 };
 
+export type GetCookieTypes = {
+  cookieName: string;
+};
+
+export type SetCookieTypes = {
+  cookieName: string;
+  cookieValue: string;
+  expiryInDays: number;
+};
+
 export interface Message {
   text: string;
   isBot: boolean;
