@@ -2,27 +2,18 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 
 import { API_DOMAIN } from '@constants/generic';
 
-type Options = {
-  apiKey?: string;
-  userMessage?: string;
-  agentType?: string;
-};
-
-export async function callApi(url: string, method = 'POST', options: Options = {}) {
-  const { apiKey, userMessage, agentType } = options;
-
+export async function callApi(url: string, method = 'POST', body = {}) {
   try {
-    const response = await fetch(`${url}/${agentType}`, {
+    const response = await fetch(`${url}`, {
       method,
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ inputs: userMessage })
+      body: JSON.stringify(body)
     });
     const data = await response.json();
 
-    return data?.[0]?.generated_text || "I'm sorry, I don't understand that.";
+    return data || "I'm sorry, I don't understand that.";
   } catch (error) {
     console.error('Error:', error);
 
@@ -35,7 +26,7 @@ export const getBotResponse = async (
   onStreamMessage: (event: any) => void,
   onStreamMessageError: () => void
 ): Promise<void> => {
-  fetchEventSource(API_DOMAIN, {
+  fetchEventSource(`${API_DOMAIN}/sse-endpoint`, {
     // async onopen(response) {
     //   if (response.ok)
     //    everything's good

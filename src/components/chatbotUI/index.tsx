@@ -1,10 +1,11 @@
 import { marked } from 'marked';
 import { useEffect, useRef, useState } from 'preact/hooks';
 
-import { getBotResponse } from '@api';
-import { DEFAULT_THEME } from '@constants/generic';
+import { callApi, getBotResponse } from '@api';
+import { API_DOMAIN, COOKIE_EXPIRATION_TIME_IN_DAYS, DEFAULT_THEME } from '@constants/generic';
 import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
 import type { ChatBotUIProps, Message } from '@types';
+import { getCookie, setCookie } from '@utils';
 
 import './styles.css';
 
@@ -26,7 +27,34 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
     scrollToBottom();
   }, [messages, currentMessage]);
 
+  useEffect(() => {
+    //cookie expiry resets everytime user opens site
+    startConversations(getCookie({ cookieName: 'conversationId' }));
+  }, []);
+
   useOutsideClickAlerter(chatBotWindowRef, () => setIsOpen(false), chatBotButtonRef);
+
+  const startConversations = async (conversationId: string | null) => {
+    if (conversationId) {
+      const response = await callApi(`${API_DOMAIN}/conversation/1212`, 'PATCH');
+
+      setCookie({
+        cookieName: 'conversationId',
+        cookieValue: conversationId,
+        expiryInDays: COOKIE_EXPIRATION_TIME_IN_DAYS
+      });
+      setMessages((prevMessages) => [...prevMessages, { text: response?.message, isBot: true }]);
+    } else {
+      const response = await callApi(`${API_DOMAIN}/conversation`);
+
+      setCookie({
+        cookieName: 'conversationId',
+        cookieValue: response?.conversationId,
+        expiryInDays: COOKIE_EXPIRATION_TIME_IN_DAYS
+      });
+      setMessages((prevMessages) => [...prevMessages, { text: response?.message, isBot: true }]);
+    }
+  };
 
   const scrollToBottom = () => {
     if (chatContainerRef.current)
