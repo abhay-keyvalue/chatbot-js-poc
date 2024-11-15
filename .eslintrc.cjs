@@ -84,7 +84,7 @@ module.exports = {
             group: 'internal'
           },
           {
-            pattern: '@components/**',
+            pattern: '@components',
             group: 'internal'
           },
           {
