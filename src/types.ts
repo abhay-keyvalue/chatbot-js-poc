@@ -36,3 +36,21 @@ export interface ChatBotUIProps {
     agentType: string;
   };
 }
+
+export interface ChatInputProps {
+  handleSendMessage: () => void;
+  input: string;
+  setInput: any;
+  isDisabled: boolean;
+}
+
+export interface ChatHeaderProps {
+  toggleChatWindow: () => void;
+}
+
+export interface ChatBubbleProps {
+  message: Message;
+  index: number;
+  theme: Theme;
+  event: string;
+}

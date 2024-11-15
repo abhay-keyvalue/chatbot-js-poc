@@ -1,0 +1,24 @@
+.chat-message-container {
+  display: flex;
+  margin: 8px 0;
+}
+
+.chat-message-bot {
+  justify-content: flex-start;
+}
+
+.chat-message-user {
+  justify-content: flex-end;
+}
+
+.chat-message {
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 70%;
+}
+
+.event-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}

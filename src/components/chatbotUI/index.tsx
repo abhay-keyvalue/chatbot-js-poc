@@ -1,7 +1,7 @@
-import { marked } from 'marked';
 import { useEffect, useRef, useState } from 'preact/hooks';
 
 import { callApi, getBotResponse } from '@api';
+import { ChatBubble, ChatHeader, ChatInput } from '@components';
 import { API_DOMAIN, COOKIE_EXPIRATION_TIME_IN_DAYS, DEFAULT_THEME } from '@constants/generic';
 import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
 import type { ChatBotUIProps, Message } from '@types';
@@ -114,38 +114,6 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
     setIsOpen(!isOpen);
   };
 
-  const onChangeInput = (e: any) => {
-    setInput(e.target.value);
-  };
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') handleSendMessage();
-  };
-
-  const renderChatBubble = (msg: Message, index: number) => (
-    <div
-      key={index}
-      className={`chat-message-container ${msg.isBot ? 'chat-message-bot' : 'chat-message-user'}`}
-    >
-      <div
-        className='chat-message'
-        style={{
-          backgroundColor: msg.isBot ? '#e0e0e0' : theme.buttonColor,
-          color: msg.isBot ? theme.textColor : '#fff'
-        }}
-      >
-        {currentEvent?.length > 0 && index === -1 && (
-          <div className='event-title'>{`${currentEvent}...`}</div>
-        )}
-        {msg.isBot ? (
-          <div dangerouslySetInnerHTML={{ __html: marked(msg.text) as string }} />
-        ) : (
-          msg.text
-        )}
-      </div>
-    </div>
-  );
-
   return (
     <div>
       <div
@@ -161,49 +129,30 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
         />
       </div>
       <div className={`chat-window ${isOpen && 'open'}`} ref={chatBotWindowRef}>
-        <div className='chat-header'>
-          <img
-            src='https://cdn-icons-png.flaticon.com/128/18221/18221591.png'
-            alt='Bot'
-            className='header-image'
-            width={30}
-            height={30}
-          />
-          <span>ChatBot</span>
-          <div className='close-icon' onClick={toggleChatWindow}>
-            X
-          </div>
-        </div>
-
+        <ChatHeader toggleChatWindow={toggleChatWindow} />
         <div className='chat-display' ref={chatContainerRef}>
           {messages?.length == 0 ? (
             <div className='start-conversation'>Start a conversation!</div>
           ) : (
-            messages?.map((msg, index) => renderChatBubble(msg, index))
+            messages?.map((msg, index) => (
+              <ChatBubble message={msg} index={index} theme={theme} event={currentEvent} />
+            ))
           )}
-          {currentMessage?.length > 0 &&
-            renderChatBubble({ text: currentMessage, isBot: true }, -1)}
-        </div>
-
-        <div className='chat-input-container'>
-          <input
-            type='text'
-            value={input}
-            onChange={onChangeInput}
-            onKeyPress={handleKeyDown}
-            className='input-field'
-            placeholder='Message...'
-          />
-          <button className='send-button' onClick={handleSendMessage}>
-            <img
-              src='https://cdn-icons-png.flaticon.com/128/14025/14025522.png'
-              alt='Send'
-              className='send-icon'
-              width={32}
-              height={32}
+          {currentMessage?.length > 0 && (
+            <ChatBubble
+              message={{ text: currentMessage, isBot: true }}
+              index={-1}
+              theme={theme}
+              event={currentEvent}
             />
-          </button>
+          )}
         </div>
+        <ChatInput
+          handleSendMessage={handleSendMessage}
+          input={input}
+          setInput={(val: string) => setInput(val)}
+          isDisabled={streaming}
+        />
       </div>
     </div>
   );
