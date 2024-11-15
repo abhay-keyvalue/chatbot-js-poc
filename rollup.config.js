@@ -42,5 +42,6 @@ export default {
     terser(),
     image(),
     postcss()
-  ]
+  ],
+  context: 'globalThis'
 };
