@@ -21,6 +21,7 @@
     "paths": {
       "@api": ["src/api/index"],
       "@components": ["src/components"],
+      "@screens/*": ["src/screens/*"],
       "@constants/*": ["src/constants/*"],
       "@hooks/*": ["src/hooks/*"],
       "@types": ["src/types"],

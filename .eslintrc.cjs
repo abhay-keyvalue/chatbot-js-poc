@@ -88,6 +88,10 @@ module.exports = {
             group: 'internal'
           },
           {
+            pattern: '@screens/*',
+            group: 'internal'
+          },
+          {
             pattern: '@constants/*',
             group: 'internal'
           },
