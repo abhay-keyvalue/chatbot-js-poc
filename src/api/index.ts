@@ -1,7 +1,7 @@
 /**
  * This module provides functions for making API calls and getting bot responses.
  */
-
+import 'whatwg-fetch';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 
 import { API_DOMAIN, en } from '@constants';

@@ -65,25 +65,30 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     if (conversationId) {
       // Send PATCH request to update the conversation
       const response = await callApi(`${API_DOMAIN}/conversation/1212`, 'PATCH');
-      const responseMessageData = { text: response?.message, isBot: true };
 
-      setCookie({
-        cookieName: 'conversationId',
-        cookieValue: conversationId,
-        expiryInDays: COOKIE_EXPIRATION_TIME_IN_DAYS
-      });
-      setMessages((prevMessages) => [...prevMessages, responseMessageData]);
+      if (response?.message?.length > 0) {
+        const responseMessageData = { text: response?.message, isBot: true };
+
+        setCookie({
+          cookieName: 'conversationId',
+          cookieValue: conversationId,
+          expiryInDays: COOKIE_EXPIRATION_TIME_IN_DAYS
+        });
+        setMessages((prevMessages) => [...prevMessages, responseMessageData]);
+      }
     } else {
       // Send POST request to create a new conversation
       const response = await callApi(`${API_DOMAIN}/conversation`);
       const responseMessageData = { text: response?.message, isBot: true };
 
-      setCookie({
-        cookieName: 'conversationId',
-        cookieValue: response?.conversationId,
-        expiryInDays: COOKIE_EXPIRATION_TIME_IN_DAYS
-      });
-      setMessages((prevMessages) => [...prevMessages, responseMessageData]);
+      if (response?.message?.length > 0) {
+        setCookie({
+          cookieName: 'conversationId',
+          cookieValue: response?.conversationId,
+          expiryInDays: COOKIE_EXPIRATION_TIME_IN_DAYS
+        });
+        setMessages((prevMessages) => [...prevMessages, responseMessageData]);
+      }
     }
   };
 
@@ -122,11 +127,12 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   const onStreamMessage = (messageData: MessageData): void => {
     const eventText = messageData?.data || '';
     const event = messageData?.event || '';
+    const isComplete = event === 'end';
     const newMessageData = { text: eventText, isBot: true };
 
     if (event.length > 0) setCurrentEvent(event);
 
-    if (event === 'end') {
+    if (isComplete) {
       setMessages((prevMessages) => [...prevMessages, newMessageData]);
       newMessage = '';
       setCurrentMessage('');
