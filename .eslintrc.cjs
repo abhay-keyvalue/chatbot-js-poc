@@ -92,7 +92,7 @@ module.exports = {
             group: 'internal'
           },
           {
-            pattern: '@constants/*',
+            pattern: '@constants',
             group: 'internal'
           },
           {
@@ -106,7 +106,7 @@ module.exports = {
           {
             pattern: '@utils',
             group: 'internal'
-          },
+          }
         ],
         pathGroupsExcludedImportTypes: ['internal', 'preact'],
         'newlines-between': 'always',

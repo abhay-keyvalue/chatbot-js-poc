@@ -1,8 +1,22 @@
+import { CHATBOT_SEND_ICON_URL, en } from '@constants';
 import type { ChatInputProps } from '@types';
 
 import './styles.css';
 
-const ChatInput = ({ handleSendMessage, input, setInput, isDisabled }: ChatInputProps) => {
+/**
+ * Represents the chat input component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.handleSendMessage - The function to handle sending a message.
+ * @param {string} props.input - The input value.
+ * @param {Function} props.setInput - The function to set the input value.
+ * @param {boolean} props.isDisabled - Indicates if the input is disabled.
+ * @returns {JSX.Element} The rendered component.
+ */
+
+const ChatInput = (props: ChatInputProps) => {
+  const { handleSendMessage, input, setInput, isDisabled } = props;
   const onChangeInput = (e: any) => {
     setInput(e.target.value);
   };
@@ -19,19 +33,13 @@ const ChatInput = ({ handleSendMessage, input, setInput, isDisabled }: ChatInput
         onInput={onChangeInput}
         onKeyUp={handleKeyDown}
         className='input-field'
-        placeholder='Message...'
+        placeholder={en.chatbot_placeholder}
       />
       <button
         className={isDisabled ? 'disabled-send-button' : 'send-button'}
         onClick={handleSendMessage}
       >
-        <img
-          src='https://cdn-icons-png.flaticon.com/128/14025/14025522.png'
-          alt='Send'
-          className='send-icon'
-          width={32}
-          height={32}
-        />
+        <img src={CHATBOT_SEND_ICON_URL} alt='Send' className='send-icon' width={32} height={32} />
       </button>
     </div>
   );

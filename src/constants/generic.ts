@@ -29,3 +29,7 @@ export const DEFAULT_THEME = {
   chatWindowColor: '#ffffff',
   textColor: '#333'
 };
+
+export const CHATBOT_ICON_URL = 'https://cdn-icons-png.flaticon.com/128/18221/18221591.png';
+
+export const CHATBOT_SEND_ICON_URL = 'https://cdn-icons-png.flaticon.com/128/14025/14025522.png';

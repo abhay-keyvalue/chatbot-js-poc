@@ -1,6 +1,11 @@
 import type { GetCookieTypes, SetCookieTypes } from '@types';
 
-const getCookie = ({ cookieName }: GetCookieTypes) => {
+/**
+ * Retrieves the value of a cookie by its name.
+ * @param {GetCookieTypes} options - The options for retrieving the cookie.
+ * @returns {string} The value of the cookie.
+ */
+const getCookie = ({ cookieName }: GetCookieTypes): string => {
   const name = cookieName + '=';
   const cookieData = decodeURIComponent(document.cookie).split(';');
 
@@ -15,7 +20,11 @@ const getCookie = ({ cookieName }: GetCookieTypes) => {
   return '';
 };
 
-const setCookie = ({ cookieName, cookieValue, expiryInDays }: SetCookieTypes) => {
+/**
+ * Sets a cookie with the specified name, value, and expiry.
+ * @param {SetCookieTypes} options - The options for setting the cookie.
+ */
+const setCookie = ({ cookieName, cookieValue, expiryInDays }: SetCookieTypes): void => {
   const date = new Date();
 
   date.setTime(date.getTime() + expiryInDays * 24 * 60 * 60 * 1000);

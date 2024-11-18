@@ -1,6 +1,6 @@
 # Chatbot-js-sdk-poc
 
-A simple, customizable JavaScript SDK for integrating a chatbot widget into your website. This SDK provides a user interface with basic styling options, message storage, and basic functionalities like sending messages, receiving responses, and clearing chat history.
+A simple, customizable JavaScript SDK for integrating a chatbot widget into your website. This SDK provides a user interface with basic styling options, message storage, and basic functionalities like sending messages and receiving responses.
 
 ## Features
 
@@ -78,12 +78,4 @@ Clears chat history and resets the welcome message.
 
 ```js
 chatbot.clearMessages();
-```
-
-### Adding Custom Messages
-
-To add custom messages, use appendMessage:
-
-```js
-chatbot.appendMessage('Bot', 'Welcome to the chat!', 'left');
 ```
