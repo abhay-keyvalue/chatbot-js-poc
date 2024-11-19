@@ -130,7 +130,11 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
       </div>
       <div className={`chat-window ${isOpen && 'open'}`} ref={chatBotWindowRef}>
         <ChatHeader toggleChatWindow={toggleChatWindow} />
-        <div className='chat-display' ref={chatContainerRef}>
+        <div
+          className='chat-display'
+          style={{ ...(streaming && { overflow: 'hidden' }) }}
+          ref={chatContainerRef}
+        >
           {messages?.length == 0 ? (
             <div className='start-conversation'>Start a conversation!</div>
           ) : (
