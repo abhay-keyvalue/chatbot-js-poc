@@ -47,7 +47,6 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   // Effects
   useEffect(() => {
     scrollToBottom();
-    console.log('messages', messages, 'currentMessage', currentMessage);
   }, [messages, currentMessage]);
 
   useEffect(() => {
@@ -151,7 +150,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
         }
         if (botText.type === 'table' && botText.data) currentTableData = botText.data;
       } catch (error) {
-        console.log(ErrorMap[ErrorTypes.ERROR]?.message, error);
+        console.warn(ErrorMap[ErrorTypes.ERROR]?.message, error);
       }
     }
   };
@@ -160,11 +159,11 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    * Handles the error that occurs when streaming a message.
    * Resets the current message, sets streaming to false, and pushes an error message.
    */
-  const onStreamMessageError = (err: any): void => {
+  const onStreamMessageError = (err: string): void => {
     setCurrentMessage('');
     setStreaming(false);
     pushErrorMessage();
-    console.log(ErrorMap[ErrorTypes.ERROR]?.message, err);
+    console.warn(ErrorMap[ErrorTypes.ERROR]?.message, err);
   };
 
   /**
