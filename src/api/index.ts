@@ -42,7 +42,7 @@ export async function callApi(url: string, method = 'POST', body = {}) {
 export const getBotResponse = async (
   userMessage: string,
   onStreamMessage: (event: any) => void,
-  onStreamMessageError: () => void
+  onStreamMessageError: (error: any) => void
 ): Promise<void> => {
   fetchEventSource(`${API_DOMAIN}/sse-endpoint`, {
     onmessage(event) {
@@ -50,7 +50,7 @@ export const getBotResponse = async (
     },
     onerror(err) {
       if (err) {
-        onStreamMessageError();
+        onStreamMessageError(err);
         throw err;
       }
     }

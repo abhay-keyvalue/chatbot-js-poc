@@ -23,6 +23,7 @@ export type SetCookieTypes = {
 export interface Message {
   text: string;
   isBot: boolean;
+  data?: any;
 }
 
 export interface ChatBotUIProps {

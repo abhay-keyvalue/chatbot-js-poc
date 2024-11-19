@@ -8,15 +8,17 @@ import {
   CHATBOT_ICON_URL,
   COOKIE_EXPIRATION_TIME_IN_DAYS,
   DEFAULT_THEME,
-  en
+  en,
+  ErrorMap,
+  ErrorTypes
 } from '@constants';
 import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
 import type { ChatBotUIProps, Message, MessageData } from '@types';
 import { getCookie, setCookie } from '@utils';
-
 import './styles.css';
 
 let newMessage = '';
+let currentTableData = {};
 
 /**
  * Represents the ChatBotUI component.
@@ -128,25 +130,27 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     const eventText = messageData?.data || '';
     const event = messageData?.event || '';
     const isComplete = event === 'end';
-    const newMessageData = { text: eventText, isBot: true };
+    const newMessageData = { text: eventText, isBot: true, data: currentTableData };
 
     if (event.length > 0) setCurrentEvent(event);
 
     if (isComplete) {
       setMessages((prevMessages) => [...prevMessages, newMessageData]);
       newMessage = '';
+      currentTableData = {};
       setCurrentMessage('');
       setStreaming(false);
     } else if (eventText?.length > 0) {
       try {
         const botText = JSON.parse(eventText);
 
-        if (botText.type === 'markdown' && botText.text) {
-          newMessage = newMessage + botText.text;
+        if (botText?.type === 'markdown' && botText?.text) {
+          newMessage = newMessage + botText?.text;
           setCurrentMessage(newMessage);
         }
+        if (botText.type === 'table' && botText.data) currentTableData = botText.data;
       } catch (error) {
-        console.error('ERROR', error);
+        console.log(ErrorMap[ErrorTypes.ERROR]?.message, error);
       }
     }
   };
@@ -155,10 +159,11 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    * Handles the error that occurs when streaming a message.
    * Resets the current message, sets streaming to false, and pushes an error message.
    */
-  const onStreamMessageError = (): void => {
+  const onStreamMessageError = (err: any): void => {
     setCurrentMessage('');
     setStreaming(false);
     pushErrorMessage();
+    console.log(ErrorMap[ErrorTypes.ERROR]?.message, err);
   };
 
   /**
