@@ -3,6 +3,7 @@ import { marked } from 'marked';
 import type { ChatBubbleProps } from '@types';
 
 import './styles.css';
+import { Table } from '../Table';
 
 /**
  * Represents a chat bubble component.
@@ -31,6 +32,7 @@ const ChatBubble = (props: ChatBubbleProps) => {
         ) : (
           message.text
         )}
+        {message.data && <Table columns={message.data.columns} rows={message.data.rows} />}
       </div>
     </div>
   );

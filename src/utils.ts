@@ -31,4 +31,6 @@ const setCookie = ({ cookieName, cookieValue, expiryInDays }: SetCookieTypes): v
   document.cookie = cookieName + '=' + cookieValue + ';expires=' + date.toUTCString() + ';path=/';
 };
 
-export { getCookie, setCookie };
+const chatSdkError = (message: string) => new Error(`Chat SDK Error: ${message}`);
+
+export { getCookie, setCookie, chatSdkError };

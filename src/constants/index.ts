@@ -6,6 +6,7 @@ import {
   DEFAULT_THEME,
   ErrorLevelType,
   ErrorMap,
+  ErrorTypes,
   HttpMethodOptions
 } from './generic';
 import { en } from './translation';
@@ -19,5 +20,6 @@ export {
   DEFAULT_THEME,
   CHATBOT_ICON_URL,
   CHATBOT_SEND_ICON_URL,
-  en
+  en,
+  ErrorTypes
 };
