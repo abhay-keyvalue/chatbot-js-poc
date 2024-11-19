@@ -17,6 +17,11 @@
   max-width: 70%;
 }
 
+.bot-message {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
 .event-title {
   font-size: 15px;
   font-weight: 600;

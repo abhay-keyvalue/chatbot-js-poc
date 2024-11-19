@@ -54,3 +54,8 @@ export interface ChatBubbleProps {
   theme: Theme;
   event: string;
 }
+
+export interface MessageData {
+  data: string;
+  event: string;
+}
