@@ -132,7 +132,7 @@ const ChatBotUI = ({ theme = DEFAULT_THEME }: ChatBotUIProps) => {
         <ChatHeader toggleChatWindow={toggleChatWindow} />
         <div
           className='chat-display'
-          style={streaming ? { overflow: 'hidden' } : ''}
+          style={{ ...(streaming && { overflow: 'hidden' }) }}
           ref={chatContainerRef}
         >
           {messages?.length == 0 ? (
