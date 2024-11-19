@@ -1,12 +1,11 @@
-# Chatbot-js-sdk-poc
+# Milestone Chatbot
 
-A simple, customizable JavaScript SDK for integrating a chatbot widget into your website. This SDK provides a user interface with basic styling options, message storage, and basic functionalities like sending messages and receiving responses.
+A customizable JavaScript SDK for integrating a chatbot functionality into your website. This SDK provides a user interface with basic styling options, message storage, and basic functionalities like sending messages and receiving responses.
 
 ## Features
 
 - **Customizable Theme**: Configure button, chat window, and text colors.
-- **Chat Message Persistence**: Stores chat history in local storage for up to one week.
-- **Clear Chat**: Option to clear chat history.
+- **AI-based Responses**: Utilizes artificial intelligence to provide responses to a wide range of user queries.
 
 ## Installation
 
@@ -70,12 +69,4 @@ Toggles the visibility of the chat window.
 
 ```js
 chatbot.toggleChatWindow();
-```
-
-#### clearMessages
-
-Clears chat history and resets the welcome message.
-
-```js
-chatbot.clearMessages();
 ```
