@@ -17,9 +17,6 @@ import type { ChatBotUIProps, Message, MessageData } from '@types';
 import { getCookie, setCookie } from '@utils';
 import './styles.css';
 
-let newMessage = '';
-let currentTableData = {};
-
 /**
  * Represents the ChatBotUI component.
  *
@@ -39,6 +36,9 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   const [input, setInput] = useState('');
   const [streaming, setStreaming] = useState(false);
 
+  let newMessage = '';
+  let currentTableData = {};
+
   // Refs
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const chatBotWindowRef = useRef<HTMLDivElement>(null);
@@ -47,6 +47,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   // Effects
   useEffect(() => {
     scrollToBottom();
+    console.log('messages', messages, 'currentMessage', currentMessage);
   }, [messages, currentMessage]);
 
   useEffect(() => {
@@ -130,7 +131,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     const eventText = messageData?.data || '';
     const event = messageData?.event || '';
     const isComplete = event === 'end';
-    const newMessageData = { text: eventText, isBot: true, data: currentTableData };
+    const newMessageData = { text: newMessage, isBot: true, data: currentTableData };
 
     if (event.length > 0) setCurrentEvent(event);
 
