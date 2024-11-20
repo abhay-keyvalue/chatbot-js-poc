@@ -1,6 +1,6 @@
 import type { JSX } from 'preact';
 
-import { CHATBOT_SEND_ICON_URL, en } from '@constants';
+import { en } from '@constants';
 import type { ChatInputProps } from '@types';
 
 import './styles.css';
@@ -44,13 +44,7 @@ const ChatInput = (props: ChatInputProps) => {
         className={isDisabled ? 'disabled-send-button' : 'send-button'}
         onClick={handleSendMessage}
       >
-        <img
-          src={sendIcon || CHATBOT_SEND_ICON_URL}
-          alt='Send'
-          className='send-icon'
-          width={32}
-          height={32}
-        />
+        <img src={sendIcon} alt='Send' className='send-icon' width={32} height={32} />
       </button>
     </div>
   );

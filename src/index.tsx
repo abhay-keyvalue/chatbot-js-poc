@@ -37,7 +37,7 @@ export class ChatBot {
   private async initUI(): Promise<void> {
     try {
       const response = await callApi(
-        `http://192.168.4.202:3005/api/v1/tenants/api-Key/test_api_key`,
+        `${process.env.SDK_BASE_URL}/api/v1/tenants/api-Key/test_api_key`,
         'GET'
       );
 
