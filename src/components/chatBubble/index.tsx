@@ -32,7 +32,9 @@ const ChatBubble = (props: ChatBubbleProps) => {
         ) : (
           message.text
         )}
-        {message.data && <Table columns={message.data.columns} rows={message.data.rows} />}
+        {message.data && (
+          <Table columns={message?.data?.columns || []} rows={message?.data?.rows || []} />
+        )}
       </div>
     </div>
   );
