@@ -27,5 +27,3 @@ export declare const DEFAULT_THEME: {
     chatWindowColor: string;
     textColor: string;
 };
-export declare const CHATBOT_ICON_URL = "https://cdn-icons-png.flaticon.com/128/18221/18221591.png";
-export declare const CHATBOT_SEND_ICON_URL = "https://cdn-icons-png.flaticon.com/128/14025/14025522.png";

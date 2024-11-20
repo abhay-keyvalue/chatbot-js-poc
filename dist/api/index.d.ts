@@ -10,7 +10,7 @@ import type { MessageData } from '@types';
  * @param body - The request body for the API call. Default is an empty object.
  * @returns A Promise that resolves to the response data or an error message.
  */
-export declare function callApi(url: string, method?: string, body?: any): Promise<any>;
+export declare function callApi(url: string, method?: string, body?: {}): Promise<any>;
 /**
  * Gets the bot response for the given user message by establishing a server-sent event (SSE) connection.
  * @param userMessage - The user message to send to the bot.
