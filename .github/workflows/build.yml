@@ -36,9 +36,9 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Upload build artifacts
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: milestone-build
-          path: dist/
+          github_token: ${{ secrets.TOKEN }}
+          publish_dir: example/dist/umd/Milestone.js
