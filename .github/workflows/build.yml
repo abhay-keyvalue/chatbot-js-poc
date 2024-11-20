@@ -28,6 +28,10 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      # Clean build directory
+      - name: Clean Build Directory
+        run: rm -rf example/dist
+
       # Run linting
       - name: Lint
         run: npm run lint
@@ -36,7 +40,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Debug build directory
+      # Debug build output
       - name: Debug Build Output
         run: ls -R example/dist
 
