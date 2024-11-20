@@ -4,7 +4,6 @@ import type { JSX } from 'preact/jsx-runtime';
 import { callApi, getBotResponse } from '@api';
 import { ChatBubble, ChatHeader, ChatInput } from '@components';
 import {
-  CHATBOT_ICON_URL,
   COOKIE_EXPIRATION_TIME_IN_DAYS,
   DEFAULT_THEME,
   en,
@@ -21,11 +20,15 @@ import './styles.css';
  *
  * @component
  * @param {Object} props - The component props.
- * @param {string} [props.theme=DEFAULT_THEME] - The theme for the chatbot UI.
+ * @param {Object} [props.settings] - Contains Tenant settings.
+ * @param {Object} [props.config] - Contains apiKey and agentType.
+ * @param {Object} [props.theme] - The theme for the chatbot UI mentioned in chatBot initialization.
  * @returns {JSX.Element} The rendered ChatBotUI component.
  */
 const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
-  const { theme = DEFAULT_THEME } = props;
+  const { settings, theme } = props;
+  const settingsTheme = settings?.theme || {};
+  const botTheme = { ...DEFAULT_THEME, ...settingsTheme, ...theme };
 
   // State variables
   const [isOpen, setIsOpen] = useState(false);
@@ -79,7 +82,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       }
     } else {
       // Send POST request to create a new conversation
-      const response = await callApi(`${process.env.SDK_BASE_URL}/conversation`);
+      const response = await callApi(`${process.env.SDK_BASE_URL}/conversation`, 'POST');
       const responseMessageData = { text: response?.message, isBot: true };
 
       if (response?.message?.length > 0) {
@@ -178,7 +181,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    * Toggles the chat window open or closed.
    */
   const toggleChatWindow = (): void => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   /**
@@ -190,11 +193,11 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     () => (
       <div
         className='chatbot-button'
-        style={{ backgroundColor: theme.buttonColor }}
+        style={{ backgroundColor: botTheme.primaryColor }}
         onClick={toggleChatWindow}
         ref={chatBotButtonRef}
       >
-        <img src={CHATBOT_ICON_URL} alt='Chat' className='chat-circle-icon' />
+        <img src={settings?.botIcon} alt='Chat' className='chat-circle-icon' />
       </div>
     ),
     []
@@ -211,7 +214,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     const currentMessageData = { text: currentMessage, isBot: true };
 
     return (
-      <ChatBubble message={currentMessageData} index={-1} theme={theme} event={currentEvent} />
+      <ChatBubble message={currentMessageData} index={-1} theme={botTheme} event={currentEvent} />
     );
   }, [currentMessage]);
 
@@ -225,7 +228,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       return <div className='start-conversation'>{en.empty_screen_message}</div>;
 
     return messages?.map((msg, index) => (
-      <ChatBubble message={msg} index={index} theme={theme} event={currentEvent} />
+      <ChatBubble message={msg} index={index} theme={botTheme} event={currentEvent} />
     ));
   }, [messages]);
 
@@ -233,7 +236,11 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     <div>
       {renderChatBotIcon}
       <div className={`chat-window ${isOpen && 'open'}`} ref={chatBotWindowRef}>
-        <ChatHeader toggleChatWindow={toggleChatWindow} />
+        <ChatHeader
+          toggleChatWindow={toggleChatWindow}
+          botIcon={settings?.botIcon}
+          closeIcon={settings?.closeIcon}
+        />
         <div className='chat-display' ref={chatContainerRef}>
           {renderPreviousMessages}
           {renderCurrentMessage}
@@ -243,6 +250,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
           input={input}
           setInput={setInput}
           isDisabled={streaming}
+          sendIcon={settings?.sendIcon}
         />
       </div>
     </div>

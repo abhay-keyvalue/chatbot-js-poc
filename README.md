@@ -24,7 +24,7 @@ const chatbot = new ChatBot({
   apiKey: 'YOUR_API_KEY', // Required: API key for authentication.
   agentType: 'YOUR_AGENT_TYPE', // Required: Agent type for the bot.
   theme: {
-    buttonColor: '#3498db', // Optional: Color of the chat button.
+    primaryColor: '#3498db', // Optional: Color of the chat button.
     chatWindowColor: '#f5f5f5', // Optional: Background color of the chat window.
     textColor: '#333' // Optional: Color of bot text.
   }
@@ -47,7 +47,7 @@ Customize the chat's appearance using the theme option:
 
 | Property          | Type   | Default Value | Description                                         |
 | ----------------- | ------ | ------------- | --------------------------------------------------- |
-| `buttonColor`     | String | `#25314B`     | The color of the chatbot button.                    |
+| `primaryColor`    | String | `#25314B`     | The color of the chatbot button.                    |
 | `chatWindowColor` | String | `#ffffff`     | The background color of the chat window.            |
 | `textColor`       | String | `#333333`     | The color of the text displayed in the chat window. |
 
@@ -55,7 +55,7 @@ Example:
 
 ```javascript
 theme: {
-  buttonColor: '#4CAF50',       // Button color
+  primaryColor: '#4CAF50',       // Button color
   chatWindowColor: '#ffffff',   // Chat window background color
   textColor: '#333333'          // Text color
 }

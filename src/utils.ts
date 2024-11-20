@@ -33,4 +33,36 @@ const setCookie = ({ cookieName, cookieValue, expiryInDays }: SetCookieTypes): v
 
 const chatSdkError = (message: string) => new Error(`Chat SDK Error: ${message}`);
 
-export { getCookie, setCookie, chatSdkError };
+const isArray = (obj: unknown): boolean => Boolean(isObject(obj) && obj instanceof Array);
+
+const isObject = (obj: unknown): boolean => Boolean(obj && typeof obj === 'object');
+
+const isBoolean = (val: unknown): boolean => typeof val === 'boolean';
+
+const isEmptyArray = (obj: any): boolean => Boolean(isArray(obj) && obj.length === 0);
+
+const isEmptyObject = (obj: unknown) => obj && Object.keys(obj).length === 0;
+
+const isEmptyString = (str: unknown): boolean =>
+  Boolean(typeof str === 'string' && str.length === 0);
+
+const isNonEmptyObject = (obj: unknown) => obj && Object.keys(obj).length > 0;
+
+const isNonEmptyArray = (arr: unknown) => Array.isArray(arr) && arr.length > 0;
+
+const isNonEmptyString = (str: unknown) => typeof str === 'string' && str?.trim().length > 0;
+
+export {
+  getCookie,
+  setCookie,
+  chatSdkError,
+  isArray,
+  isObject,
+  isBoolean,
+  isEmptyArray,
+  isEmptyObject,
+  isEmptyString,
+  isNonEmptyObject,
+  isNonEmptyArray,
+  isNonEmptyString
+};

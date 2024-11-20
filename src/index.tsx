@@ -4,7 +4,7 @@
 
 import { render } from 'preact';
 
-import { DEFAULT_THEME } from '@constants';
+import { callApi } from '@api';
 import ChatBotUI from '@screens/chatbotUI';
 import type { ChatBotOptions, Theme } from '@types';
 
@@ -24,9 +24,8 @@ export class ChatBot {
     const { apiKey, agentType, theme = {} } = props;
 
     this.initUI();
-    const defaultTheme = DEFAULT_THEME;
 
-    this.theme = { ...defaultTheme, ...theme };
+    this.theme = theme;
     this.apiKey = apiKey;
     this.agentType = agentType;
   }
@@ -37,26 +36,32 @@ export class ChatBot {
    */
   private async initUI(): Promise<void> {
     try {
-      const response = await fetch(
-        `${process.env.SDK_BASE_URL}/api/v1/tenants/api-Key/test_api_key`
+      const response = await callApi(
+        `${process.env.SDK_BASE_URL}/api/v1/tenants/api-Key/test_api_key`,
+        'GET'
       );
 
-      if (!response.ok) throw new Error('Failed to fetch configuration data');
+      if (!response) throw new Error('Failed to fetch configuration data');
 
-      const configData = await response.json();
+      const configData = await response?.data;
 
       // To be provided to the ChatBotUI component for branding
-      // eslint-disable-next-line no-console
-      console.log(configData);
+      if (configData) {
+        // To be removed
+        const chatBotConfig = {
+          apiKey: this.apiKey || configData?.apiKey,
+          agentType: this.agentType
+        };
 
-      // To be removed
-      const chatBotConfig = { apiKey: this.apiKey, agentType: this.agentType };
+        const container = document.createElement('div');
 
-      const container = document.createElement('div');
+        document.body.appendChild(container);
 
-      document.body.appendChild(container);
-
-      render(<ChatBotUI theme={this.theme} config={chatBotConfig} />, container);
+        render(
+          <ChatBotUI config={chatBotConfig} settings={configData?.settings} theme={this.theme} />,
+          container
+        );
+      }
     } catch (error) {
       console.error('Error initializing ChatBot UI:', error);
     }

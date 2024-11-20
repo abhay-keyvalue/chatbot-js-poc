@@ -21,7 +21,7 @@ export async function callApi(url: string, method = 'POST', body = {}) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(body)
+      ...(body && { body: JSON.stringify(body) })
     });
     const data = await response.json();
 
