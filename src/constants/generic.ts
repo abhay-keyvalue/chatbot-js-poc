@@ -1,5 +1,3 @@
-export const API_DOMAIN = 'https://51a3-103-138-236-18.ngrok-free.app';
-
 export const COOKIE_EXPIRATION_TIME_IN_DAYS = 7;
 
 export enum HttpMethodOptions {
