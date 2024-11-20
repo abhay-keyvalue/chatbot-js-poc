@@ -3,8 +3,10 @@ import commonjs from '@rollup/plugin-commonjs';
 import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
+import 'dotenv/config';
 import postcss from 'rollup-plugin-postcss';
 
 export default {
@@ -41,7 +43,13 @@ export default {
     }),
     terser(),
     image(),
-    postcss()
+    postcss(),
+    replace({
+      preventAssignment: true, // Prevent variable reassignment
+      values: {
+        'process.env.SDK_BASE_URL': JSON.stringify(process.env.SDK_BASE_URL)
+      }
+    })
   ],
   context: 'globalThis'
 };

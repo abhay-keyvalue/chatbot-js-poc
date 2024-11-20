@@ -4,7 +4,7 @@
 import 'whatwg-fetch';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 
-import { API_DOMAIN, en } from '@constants';
+import { en } from '@constants';
 
 /**
  * Makes an API call to the specified URL with the given method and body.
@@ -44,7 +44,7 @@ export const getBotResponse = async (
   onStreamMessage: (event: any) => void,
   onStreamMessageError: (error: string) => void
 ): Promise<void> => {
-  fetchEventSource(`${API_DOMAIN}/sse-endpoint`, {
+  fetchEventSource(`${process.env.SDK_BASE_URL}/sse-endpoint`, {
     onmessage(event) {
       onStreamMessage(event);
     },

@@ -37,7 +37,9 @@ export class ChatBot {
    */
   private async initUI(): Promise<void> {
     try {
-      const response = await fetch(`http://192.168.4.202:3005/api/v1/tenants?apiKey=test_api_key`);
+      const response = await fetch(
+        `${process.env.SDK_BASE_URL}/api/v1/tenants/api-Key/test_api_key`
+      );
 
       if (!response.ok) throw new Error('Failed to fetch configuration data');
 

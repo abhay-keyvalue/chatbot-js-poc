@@ -4,7 +4,6 @@ import type { JSX } from 'preact/jsx-runtime';
 import { callApi, getBotResponse } from '@api';
 import { ChatBubble, ChatHeader, ChatInput } from '@components';
 import {
-  API_DOMAIN,
   CHATBOT_ICON_URL,
   COOKIE_EXPIRATION_TIME_IN_DAYS,
   DEFAULT_THEME,
@@ -66,7 +65,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   const startConversations = async (conversationId?: string | null): Promise<void> => {
     if (conversationId) {
       // Send PATCH request to update the conversation
-      const response = await callApi(`${API_DOMAIN}/conversation/1212`, 'PATCH');
+      const response = await callApi(`${process.env.SDK_BASE_URL}/conversation/1212`, 'PATCH');
 
       if (response?.message?.length > 0) {
         const responseMessageData = { text: response?.message, isBot: true };
@@ -80,7 +79,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       }
     } else {
       // Send POST request to create a new conversation
-      const response = await callApi(`${API_DOMAIN}/conversation`);
+      const response = await callApi(`${process.env.SDK_BASE_URL}/conversation`);
       const responseMessageData = { text: response?.message, isBot: true };
 
       if (response?.message?.length > 0) {
