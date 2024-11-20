@@ -1,4 +1,4 @@
-name: Build and Publish
+name: Build Chatbot SDK
 
 on:
   push:
@@ -28,6 +28,17 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Run the build script
+      # Run linting
+      - name: Lint
+        run: npm run lint
+
+      # Build the project
       - name: Build
         run: npm run build
+
+      # Upload build artifacts
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: milestone-build
+          path: dist/
