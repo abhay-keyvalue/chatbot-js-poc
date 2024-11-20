@@ -1,18 +1,5 @@
 // Define types for columns and rows
-interface Column {
-  header: string;
-  accessor: string;
-  align?: 'left' | 'center' | 'right'; // Optional alignment for column
-}
-
-interface Row {
-  [key: string]: string; // Flexible keys with ReactNode as value for rich content
-}
-
-interface TableComponentProps {
-  columns: Column[];
-  rows: Row[];
-}
+import type { TableComponentProps } from '@types';
 
 export const Table = ({ columns, rows }: TableComponentProps) => (
   <div style={{ overflowX: 'auto', margin: '20px 0' }}>

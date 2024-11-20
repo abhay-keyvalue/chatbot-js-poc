@@ -23,7 +23,10 @@ export type SetCookieTypes = {
 export interface Message {
   text: string;
   isBot: boolean;
-  data?: any;
+  data?: {
+    columns: Column[];
+    rows: Row[];
+  };
 }
 
 export interface ChatBotUIProps {
@@ -41,7 +44,7 @@ export interface ChatBotUIProps {
 export interface ChatInputProps {
   handleSendMessage: () => void;
   input: string;
-  setInput: any;
+  setInput: (text: string) => void;
   isDisabled: boolean;
 }
 
@@ -59,4 +62,19 @@ export interface ChatBubbleProps {
 export interface MessageData {
   data: string;
   event: string;
+}
+
+export interface Column {
+  header: string;
+  accessor: string;
+  align?: 'left' | 'center' | 'right';
+}
+
+export interface Row {
+  [key: string]: string;
+}
+
+export interface TableComponentProps {
+  columns: Column[];
+  rows: Row[];
 }

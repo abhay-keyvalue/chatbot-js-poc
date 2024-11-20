@@ -1,3 +1,5 @@
+import type { JSX } from 'preact';
+
 import { CHATBOT_SEND_ICON_URL, en } from '@constants';
 import type { ChatInputProps } from '@types';
 
@@ -17,8 +19,10 @@ import './styles.css';
 
 const ChatInput = (props: ChatInputProps) => {
   const { handleSendMessage, input, setInput, isDisabled } = props;
-  const onChangeInput = (e: any) => {
-    setInput(e.target.value);
+  const onChangeInput = (e: JSX.TargetedEvent<HTMLInputElement>) => {
+    const eventTarget = e?.target as HTMLInputElement;
+
+    setInput(eventTarget?.value || '');
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
