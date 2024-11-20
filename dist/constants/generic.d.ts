@@ -23,7 +23,7 @@ export declare enum ErrorTypes {
     NETWORK_ERROR = "NETWORK_ERROR"
 }
 export declare const DEFAULT_THEME: {
-    buttonColor: string;
+    primaryColor: string;
     chatWindowColor: string;
     textColor: string;
 };

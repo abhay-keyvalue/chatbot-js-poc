@@ -11,4 +11,13 @@ declare const getCookie: ({ cookieName }: GetCookieTypes) => string;
  */
 declare const setCookie: ({ cookieName, cookieValue, expiryInDays }: SetCookieTypes) => void;
 declare const chatSdkError: (message: string) => Error;
-export { getCookie, setCookie, chatSdkError };
+declare const isArray: (obj: any) => boolean;
+declare const isObject: (obj: any) => boolean;
+declare const isBoolean: (val: any) => boolean;
+declare const isEmptyArray: (obj: any) => boolean;
+declare const isEmptyObject: (obj: any) => any;
+declare const isEmptyString: (str: any) => boolean;
+declare const isNonEmptyObject: (obj: any) => any;
+declare const isNonEmptyArray: (arr: any) => boolean;
+declare const isNonEmptyString: (str: any) => boolean;
+export { getCookie, setCookie, chatSdkError, isArray, isObject, isBoolean, isEmptyArray, isEmptyObject, isEmptyString, isNonEmptyObject, isNonEmptyArray, isNonEmptyString };

@@ -6,7 +6,9 @@ import './styles.css';
  *
  * @component
  * @param {Object} props - The component props.
- * @param {string} [props.theme=DEFAULT_THEME] - The theme for the chatbot UI.
+ * @param {Object} [props.settings] - Contains Tenant settings.
+ * @param {Object} [props.config] - Contains apiKey and agentType.
+ * @param {Object} [props.theme] - The theme for the chatbot UI mentioned in chatBot initialization.
  * @returns {JSX.Element} The rendered ChatBotUI component.
  */
 declare const ChatBotUI: (props: ChatBotUIProps) => JSX.Element;
