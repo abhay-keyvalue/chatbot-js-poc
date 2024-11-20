@@ -36,9 +36,13 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Debug build directory
+      - name: Debug Build Output
+        run: ls -R example/dist
+
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.TOKEN }}
-          publish_dir: example
+          publish_dir: example/dist/umd
