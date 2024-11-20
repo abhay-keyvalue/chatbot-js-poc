@@ -24,8 +24,8 @@ export interface Message {
   text: string;
   isBot: boolean;
   data?: {
-    columns: Column[];
-    rows: Row[];
+    columns?: Column[];
+    rows?: Row[];
   };
 }
 
@@ -60,8 +60,8 @@ export interface ChatBubbleProps {
 }
 
 export interface MessageData {
-  data: string;
-  event: string;
+  data?: string;
+  event?: string;
 }
 
 export interface Column {
