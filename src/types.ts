@@ -1,5 +1,5 @@
 export type Theme = {
-  buttonColor?: string;
+  primaryColor?: string;
   chatWindowColor?: string;
   textColor?: string;
 };
@@ -30,15 +30,19 @@ export interface Message {
 }
 
 export interface ChatBotUIProps {
-  theme?: {
-    buttonColor?: string;
-    chatWindowColor?: string;
-    textColor?: string;
-  };
   config?: {
     apiKey: string;
     agentType: string;
   };
+  settings?: {
+    logo?: string;
+    botIcon?: string;
+    banner?: string;
+    sendIcon?: string;
+    closeIcon?: string;
+    theme?: Theme;
+  };
+  theme?: Theme;
 }
 
 export interface ChatInputProps {
@@ -46,10 +50,13 @@ export interface ChatInputProps {
   input: string;
   setInput: (text: string) => void;
   isDisabled: boolean;
+  sendIcon?: string;
 }
 
 export interface ChatHeaderProps {
   toggleChatWindow: () => void;
+  botIcon?: string;
+  closeIcon?: string;
 }
 
 export interface ChatBubbleProps {

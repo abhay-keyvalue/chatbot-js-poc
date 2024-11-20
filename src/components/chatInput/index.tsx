@@ -14,11 +14,12 @@ import './styles.css';
  * @param {string} props.input - The input value.
  * @param {Function} props.setInput - The function to set the input value.
  * @param {boolean} props.isDisabled - Indicates if the input is disabled.
+ * @param {string} props.sendIcon - Url for sendIcon.
  * @returns {JSX.Element} The rendered component.
  */
 
 const ChatInput = (props: ChatInputProps) => {
-  const { handleSendMessage, input, setInput, isDisabled } = props;
+  const { handleSendMessage, input, setInput, isDisabled, sendIcon } = props;
   const onChangeInput = (e: JSX.TargetedEvent<HTMLInputElement>) => {
     const eventTarget = e?.target as HTMLInputElement;
 
@@ -43,7 +44,13 @@ const ChatInput = (props: ChatInputProps) => {
         className={isDisabled ? 'disabled-send-button' : 'send-button'}
         onClick={handleSendMessage}
       >
-        <img src={CHATBOT_SEND_ICON_URL} alt='Send' className='send-icon' width={32} height={32} />
+        <img
+          src={sendIcon || CHATBOT_SEND_ICON_URL}
+          alt='Send'
+          className='send-icon'
+          width={32}
+          height={32}
+        />
       </button>
     </div>
   );

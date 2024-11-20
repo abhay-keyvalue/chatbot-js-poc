@@ -22,7 +22,7 @@ const ChatBubble = (props: ChatBubbleProps) => {
       <div
         className={`chat-message ${message.isBot && 'bot-message'}`}
         style={{
-          backgroundColor: message.isBot ? '#e0e0e0' : theme.buttonColor,
+          backgroundColor: message.isBot ? '#e0e0e0' : theme.primaryColor,
           color: message.isBot ? theme.textColor : '#fff'
         }}
       >

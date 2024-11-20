@@ -14,14 +14,14 @@ import type { MessageData } from '@types';
  * @param body - The request body for the API call. Default is an empty object.
  * @returns A Promise that resolves to the response data or an error message.
  */
-export async function callApi(url: string, method = 'POST', body = {}) {
+export async function callApi(url: string, method = 'POST', body?: any) {
   try {
     const response = await fetch(`${url}`, {
       method,
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(body)
+      ...(body && { body: JSON.stringify(body) })
     });
     const data = await response.json();
 
