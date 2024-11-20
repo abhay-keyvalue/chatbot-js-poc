@@ -36,7 +36,7 @@ export enum ErrorTypes {
 }
 
 export const DEFAULT_THEME = {
-  primaryColor: '#25314B',
+  primaryColor: 'red',
   chatWindowColor: '#ffffff',
   textColor: '#333'
 };
