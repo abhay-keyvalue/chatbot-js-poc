@@ -35,14 +35,29 @@ export class ChatBot {
    * Initializes the user interface for the ChatBot.
    * Creates a container element and renders the ChatBotUI component inside it.
    */
-  private initUI(): void {
-    const container = document.createElement('div');
+  private async initUI(): Promise<void> {
+    try {
+      const response = await fetch(`http://192.168.4.202:3005/api/v1/tenants?apiKey=test_api_key`);
 
-    document.body.appendChild(container);
+      if (!response.ok) throw new Error('Failed to fetch configuration data');
 
-    const chatBotConfig = { apiKey: this.apiKey, agentType: this.agentType };
+      const configData = await response.json();
 
-    render(<ChatBotUI theme={this.theme} config={chatBotConfig} />, container);
+      // To be provided to the ChatBotUI component for branding
+      // eslint-disable-next-line no-console
+      console.log(configData);
+
+      // To be removed
+      const chatBotConfig = { apiKey: this.apiKey, agentType: this.agentType };
+
+      const container = document.createElement('div');
+
+      document.body.appendChild(container);
+
+      render(<ChatBotUI theme={this.theme} config={chatBotConfig} />, container);
+    } catch (error) {
+      console.error('Error initializing ChatBot UI:', error);
+    }
   }
 }
 
