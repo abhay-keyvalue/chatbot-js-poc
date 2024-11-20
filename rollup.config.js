@@ -13,13 +13,13 @@ export default {
   input: 'src/index.tsx',
   output: [
     {
-      file: 'example/dist/esm/Milestone.js',
+      file: 'dist/esm/Milestone.js',
       format: 'esm',
       name: 'Milestone',
       sourcemap: false
     },
     {
-      file: 'example/dist/umd/Milestone.js',
+      file: 'dist/umd/Milestone.js',
       format: 'umd',
       name: 'Milestone',
       sourcemap: false
