@@ -4,7 +4,6 @@ import type { JSX } from 'preact/jsx-runtime';
 import { callApi, getBotResponse } from '@api';
 import { ChatBubble, ChatHeader, ChatInput } from '@components';
 import {
-  CHATBOT_ICON_URL,
   COOKIE_EXPIRATION_TIME_IN_DAYS,
   DEFAULT_THEME,
   en,
@@ -198,7 +197,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
         onClick={toggleChatWindow}
         ref={chatBotButtonRef}
       >
-        <img src={settings?.botIcon || CHATBOT_ICON_URL} alt='Chat' className='chat-circle-icon' />
+        <img src={settings?.botIcon} alt='Chat' className='chat-circle-icon' />
       </div>
     ),
     []

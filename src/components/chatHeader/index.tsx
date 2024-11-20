@@ -1,4 +1,4 @@
-import { CHATBOT_ICON_URL, en } from '@constants';
+import { en } from '@constants';
 import type { ChatHeaderProps } from '@types';
 
 import './styles.css';
@@ -17,13 +17,7 @@ const ChatHeader = (props: ChatHeaderProps) => {
 
   return (
     <div className='chat-header'>
-      <img
-        src={botIcon || CHATBOT_ICON_URL}
-        alt='Bot'
-        className='header-image'
-        width={30}
-        height={30}
-      />
+      <img src={botIcon} alt='Bot' className='header-image' width={30} height={30} />
       <span>{en.chatbot_title}</span>
       <div className='close-icon' onClick={toggleChatWindow}>
         {closeIcon?.length ? (
