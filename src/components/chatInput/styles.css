@@ -1,6 +1,7 @@
 .chat-input-container {
   display: flex;
   padding: 4px;
+  padding-right: 6px;
   border: 1px solid #ddd;
   border-radius: 25px;
   margin: 15px;
