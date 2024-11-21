@@ -64,8 +64,10 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   }, []);
 
   const closeChatWindow = (): void => {
-    logger.info(`${logMessages.togglingChatWindow} closed`);
-    setIsOpen(false);
+    if (isOpen) {
+      logger.info(`${logMessages.togglingChatWindow} closed`);
+      setIsOpen(false);
+    }
   };
 
   useOutsideClickAlerter(chatBotWindowRef, closeChatWindow, chatBotButtonRef);
@@ -204,7 +206,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
         <img src={settings?.botIcon} alt='Chat' className='chat-circle-icon' />
       </div>
     ),
-    []
+    [isOpen]
   );
 
   /**
