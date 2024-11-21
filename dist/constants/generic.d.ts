@@ -24,6 +24,7 @@ export declare enum ErrorTypes {
 }
 export declare const DEFAULT_THEME: {
     primaryColor: string;
+    secondaryColor: string;
     chatWindowColor: string;
     textColor: string;
 };
