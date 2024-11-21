@@ -3,16 +3,10 @@ import type { JSX } from 'preact/jsx-runtime';
 
 import { callApi, getBotResponse } from '@api';
 import { ChatBubble, ChatHeader, ChatInput } from '@components';
-import {
-  COOKIE_EXPIRATION_TIME_IN_DAYS,
-  DEFAULT_THEME,
-  en,
-  ErrorMap,
-  ErrorTypes
-} from '@constants';
+import { DEFAULT_THEME, en, ErrorMap, ErrorTypes, HttpMethodOptions } from '@constants';
 import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
 import type { ChatBotUIProps, Message, MessageData } from '@types';
-import { getCookie, setCookie } from '@utils';
+
 import './styles.css';
 
 /**
@@ -23,16 +17,17 @@ import './styles.css';
  * @param {Object} [props.settings] - Contains Tenant settings.
  * @param {Object} [props.config] - Contains apiKey and agentType.
  * @param {Object} [props.theme] - The theme for the chatbot UI mentioned in chatBot initialization.
+ * @param {Object} [props.chat] - Contains chatId and history.
  * @returns {JSX.Element} The rendered ChatBotUI component.
  */
 const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
-  const { settings, theme } = props;
+  const { settings, theme, chat } = props;
   const settingsTheme = settings?.theme || {};
   const botTheme = { ...DEFAULT_THEME, ...settingsTheme, ...theme };
 
   // State variables
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(chat?.history || []);
   const [currentMessage, setCurrentMessage] = useState('');
   const [currentEvent, setCurrentEvent] = useState('');
   const [input, setInput] = useState('');
@@ -52,47 +47,28 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   }, [messages, currentMessage]);
 
   useEffect(() => {
-    startConversations(getCookie({ cookieName: 'conversationId' }));
+    startConversations();
   }, []);
 
   useOutsideClickAlerter(chatBotWindowRef, () => setIsOpen(false), chatBotButtonRef);
 
   /**
    * Starts a conversation with the chatbot.
-   * If a conversationId is provided, it sends a PATCH request to update the conversation.
    * If no conversationId is provided, it sends a POST request to create a new conversation.
    *
-   * @param {string | null} conversationId - The ID of the conversation (optional).
    * @returns {Promise<void>} A promise that resolves when the conversation is started.
    */
-  const startConversations = async (conversationId?: string | null): Promise<void> => {
-    if (conversationId) {
-      // Send PATCH request to update the conversation
-      const response = await callApi(`${process.env.SDK_BASE_URL}/conversation/1212`, 'PATCH');
+  const startConversations = async (): Promise<void> => {
+    // Send PATCH request to update the conversation
+    const response = await callApi(
+      `${process.env.SDK_BASE_URL}/conversation`,
+      HttpMethodOptions.GET
+    );
 
-      if (response?.message?.length > 0) {
-        const responseMessageData = { text: response?.message, isBot: true };
-
-        setCookie({
-          cookieName: 'conversationId',
-          cookieValue: conversationId,
-          expiryInDays: COOKIE_EXPIRATION_TIME_IN_DAYS
-        });
-        setMessages((prevMessages) => [...prevMessages, responseMessageData]);
-      }
-    } else {
-      // Send POST request to create a new conversation
-      const response = await callApi(`${process.env.SDK_BASE_URL}/conversation`, 'POST');
+    if (response?.message?.length > 0 && response?.statusCode === 200) {
       const responseMessageData = { text: response?.message, isBot: true };
 
-      if (response?.message?.length > 0) {
-        setCookie({
-          cookieName: 'conversationId',
-          cookieValue: response?.conversationId,
-          expiryInDays: COOKIE_EXPIRATION_TIME_IN_DAYS
-        });
-        setMessages((prevMessages) => [...prevMessages, responseMessageData]);
-      }
+      setMessages((prevMessages) => [...prevMessages, responseMessageData]);
     }
   };
 

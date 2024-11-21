@@ -6,6 +6,7 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 
 import { en } from '@constants';
 import type { MessageData } from '@types';
+import { isEmptyObject } from '@utils';
 
 /**
  * Makes an API call to the specified URL with the given method and body.
@@ -21,7 +22,7 @@ export async function callApi(url: string, method = 'POST', body = {}) {
       headers: {
         'Content-Type': 'application/json'
       },
-      ...(body && { body: JSON.stringify(body) })
+      ...(!isEmptyObject(body) && { body: JSON.stringify(body) })
     });
     const data = await response.json();
 
