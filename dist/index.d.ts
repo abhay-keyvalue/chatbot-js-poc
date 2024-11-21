@@ -15,6 +15,11 @@ export declare class ChatBot {
      */
     constructor(props: ChatBotOptions);
     /**
+     * Sets the logger flag based on the provided value.
+     * @param isEnabled - The flag to enable or disable logging.
+     */
+    private setLoggerFlag;
+    /**
      * Initializes the user interface for the ChatBot.
      * Creates a container element and renders the ChatBotUI component inside it.
      */
