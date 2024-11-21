@@ -38,6 +38,10 @@ export interface ChatBotUIProps {
         theme?: Theme;
     };
     theme?: Theme;
+    chat?: {
+        id?: string;
+        history?: Message[];
+    };
 }
 export interface ChatInputProps {
     handleSendMessage: () => void;
