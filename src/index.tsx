@@ -5,6 +5,7 @@
 import { render } from 'preact';
 
 import { callApi } from '@api';
+import { HttpMethodOptions } from '@constants';
 import ChatBotUI from '@screens/chatbotUI';
 import type { ChatBotOptions, Theme } from '@types';
 
@@ -37,8 +38,8 @@ export class ChatBot {
   private async initUI(): Promise<void> {
     try {
       const response = await callApi(
-        `${process.env.SDK_BASE_URL}/api/v1/tenants/api-Key/test_api_key`,
-        'GET'
+        `${process.env.SDK_BASE_URL}/api/v1/tenants/test_api_key/initialize`,
+        HttpMethodOptions.POST
       );
 
       if (!response) throw new Error('Failed to fetch configuration data');
@@ -46,7 +47,7 @@ export class ChatBot {
       const configData = await response?.data;
 
       // To be provided to the ChatBotUI component for branding
-      if (configData) {
+      if (configData?.tenant) {
         // To be removed
         const chatBotConfig = {
           apiKey: this.apiKey || configData?.apiKey,
@@ -58,12 +59,17 @@ export class ChatBot {
         document.body.appendChild(container);
 
         render(
-          <ChatBotUI config={chatBotConfig} settings={configData?.settings} theme={this.theme} />,
+          <ChatBotUI
+            config={chatBotConfig}
+            settings={configData?.tenant?.settings}
+            theme={this.theme}
+            chat={configData?.chat}
+          />,
           container
         );
       }
     } catch (error) {
-      console.error('Error initializing ChatBot UI:', error);
+      console.error('Error initializing ChatBot: ', error);
     }
   }
 }
