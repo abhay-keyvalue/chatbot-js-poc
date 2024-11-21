@@ -11,6 +11,7 @@ import './styles.css';
  * @param {Function} props.setInput - The function to set the input value.
  * @param {boolean} props.isDisabled - Indicates if the input is disabled.
  * @param {string} props.sendIcon - Url for sendIcon.
+ * @param {theme} props.theme - The chat theme.
  * @returns {JSX.Element} The rendered component.
  */
 declare const ChatInput: (props: ChatInputProps) => JSX.Element;

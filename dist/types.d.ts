@@ -59,6 +59,7 @@ export interface ChatInputProps {
     setInput: (text: string) => void;
     isDisabled: boolean;
     sendIcon?: string;
+    theme?: Theme;
 }
 export interface ChatHeaderProps {
     toggleChatWindow: () => void;
