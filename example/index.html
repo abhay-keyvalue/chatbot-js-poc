@@ -26,6 +26,14 @@
       const chatBot = new ChatBot({
         apiKey: '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',
         agentType: 'gpt2',
+        settings: {
+          position: {
+            bottom: '20px',
+            right: '20px'
+          },
+          title: 'ChatBot',
+          placeholderText: 'Type a message...',
+          logEnabled: true
         theme: {
           primaryColor: '#25314b',
           secondaryColor: '#3498db',

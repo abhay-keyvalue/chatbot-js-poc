@@ -9,6 +9,15 @@ export type ChatBotOptions = {
   apiKey: string;
   agentType: string;
   theme?: Theme;
+  settings?: {
+    position?: {
+      bottom?: string | number;
+      right?: string | number;
+    };
+    title?: string;
+    placeholderText?: string;
+    logEnabled?: boolean;
+  };
 };
 
 export type GetCookieTypes = {

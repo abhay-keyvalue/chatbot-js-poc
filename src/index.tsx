@@ -5,9 +5,10 @@
 import { render } from 'preact';
 
 import { callApi } from '@api';
-import { HttpMethodOptions } from '@constants';
+import { HttpMethodOptions, logMessages } from '@constants';
 import ChatBotUI from '@screens/chatbotUI';
 import type { ChatBotOptions, Theme } from '@types';
+import { logger } from '@utils';
 
 /**
  * Represents a ChatBot instance.
@@ -22,13 +23,23 @@ export class ChatBot {
    * @param options - The options for configuring the ChatBot instance.
    */
   constructor(props: ChatBotOptions) {
-    const { apiKey, agentType, theme = {} } = props;
+    const { apiKey, agentType, theme = {}, settings } = props;
 
     this.initUI();
+    this.setLoggerFlag(settings?.logEnabled);
 
     this.theme = theme;
     this.apiKey = apiKey;
     this.agentType = agentType;
+  }
+
+  /**
+   * Sets the logger flag based on the provided value.
+   * @param isEnabled - The flag to enable or disable logging.
+   */
+  private setLoggerFlag(isEnabled?: boolean): void {
+    if (isEnabled) localStorage.setItem('loggerEnabled', 'true');
+    else localStorage.removeItem('loggerEnabled');
   }
 
   /**
@@ -48,6 +59,8 @@ export class ChatBot {
 
       // To be provided to the ChatBotUI component for branding
       if (configData?.tenant) {
+        logger.info(logMessages.initializeChatBotUI);
+
         // To be removed
         const chatBotConfig = {
           apiKey: this.apiKey || configData?.apiKey,

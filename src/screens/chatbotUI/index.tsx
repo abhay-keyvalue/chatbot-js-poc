@@ -3,9 +3,17 @@ import type { JSX } from 'preact/jsx-runtime';
 
 import { callApi, getBotResponse } from '@api';
 import { ChatBubble, ChatHeader, ChatInput } from '@components';
-import { DEFAULT_THEME, en, ErrorMap, ErrorTypes, HttpMethodOptions } from '@constants';
+import {
+  DEFAULT_THEME,
+  en,
+  ErrorMap,
+  ErrorTypes,
+  HttpMethodOptions,
+  logMessages
+} from '@constants';
 import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
 import type { ChatBotUIProps, Message, MessageData } from '@types';
+import { logger } from '@utils';
 
 import './styles.css';
 
@@ -50,7 +58,12 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     startConversations();
   }, []);
 
-  useOutsideClickAlerter(chatBotWindowRef, () => setIsOpen(false), chatBotButtonRef);
+  const closeChatWindow = (): void => {
+    logger.info(`${logMessages.togglingChatWindow} closed`);
+    setIsOpen(false);
+  };
+
+  useOutsideClickAlerter(chatBotWindowRef, closeChatWindow, chatBotButtonRef);
 
   /**
    * Starts a conversation with the chatbot.
@@ -59,16 +72,21 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    * @returns {Promise<void>} A promise that resolves when the conversation is started.
    */
   const startConversations = async (): Promise<void> => {
-    // Send PATCH request to update the conversation
-    const response = await callApi(
-      `${process.env.SDK_BASE_URL}/conversation`,
-      HttpMethodOptions.GET
-    );
+    try {
+      // Send PATCH request to update the conversation
+      const response = await callApi(
+        `${process.env.SDK_BASE_URL}/conversation`,
+        HttpMethodOptions.GET
+      );
 
-    if (response?.message?.length > 0 && response?.statusCode === 200) {
-      const responseMessageData = { text: response?.message, isBot: true };
+      if (response?.message?.length > 0 && response?.statusCode === 200) {
+        logger.info(logMessages.startingConversation);
+        const responseMessageData = { text: response?.message, isBot: true };
 
-      setMessages((prevMessages) => [...prevMessages, responseMessageData]);
+        setMessages((prevMessages) => [...prevMessages, responseMessageData]);
+      }
+    } catch {
+      logger.error(logMessages.errorStartingConversation);
     }
   };
 
@@ -92,6 +110,8 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     if (input.trim()?.length > 0 && !streaming) {
       const userMessage = { text: input, isBot: false };
 
+      logger.info(`${logMessages.sendMessageToBot} ${input}`);
+
       setMessages((prevMessages) => [...prevMessages, userMessage]);
       setInput('');
       setStreaming(true);
@@ -113,6 +133,8 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     if (event.length > 0) setCurrentEvent(event);
 
     if (isComplete) {
+      logger.info(`${logMessages.receivedMessageFromBot} ${newMessageData?.text}`);
+
       setMessages((prevMessages) => [...prevMessages, newMessageData]);
       newMessage = '';
       currentTableData = {};
@@ -128,7 +150,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
         }
         if (botText.type === 'table' && botText.data) currentTableData = botText.data;
       } catch (error) {
-        console.warn(ErrorMap[ErrorTypes.ERROR]?.message, error);
+        console.warn(ErrorMap[ErrorTypes.ERROR_IN_PARSING]?.message, error);
       }
     }
   };
@@ -157,6 +179,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    * Toggles the chat window open or closed.
    */
   const toggleChatWindow = (): void => {
+    logger.info(`${logMessages.togglingChatWindow}  ${!isOpen ? 'open' : 'closed'}`);
     setIsOpen((prev) => !prev);
   };
 

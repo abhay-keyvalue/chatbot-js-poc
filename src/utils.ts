@@ -1,5 +1,7 @@
 import type { GetCookieTypes, SetCookieTypes } from '@types';
 
+import { LogLevel } from './constants';
+
 /**
  * Retrieves the value of a cookie by its name.
  * @param {GetCookieTypes} options - The options for retrieving the cookie.
@@ -29,6 +31,25 @@ const setCookie = ({ cookieName, cookieValue, expiryInDays }: SetCookieTypes): v
 
   date.setTime(date.getTime() + expiryInDays * 24 * 60 * 60 * 1000);
   document.cookie = cookieName + '=' + cookieValue + ';expires=' + date.toUTCString() + ';path=/';
+};
+
+const logger = {
+  log: async (level: LogLevel.INFO | LogLevel.ERROR, message: string) => {
+    const timestamp = new Date().toISOString();
+    const levelString = LogLevel[level].toUpperCase();
+
+    const loggerEnabled = localStorage.getItem('loggerEnabled');
+
+    if (loggerEnabled === 'true')
+      // eslint-disable-next-line no-console
+      console.log(`[${timestamp}] [${levelString}] ${message}`);
+  },
+  error(error: string) {
+    this.log(LogLevel.ERROR, error);
+  },
+  info(message: string) {
+    this.log(LogLevel.INFO, message);
+  }
 };
 
 const chatSdkError = (message: string) => new Error(`Chat SDK Error: ${message}`);
@@ -64,5 +85,6 @@ export {
   isEmptyString,
   isNonEmptyObject,
   isNonEmptyArray,
-  isNonEmptyString
+  isNonEmptyString,
+  logger
 };

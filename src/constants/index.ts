@@ -4,7 +4,9 @@ import {
   ErrorLevelType,
   ErrorMap,
   ErrorTypes,
-  HttpMethodOptions
+  HttpMethodOptions,
+  LogLevel,
+  logMessages
 } from './generic';
 import { en } from './translation';
 
@@ -15,5 +17,7 @@ export {
   ErrorMap,
   DEFAULT_THEME,
   en,
-  ErrorTypes
+  ErrorTypes,
+  LogLevel,
+  logMessages
 };

@@ -4,7 +4,7 @@
 import 'whatwg-fetch';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 
-import { en } from '@constants';
+import { en, ErrorMap, ErrorTypes, HttpMethodOptions } from '@constants';
 import type { MessageData } from '@types';
 import { isEmptyObject } from '@utils';
 
@@ -15,7 +15,7 @@ import { isEmptyObject } from '@utils';
  * @param body - The request body for the API call. Default is an empty object.
  * @returns A Promise that resolves to the response data or an error message.
  */
-export async function callApi(url: string, method = 'POST', body = {}) {
+export async function callApi(url: string, method = HttpMethodOptions.GET, body = {}) {
   try {
     const response = await fetch(`${url}`, {
       method,
@@ -28,7 +28,7 @@ export async function callApi(url: string, method = 'POST', body = {}) {
 
     return data || en.error_message_no_response;
   } catch (error) {
-    console.error('Error:', error);
+    console.warn(ErrorMap[ErrorTypes.NETWORK_ERROR]?.message, error);
 
     return en.error_message_generic;
   }
