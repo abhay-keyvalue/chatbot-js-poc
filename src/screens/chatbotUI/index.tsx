@@ -215,6 +215,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
         <ChatHeader
           toggleChatWindow={toggleChatWindow}
           botIcon={settings?.botIcon}
+          theme={botTheme}
           closeIcon={settings?.closeIcon}
         />
         <div className='chat-display' ref={chatContainerRef}>

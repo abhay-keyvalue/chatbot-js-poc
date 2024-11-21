@@ -13,10 +13,10 @@ import './styles.css';
  */
 
 const ChatHeader = (props: ChatHeaderProps) => {
-  const { toggleChatWindow, botIcon, closeIcon } = props;
+  const { toggleChatWindow, botIcon, closeIcon, theme } = props;
 
   return (
-    <div className='chat-header'>
+    <div className='chat-header' style={{ backgroundColor: theme?.primaryColor }}>
       <img src={botIcon} alt='Bot' className='header-image' width={30} height={30} />
       <span>{en.chatbot_title}</span>
       <div className='close-icon' onClick={toggleChatWindow}>

@@ -1,5 +1,6 @@
 export type Theme = {
   primaryColor?: string;
+  secondaryColor?: string;
   chatWindowColor?: string;
   textColor?: string;
 };
@@ -61,6 +62,7 @@ export interface ChatHeaderProps {
   toggleChatWindow: () => void;
   botIcon?: string;
   closeIcon?: string;
+  theme?: Theme;
 }
 
 export interface ChatBubbleProps {
