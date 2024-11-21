@@ -1,3 +1,5 @@
+import { COLORS } from './colors';
+
 export const COOKIE_EXPIRATION_TIME_IN_DAYS = 7;
 
 export enum HttpMethodOptions {
@@ -42,10 +44,10 @@ export enum ErrorTypes {
 }
 
 export const DEFAULT_THEME = {
-  primaryColor: '#25314b',
-  secondaryColor: '#3498db',
-  chatWindowColor: '#ffffff',
-  textColor: '#333'
+  primaryColor: COLORS.primary,
+  secondaryColor: COLORS.secondary,
+  chatWindowColor: COLORS.white,
+  textColor: COLORS.primaryText
 };
 
 export enum LogLevel {
