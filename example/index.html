@@ -8,8 +8,8 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
       rel="stylesheet"
     />
-    <!-- <script src="dist/umd/Milestone.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/gh/abhay-keyvalue/chatbot-js-poc/Milestone.js"></script>
+    <script src="dist/umd/Milestone.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/abhay-keyvalue/chatbot-js-poc/Milestone.js"></script> -->
     <style>
       body {
         font-family: 'Open Sans', 'Lucida Console', 'Courier New', monospace;
@@ -25,7 +25,13 @@
     <script>
       const chatBot = new ChatBot({
         apiKey: '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',
-        agentType: 'gpt2'
+        agentType: 'gpt2',
+        theme: {
+          primaryColor: '#25314b',
+          secondaryColor: '#3498db',
+          chatWindowColor: '#ffffff',
+          textColor: '#333'
+        }
       });
     </script>
   </body>

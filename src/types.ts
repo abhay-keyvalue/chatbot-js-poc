@@ -1,5 +1,6 @@
 export type Theme = {
   primaryColor?: string;
+  secondaryColor?: string;
   chatWindowColor?: string;
   textColor?: string;
 };
@@ -43,6 +44,10 @@ export interface ChatBotUIProps {
     theme?: Theme;
   };
   theme?: Theme;
+  chat?: {
+    id?: string;
+    history?: Message[];
+  };
 }
 
 export interface ChatInputProps {
@@ -57,6 +62,7 @@ export interface ChatHeaderProps {
   toggleChatWindow: () => void;
   botIcon?: string;
   closeIcon?: string;
+  theme?: Theme;
 }
 
 export interface ChatBubbleProps {
