@@ -5,9 +5,10 @@
 import { render } from 'preact';
 
 import { callApi } from '@api';
-import { HttpMethodOptions } from '@constants';
+import { HttpMethodOptions, logMessages } from '@constants';
 import ChatBotUI from '@screens/chatbotUI';
 import type { ChatBotOptions, Theme } from '@types';
+import { logger } from '@utils';
 
 /**
  * Represents a ChatBot instance.
@@ -48,6 +49,8 @@ export class ChatBot {
 
       // To be provided to the ChatBotUI component for branding
       if (configData?.tenant) {
+        logger.info(logMessages.initializeChatBotUI);
+
         // To be removed
         const chatBotConfig = {
           apiKey: this.apiKey || configData?.apiKey,
