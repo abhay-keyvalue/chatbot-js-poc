@@ -38,8 +38,11 @@ const logger = {
     const timestamp = new Date().toISOString();
     const levelString = LogLevel[level].toUpperCase();
 
-    // eslint-disable-next-line no-console
-    console.log(`[${timestamp}] [${levelString}] ${message}`);
+    const loggerEnabled = localStorage.getItem('loggerEnabled');
+
+    if (loggerEnabled === 'true')
+      // eslint-disable-next-line no-console
+      console.log(`[${timestamp}] [${levelString}] ${message}`);
   },
   error(error: string) {
     this.log(LogLevel.ERROR, error);

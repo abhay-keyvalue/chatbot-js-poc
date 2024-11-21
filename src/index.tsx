@@ -23,13 +23,23 @@ export class ChatBot {
    * @param options - The options for configuring the ChatBot instance.
    */
   constructor(props: ChatBotOptions) {
-    const { apiKey, agentType, theme = {} } = props;
+    const { apiKey, agentType, theme = {}, settings } = props;
 
     this.initUI();
+    this.setLoggerFlag(settings?.logEnabled);
 
     this.theme = theme;
     this.apiKey = apiKey;
     this.agentType = agentType;
+  }
+
+  /**
+   * Sets the logger flag based on the provided value.
+   * @param isEnabled - The flag to enable or disable logging.
+   */
+  private setLoggerFlag(isEnabled?: boolean): void {
+    if (isEnabled) localStorage.setItem('loggerEnabled', 'true');
+    else localStorage.removeItem('loggerEnabled');
   }
 
   /**
