@@ -1,5 +1,6 @@
 import { marked } from 'marked';
 
+import { COLORS } from '@constants';
 import type { ChatBubbleProps } from '@types';
 
 import './styles.css';
@@ -13,19 +14,19 @@ import { Table } from '../Table';
 
 const ChatBubble = (props: ChatBubbleProps) => {
   const { message, index, theme, event } = props;
+  const styles = {
+    bubble: {
+      backgroundColor: message.isBot ? COLORS.bubble : theme.primaryColor,
+      color: message.isBot ? theme.textColor : COLORS.white
+    }
+  };
 
   return (
     <div
       key={index}
       className={`chat-message-container ${message.isBot ? 'chat-message-bot' : 'chat-message-user'}`}
     >
-      <div
-        className={`chat-message ${message.isBot && 'bot-message'}`}
-        style={{
-          backgroundColor: message.isBot ? '#e0e0e0' : theme.primaryColor,
-          color: message.isBot ? theme.textColor : '#fff'
-        }}
-      >
+      <div className={`chat-message ${message.isBot && 'bot-message'}`} style={styles.bubble}>
         {event?.length > 0 && index === -1 && <div className='event-title'>{`${event}...`}</div>}
         {message.isBot ? (
           <div dangerouslySetInnerHTML={{ __html: marked(message.text) as string }} />

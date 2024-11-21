@@ -32,6 +32,11 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   const { settings, theme, chat } = props;
   const settingsTheme = settings?.theme || {};
   const botTheme = { ...DEFAULT_THEME, ...settingsTheme, ...theme };
+  const styles = {
+    button: { backgroundColor: botTheme.primaryColor },
+    display: { backgroundColr: botTheme.chatWindowColor },
+    window: { backgroundColr: botTheme.chatWindowColor }
+  };
 
   // State variables
   const [isOpen, setIsOpen] = useState(false);
@@ -192,7 +197,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     () => (
       <div
         className='chatbot-button'
-        style={{ backgroundColor: botTheme.primaryColor }}
+        style={styles.button}
         onClick={toggleChatWindow}
         ref={chatBotButtonRef}
       >
@@ -234,14 +239,18 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   return (
     <div>
       {renderChatBotIcon}
-      <div className={`chat-window ${isOpen && 'open'}`} ref={chatBotWindowRef}>
+      <div
+        className={`chat-window ${isOpen && 'open'}`}
+        ref={chatBotWindowRef}
+        style={styles.window}
+      >
         <ChatHeader
           toggleChatWindow={toggleChatWindow}
           botIcon={settings?.botIcon}
           theme={botTheme}
           closeIcon={settings?.closeIcon}
         />
-        <div className='chat-display' ref={chatContainerRef}>
+        <div className='chat-display' ref={chatContainerRef} style={styles.display}>
           {renderPreviousMessages}
           {renderCurrentMessage}
         </div>
@@ -251,6 +260,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
           setInput={setInput}
           isDisabled={streaming}
           sendIcon={settings?.sendIcon}
+          theme={botTheme}
         />
       </div>
     </div>

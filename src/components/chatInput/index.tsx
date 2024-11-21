@@ -1,6 +1,6 @@
 import type { JSX } from 'preact';
 
-import { en } from '@constants';
+import { DEFAULT_THEME, en } from '@constants';
 import type { ChatInputProps } from '@types';
 
 import './styles.css';
@@ -15,11 +15,17 @@ import './styles.css';
  * @param {Function} props.setInput - The function to set the input value.
  * @param {boolean} props.isDisabled - Indicates if the input is disabled.
  * @param {string} props.sendIcon - Url for sendIcon.
+ * @param {theme} props.theme - The chat theme.
  * @returns {JSX.Element} The rendered component.
  */
 
 const ChatInput = (props: ChatInputProps) => {
-  const { handleSendMessage, input, setInput, isDisabled, sendIcon } = props;
+  const { handleSendMessage, input, setInput, isDisabled, sendIcon, theme = DEFAULT_THEME } = props;
+  const styles = {
+    sendButton: {
+      backgroundColor: theme?.secondaryColor
+    }
+  };
   const onChangeInput = (e: JSX.TargetedEvent<HTMLInputElement>) => {
     const eventTarget = e?.target as HTMLInputElement;
 
@@ -42,6 +48,7 @@ const ChatInput = (props: ChatInputProps) => {
       />
       <button
         className={isDisabled ? 'disabled-send-button' : 'send-button'}
+        style={styles.sendButton}
         onClick={handleSendMessage}
       >
         <img src={sendIcon} alt='Send' className='send-icon' width={32} height={32} />

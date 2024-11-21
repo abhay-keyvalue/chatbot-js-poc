@@ -1,3 +1,4 @@
+import { COLORS } from './colors';
 import {
   COOKIE_EXPIRATION_TIME_IN_DAYS,
   DEFAULT_THEME,
@@ -19,5 +20,6 @@ export {
   en,
   ErrorTypes,
   LogLevel,
-  logMessages
+  logMessages,
+  COLORS
 };
