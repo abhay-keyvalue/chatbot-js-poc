@@ -57,3 +57,5 @@ export declare const logMessages: {
     sendMessageToBot: string;
     errorStartingConversation: string;
 };
+export declare const RETRY_COUNT = 3;
+export declare const RETRY_DELAY = 1000;

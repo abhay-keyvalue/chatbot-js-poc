@@ -9,6 +9,8 @@ import type { MessageData } from '@types';
  * @param url - The URL to make the API call to.
  * @param method - The HTTP method to use for the API call. Default is 'POST'.
  * @param body - The request body for the API call. Default is an empty object.
+ * @param retries - The number of retries.
+ * @param delay - Delay between retries in milliseconds.
  * @returns A Promise that resolves to the response data or an error message.
  */
 export declare function callApi(url: string, method?: HttpMethodOptions, body?: {}): Promise<any>;
