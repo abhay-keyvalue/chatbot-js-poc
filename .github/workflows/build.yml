@@ -28,6 +28,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      # Create .env file with GitHub Secrets
+      - name: Create .env File
+        run: |
+          echo "SDK_BASE_URL=${{ secrets.SDK_BASE_URL }}" > .env
+
       # Clean build directory
       - name: Clean Build Directory
         run: rm -rf example/dist
