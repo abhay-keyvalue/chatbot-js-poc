@@ -54,11 +54,17 @@ const ChatInput = (props: ChatInputProps) => {
         onKeyUp={handleKeyDown}
         className='input-field'
         placeholder={placeholder}
+        aria-label='Type your message to send here'
+        aria-disabled={isDisabled}
+        data-testid='chat-input-field'
       />
       <button
         className={isDisabled ? 'disabled-send-button' : 'send-button'}
         style={styles.sendButton}
         onClick={handleSendMessage}
+        aria-label='Click to send your message'
+        disabled={isDisabled}
+        data-testid='chat-send-button'
       >
         <img src={sendIcon} alt='Send' className='send-icon' width={32} height={32} />
       </button>
