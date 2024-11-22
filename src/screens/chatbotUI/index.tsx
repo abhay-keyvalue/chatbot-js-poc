@@ -1,3 +1,4 @@
+import { marked } from 'marked';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import type { JSX } from 'preact/jsx-runtime';
 
@@ -149,7 +150,9 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
           newMessage = eventText;
           setCurrentMessage(newMessage);
         } else if (isDelta) {
-          newMessage += eventText;
+          const deltaData = JSON.parse(eventText);
+
+          newMessage += marked(deltaData?.text);
           setCurrentMessage(newMessage);
         }
       } catch (error) {
