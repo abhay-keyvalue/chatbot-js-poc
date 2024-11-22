@@ -7,7 +7,7 @@ import { ChatBubble, ChatHeader, ChatInput } from '@components';
 import { DEFAULT_THEME, en, ErrorMap, ErrorTypes, logMessages } from '@constants';
 import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
 import type { ChatBotUIProps, Message, MessageData } from '@types';
-import { logger } from '@utils';
+import { isNonEmptyString, logger } from '@utils';
 
 import './styles.css';
 
@@ -18,18 +18,22 @@ import './styles.css';
  * @param {Object} props - The component props.
  * @param {Object} [props.settings] - Contains Tenant settings.
  * @param {Object} [props.config] - Contains apiKey and agentType.
- * @param {Object} [props.theme] - The theme for the chatbot UI mentioned in chatBot initialization.
+ * @param {String} [props.backendBaseUrl] - The backend base URL.
  * @param {Object} [props.chat] - Contains chatId and history.
  * @returns {JSX.Element} The rendered ChatBotUI component.
  */
 const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
-  const { settings, theme, chat } = props;
+  const { settings, chat, backendBaseUrl } = props;
   const settingsTheme = settings?.theme || {};
-  const botTheme = { ...DEFAULT_THEME, ...settingsTheme, ...theme };
+  const botTheme = { ...DEFAULT_THEME, ...settingsTheme };
   const styles = {
-    button: { backgroundColor: botTheme.primaryColor },
-    display: { backgroundColr: botTheme.chatWindowColor },
-    window: { backgroundColr: botTheme.chatWindowColor }
+    button: {
+      backgroundColor: botTheme.primaryColor,
+      bottom: settings?.position?.bottom,
+      right: settings?.position?.right
+    },
+    display: { backgroundColor: botTheme.chatWindowColor },
+    window: { backgroundColor: botTheme.chatWindowColor }
   };
 
   // State variables
@@ -77,7 +81,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     try {
       await getBotResponse(
         input,
-        `${process.env.SDK_BASE_URL}/api/v1/conversations/start?chatIntent=init`,
+        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : process.env.SDK_BASE_URL}/api/v1/conversations/start?chatIntent=init`,
         onStreamMessage,
         onStreamMessageError
       );
@@ -113,7 +117,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       setStreaming(true);
       await getBotResponse(
         input,
-        `${process.env.SDK_BASE_URL}/api/v1/conversations/start`,
+        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : process.env.SDK_BASE_URL}/api/v1/conversations/start`,
         onStreamMessage,
         onStreamMessageError
       );
@@ -250,6 +254,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
           botIcon={settings?.botIcon}
           theme={botTheme}
           closeIcon={settings?.closeIcon}
+          chatTitle={settings?.chatTitle}
         />
         <div className='chat-display' ref={chatContainerRef} style={styles.display}>
           {renderPreviousMessages}
@@ -260,6 +265,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
           input={input}
           setInput={setInput}
           isDisabled={streaming}
+          placeholder={settings?.chatPlaceholder}
           sendIcon={settings?.sendIcon}
           theme={botTheme}
         />

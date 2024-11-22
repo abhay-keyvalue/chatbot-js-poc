@@ -60,7 +60,7 @@ const isObject = (obj: unknown): boolean => Boolean(obj && typeof obj === 'objec
 
 const isBoolean = (val: unknown): boolean => typeof val === 'boolean';
 
-const isEmptyArray = (obj: any): boolean => Boolean(isArray(obj) && obj.length === 0);
+const isEmptyArray = (obj: unknown[]): boolean => Boolean(isArray(obj) && obj.length === 0);
 
 const isEmptyObject = (obj: unknown) => obj && Object.keys(obj).length === 0;
 
