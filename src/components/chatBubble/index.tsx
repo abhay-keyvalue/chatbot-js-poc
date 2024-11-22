@@ -25,6 +25,7 @@ const ChatBubble = (props: ChatBubbleProps) => {
     <div
       key={index}
       className={`chat-message-container ${message.isBot ? 'chat-message-bot' : 'chat-message-user'}`}
+      data-testId='chat-message-bubble'
     >
       <div className={`chat-message ${message.isBot && 'bot-message'}`} style={styles.bubble}>
         {/* {event?.length > 0 && index === -1 && <div className='event-title'>{`${event}...`}</div>} */}

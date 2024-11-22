@@ -1,5 +1,6 @@
 import { COLORS } from './colors';
 import {
+  AccessibilityKeys,
   COOKIE_EXPIRATION_TIME_IN_DAYS,
   DEFAULT_SETTINGS,
   DEFAULT_THEME,
@@ -27,5 +28,6 @@ export {
   logMessages,
   COLORS,
   RETRY_COUNT,
-  RETRY_DELAY
+  RETRY_DELAY,
+  AccessibilityKeys
 };

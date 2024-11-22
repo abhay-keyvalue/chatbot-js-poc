@@ -4,7 +4,14 @@ import type { JSX } from 'preact/jsx-runtime';
 
 import { getBotResponse } from '@api';
 import { ChatBubble, ChatHeader, ChatInput } from '@components';
-import { DEFAULT_THEME, en, ErrorMap, ErrorTypes, logMessages } from '@constants';
+import {
+  AccessibilityKeys,
+  DEFAULT_THEME,
+  en,
+  ErrorMap,
+  ErrorTypes,
+  logMessages
+} from '@constants';
 import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
 import type { ChatBotUIProps, Message, MessageData } from '@types';
 import { isNonEmptyString, logger } from '@utils';
@@ -61,6 +68,22 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   useEffect(() => {
     startConversations();
   }, []);
+
+  const handleAccessibility = (event: any) => {
+    if (event.key === AccessibilityKeys.closeChatBot && isOpen) {
+      event.preventDefault();
+      setIsOpen(false);
+    } else if (
+      event.altKey &&
+      event.key.toLowerCase() === AccessibilityKeys.openChatBot &&
+      !isOpen
+    ) {
+      event.preventDefault();
+      setIsOpen(true);
+    }
+  };
+
+  document.addEventListener('keyup', handleAccessibility);
 
   const closeChatWindow = (): void => {
     if (isOpen) {
@@ -248,6 +271,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
         className={`chat-window ${isOpen && 'open'}`}
         ref={chatBotWindowRef}
         style={styles.window}
+        data-testid='chat-window'
       >
         <ChatHeader
           toggleChatWindow={toggleChatWindow}
