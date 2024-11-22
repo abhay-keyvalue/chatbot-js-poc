@@ -30,6 +30,21 @@ export declare const DEFAULT_THEME: {
     chatWindowColor: string;
     textColor: string;
 };
+export declare const DEFAULT_SETTINGS: {
+    chatTitle: string;
+    chatPlaceholder: string;
+    logEnabled: boolean;
+    position: {
+        bottom: string;
+        right: string;
+    };
+    theme: {
+        primaryColor: string;
+        secondaryColor: string;
+        chatWindowColor: string;
+        textColor: string;
+    };
+};
 export declare enum LogLevel {
     INFO = 0,
     ERROR = 1

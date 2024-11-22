@@ -6,9 +6,10 @@ import type { ChatBotOptions } from '@types';
  * Represents a ChatBot instance.
  */
 export declare class ChatBot {
-    private theme;
+    private settingsConfig?;
     private apiKey;
     private agentType;
+    private backendBaseUrl;
     /**
      * Creates a new instance of ChatBot.
      * @param options - The options for configuring the ChatBot instance.

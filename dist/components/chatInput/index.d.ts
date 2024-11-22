@@ -12,6 +12,7 @@ import './styles.css';
  * @param {boolean} props.isDisabled - Indicates if the input is disabled.
  * @param {string} props.sendIcon - Url for sendIcon.
  * @param {theme} props.theme - The chat theme.
+ * @param {string} props.placeholder - The placeholder for the input field.
  * @returns {JSX.Element} The rendered component.
  */
 declare const ChatInput: (props: ChatInputProps) => JSX.Element;

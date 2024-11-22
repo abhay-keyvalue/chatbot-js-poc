@@ -7,6 +7,7 @@ import './styles.css';
  * @param {Object} props - The component props.
  * @param {Function} props.toggleChatWindow - The function to toggle the chat window.
  * @param {Object} props.theme - The object to specify theme.
+ * @param {String} props.chatTitle - The title of the chat window.
  * @returns {JSX.Element} The rendered component.
  */
 declare const ChatHeader: (props: ChatHeaderProps) => import("preact").JSX.Element;
