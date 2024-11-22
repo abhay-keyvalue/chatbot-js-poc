@@ -1,49 +1,48 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ChatBot Integration</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="dist/umd/Milestone.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/gh/abhay-keyvalue/chatbot-js-poc/Milestone.js"></script> -->
-    <style>
-      body {
-        font-family: 'Open Sans', 'Lucida Console', 'Courier New', monospace;
-        width: 100%;
-        height: 100vh;
-        background-size: cover;
-      }
-    </style>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChatBot Integration</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+    rel="stylesheet" />
+  <script src="dist/umd/Milestone.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/gh/abhay-keyvalue/chatbot-js-poc/Milestone.js"></script> -->
+  <style>
+    body {
+      font-family: 'Open Sans', 'Lucida Console', 'Courier New', monospace;
+      width: 100%;
+      height: 100vh;
+      background-size: cover;
+    }
+  </style>
+</head>
 
-  <body>
-    ChatBot POC
-    <script>
-      const chatBot = new ChatBot({
-        apiKey: 'YOUR_API_KEY',
-        agentType: 'YOUR_AGENT_TYPE',
-        backendBaseUrl: 'https://doylefermi.ddns.net/milestone-core-svc'
-        // settings: {
-        //   chatTitle: 'SunOutdoors',
-        //   chatPlaceholder: 'Ask me something...',
-        //   logEnabled: true,
-        //   logo: 'https://www.sunoutdoors.com/resourcefiles/common-image/sun-outdoor-logo.svg',
-        //   banner: 'https://www.example.com/banner.png',
-        //   botIcon: 'https://cdn-icons-png.flaticon.com/128/18221/18221591.png',
-        //   sendIcon: 'https://cdn-icons-png.flaticon.com/128/14025/14025522.png',
-        //   closeIcon: 'https://cdn-icons-png.flaticon.com/128/1810/1810747.png',
-        //   theme: {
-        //     primaryColor: '#25314b',
-        //     secondaryColor: '#3498db',
-        //     chatWindowColor: '#ffffff',
-        //     textColor: '#333'
-        //   }
-        // }
-      });
-    </script>
-  </body>
+<body>
+  ChatBot POC
+  <script>
+    const chatBot = new ChatBot({
+      apiKey: 'YOUR_API_KEY',
+      agentType: 'YOUR_AGENT_TYPE',
+      backendBaseUrl: 'https://doylefermi.ddns.net/milestone-core-svc',
+      // settings: {
+      //   chatTitle: 'SunOutdoors',
+      //   chatPlaceholder: 'Ask me something...',
+      //   logEnabled: true,
+      //   logo: 'https://www.sunoutdoors.com/resourcefiles/common-image/sun-outdoor-logo.svg',
+      //   banner: 'https://www.example.com/banner.png',
+      //   botIcon: 'https://cdn-icons-png.flaticon.com/128/18221/18221591.png',
+      //   sendIcon: 'https://cdn-icons-png.flaticon.com/128/14025/14025522.png',
+      //   closeIcon: 'https://cdn-icons-png.flaticon.com/128/1810/1810747.png',
+      //   theme: {
+      //     primaryColor: '#25314b',
+      //     secondaryColor: '#3498db',
+      //     chatWindowColor: '#ffffff',
+      //     textColor: '#333'
+      //   }
+      // }
+    });
+  </script>
+</body>
 </html>
