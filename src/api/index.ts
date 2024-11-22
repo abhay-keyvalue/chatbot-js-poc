@@ -4,7 +4,7 @@
 import 'whatwg-fetch';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 
-import { en, ErrorMap, ErrorTypes, HttpMethodOptions } from '@constants';
+import { en, ErrorMap, ErrorTypes, HttpMethodOptions, RETRY_COUNT, RETRY_DELAY } from '@constants';
 import type { MessageData } from '@types';
 import { isEmptyObject } from '@utils';
 
@@ -13,25 +13,43 @@ import { isEmptyObject } from '@utils';
  * @param url - The URL to make the API call to.
  * @param method - The HTTP method to use for the API call. Default is 'POST'.
  * @param body - The request body for the API call. Default is an empty object.
+ * @param retries - The number of retries.
+ * @param delay - Delay between retries in milliseconds.
  * @returns A Promise that resolves to the response data or an error message.
  */
-export async function callApi(url: string, method = HttpMethodOptions.GET, body = {}) {
-  try {
-    const response = await fetch(`${url}`, {
-      method,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      ...(!isEmptyObject(body) && { body: JSON.stringify(body) })
-    });
-    const data = await response.json();
+export async function callApi(
+  url: string,
+  method = HttpMethodOptions.GET,
+  body = {}
+): Promise<unknown> {
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    return data || en.error_message_no_response;
-  } catch (error) {
-    console.warn(ErrorMap[ErrorTypes.NETWORK_ERROR]?.message, error);
+  for (let attempt = 0; attempt <= RETRY_COUNT; attempt++)
+    try {
+      const response = await fetch(`${url}`, {
+        method,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        ...(!isEmptyObject(body) && { body: JSON.stringify(body) })
+      });
 
-    return en.error_message_generic;
-  }
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+      const data = await response.json();
+
+      return data || en.error_message_no_response;
+    } catch (error) {
+      console.warn(
+        `Attempt ${attempt + 1} failed. Error:`,
+        ErrorMap[ErrorTypes.NETWORK_ERROR]?.message,
+        error
+      );
+
+      if (attempt < RETRY_COUNT)
+        sleep(RETRY_DELAY); // Wait before retrying
+      else return en.error_message_generic; // Return generic error after max retries
+    }
 }
 
 /**
