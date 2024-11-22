@@ -21,7 +21,7 @@ export async function callApi(
   url: string,
   method = HttpMethodOptions.GET,
   body = {}
-): Promise<unknown> {
+): Promise<any> {
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
   for (let attempt = 0; attempt <= RETRY_COUNT; attempt++)

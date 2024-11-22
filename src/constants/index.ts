@@ -16,17 +16,16 @@ import { en } from './translation';
 
 export {
   COOKIE_EXPIRATION_TIME_IN_DAYS,
+  DEFAULT_THEME,
+  DEFAULT_SETTINGS,
   HttpMethodOptions,
   ErrorLevelType,
   ErrorMap,
-  DEFAULT_THEME,
   en,
   ErrorTypes,
   LogLevel,
   logMessages,
   COLORS,
-  DEFAULT_SETTINGS,
   RETRY_COUNT,
   RETRY_DELAY
-  DEFAULT_SETTINGS
 };
