@@ -13,7 +13,7 @@ import { Table } from '../Table';
  */
 
 const ChatBubble = (props: ChatBubbleProps) => {
-  const { message, index, theme, event } = props;
+  const { message, index, theme } = props;
   const styles = {
     bubble: {
       backgroundColor: message.isBot ? COLORS.bubble : theme.primaryColor,
@@ -27,13 +27,13 @@ const ChatBubble = (props: ChatBubbleProps) => {
       className={`chat-message-container ${message.isBot ? 'chat-message-bot' : 'chat-message-user'}`}
     >
       <div className={`chat-message ${message.isBot && 'bot-message'}`} style={styles.bubble}>
-        {event?.length > 0 && index === -1 && <div className='event-title'>{`${event}...`}</div>}
+        {/* {event?.length > 0 && index === -1 && <div className='event-title'>{`${event}...`}</div>} */}
         {message.isBot ? (
           <div dangerouslySetInnerHTML={{ __html: marked(message.text) as string }} />
         ) : (
           message.text
         )}
-        {message.data && (
+        {(message.data?.columns?.length || 0) > 0 && (
           <Table columns={message?.data?.columns || []} rows={message?.data?.rows || []} />
         )}
       </div>

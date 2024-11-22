@@ -1,16 +1,10 @@
+import { marked } from 'marked';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import type { JSX } from 'preact/jsx-runtime';
 
-import { callApi, getBotResponse } from '@api';
+import { getBotResponse } from '@api';
 import { ChatBubble, ChatHeader, ChatInput } from '@components';
-import {
-  DEFAULT_THEME,
-  en,
-  ErrorMap,
-  ErrorTypes,
-  HttpMethodOptions,
-  logMessages
-} from '@constants';
+import { DEFAULT_THEME, en, ErrorMap, ErrorTypes, logMessages } from '@constants';
 import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
 import type { ChatBotUIProps, Message, MessageData } from '@types';
 import { logger } from '@utils';
@@ -48,6 +42,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
 
   let newMessage = '';
   let currentTableData = {};
+  let previousSSEEvent = '';
 
   // Refs
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -80,18 +75,12 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    */
   const startConversations = async (): Promise<void> => {
     try {
-      // Send PATCH request to update the conversation
-      const response = await callApi(
-        `${process.env.SDK_BASE_URL}/conversation`,
-        HttpMethodOptions.GET
+      await getBotResponse(
+        input,
+        `${process.env.SDK_BASE_URL}/api/v1/conversations/start?chatIntent=init`,
+        onStreamMessage,
+        onStreamMessageError
       );
-
-      if (response?.message?.length > 0 && response?.statusCode === 200) {
-        logger.info(logMessages.startingConversation);
-        const responseMessageData = { text: response?.message, isBot: true };
-
-        setMessages((prevMessages) => [...prevMessages, responseMessageData]);
-      }
     } catch {
       logger.error(logMessages.errorStartingConversation);
     }
@@ -122,7 +111,12 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       setMessages((prevMessages) => [...prevMessages, userMessage]);
       setInput('');
       setStreaming(true);
-      await getBotResponse(input, onStreamMessage, onStreamMessageError);
+      await getBotResponse(
+        input,
+        `${process.env.SDK_BASE_URL}/api/v1/conversations/start`,
+        onStreamMessage,
+        onStreamMessageError
+      );
     }
   };
 
@@ -134,28 +128,33 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   const onStreamMessage = (messageData: MessageData): void => {
     const eventText = messageData?.data || '';
     const event = messageData?.event || '';
-    const isComplete = event === 'end';
+
+    if (event) previousSSEEvent = event;
+    const isComplete = previousSSEEvent === '[end]';
+    const isInit = previousSSEEvent === '[init]';
+    const isDelta = previousSSEEvent === '[delta]';
     const newMessageData = { text: newMessage, isBot: true, data: currentTableData };
 
     if (event.length > 0) setCurrentEvent(event);
 
     if (isComplete) {
       logger.info(`${logMessages.receivedMessageFromBot} ${newMessageData?.text}`);
-
       setMessages((prevMessages) => [...prevMessages, newMessageData]);
       newMessage = '';
       currentTableData = {};
       setCurrentMessage('');
       setStreaming(false);
-    } else if (eventText?.length > 0) {
+    } else if (eventText?.length > 0 && !event) {
       try {
-        const botText = JSON.parse(eventText);
+        if (isInit) {
+          newMessage = eventText;
+          setCurrentMessage(newMessage);
+        } else if (isDelta) {
+          const deltaData = JSON.parse(eventText);
 
-        if (botText?.type === 'markdown' && botText?.text) {
-          newMessage = newMessage + botText?.text;
+          newMessage += marked(deltaData?.text);
           setCurrentMessage(newMessage);
         }
-        if (botText.type === 'table' && botText.data) currentTableData = botText.data;
       } catch (error) {
         console.warn(ErrorMap[ErrorTypes.ERROR_IN_PARSING]?.message, error);
       }
@@ -230,13 +229,13 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    * @returns JSX.Element | null - The rendered previous messages or a start conversation message if there are no messages.
    */
   const renderPreviousMessages = useMemo(() => {
-    if (messages?.length === 0)
+    if (messages?.length === 0 && !currentMessage)
       return <div className='start-conversation'>{en.empty_screen_message}</div>;
 
     return messages?.map((msg, index) => (
       <ChatBubble message={msg} index={index} theme={botTheme} event={currentEvent} />
     ));
-  }, [messages]);
+  }, [messages, currentMessage]);
 
   return (
     <div>
