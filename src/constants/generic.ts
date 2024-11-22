@@ -1,4 +1,5 @@
 import { COLORS } from './colors';
+import { en } from './translation';
 
 export const COOKIE_EXPIRATION_TIME_IN_DAYS = 7;
 
@@ -48,6 +49,17 @@ export const DEFAULT_THEME = {
   secondaryColor: COLORS.secondary,
   chatWindowColor: COLORS.white,
   textColor: COLORS.primaryText
+};
+
+export const DEFAULT_SETTINGS = {
+  chatTitle: en.chatbot_title,
+  chatPlaceholder: en.chatbot_placeholder,
+  logEnabled: false,
+  position: {
+    bottom: '20px',
+    right: '20px'
+  },
+  theme: DEFAULT_THEME
 };
 
 export enum LogLevel {
