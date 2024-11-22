@@ -63,10 +63,11 @@ export async function callApi(
  */
 export const getBotResponse = async (
   userMessage: string,
+  apiUrl: string,
   onStreamMessage: (event: MessageData) => void,
   onStreamMessageError: (error: string) => void
 ): Promise<void> => {
-  fetchEventSource(`${process.env.SDK_BASE_URL}/sse-endpoint`, {
+  await fetchEventSource(apiUrl, {
     onmessage(event) {
       onStreamMessage(event);
     },
