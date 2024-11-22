@@ -4,7 +4,7 @@
 import 'whatwg-fetch';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 
-import { en, ErrorMap, ErrorTypes, HttpMethodOptions } from '@constants';
+import { en, ErrorMap, ErrorTypes, HttpMethodOptions, RETRY_COUNT, RETRY_DELAY } from '@constants';
 import type { MessageData } from '@types';
 import { isEmptyObject } from '@utils';
 
@@ -20,13 +20,11 @@ import { isEmptyObject } from '@utils';
 export async function callApi(
   url: string,
   method = HttpMethodOptions.GET,
-  body = {},
-  retries = 3,
-  delay = 1000
-): Promise<any> {
+  body = {}
+): Promise<unknown> {
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  for (let attempt = 0; attempt <= retries; attempt++)
+  for (let attempt = 0; attempt <= RETRY_COUNT; attempt++)
     try {
       const response = await fetch(`${url}`, {
         method,
@@ -48,8 +46,8 @@ export async function callApi(
         error
       );
 
-      if (attempt < retries)
-        sleep(delay); // Wait before retrying
+      if (attempt < RETRY_COUNT)
+        sleep(RETRY_DELAY); // Wait before retrying
       else return en.error_message_generic; // Return generic error after max retries
     }
 }

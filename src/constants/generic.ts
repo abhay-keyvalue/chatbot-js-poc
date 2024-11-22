@@ -75,3 +75,6 @@ export const logMessages = {
   sendMessageToBot: 'Sending message to bot:',
   errorStartingConversation: 'Error starting conversation:'
 };
+
+export const RETRY_COUNT = 3;
+export const RETRY_DELAY = 1000;

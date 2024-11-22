@@ -8,7 +8,9 @@ import {
   ErrorTypes,
   HttpMethodOptions,
   LogLevel,
-  logMessages
+  logMessages,
+  RETRY_COUNT,
+  RETRY_DELAY
 } from './generic';
 import { en } from './translation';
 
@@ -23,5 +25,7 @@ export {
   LogLevel,
   logMessages,
   COLORS,
-  DEFAULT_SETTINGS
+  DEFAULT_SETTINGS,
+  RETRY_COUNT,
+  RETRY_DELAY
 };
