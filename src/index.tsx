@@ -5,32 +5,34 @@
 import { render } from 'preact';
 
 import { callApi } from '@api';
-import { HttpMethodOptions, logMessages } from '@constants';
+import { DEFAULT_SETTINGS, HttpMethodOptions, logMessages } from '@constants';
 import ChatBotUI from '@screens/chatbotUI';
-import type { ChatBotOptions, Theme } from '@types';
-import { logger } from '@utils';
+import type { ChatBotOptions, Settings } from '@types';
+import { isNonEmptyObject, isNonEmptyString, logger } from '@utils';
 
 /**
  * Represents a ChatBot instance.
  */
 export class ChatBot {
-  private theme: Theme;
+  private settingsConfig?: Settings;
   private apiKey: string;
   private agentType: string;
+  private backendBaseUrl: string;
 
   /**
    * Creates a new instance of ChatBot.
    * @param options - The options for configuring the ChatBot instance.
    */
   constructor(props: ChatBotOptions) {
-    const { apiKey, agentType, theme = {}, settings } = props;
+    const { apiKey, agentType, settings = {}, backendBaseUrl = '' } = props;
 
     this.initUI();
     this.setLoggerFlag(settings?.logEnabled);
 
-    this.theme = theme;
+    this.settingsConfig = settings;
     this.apiKey = apiKey;
     this.agentType = agentType;
+    this.backendBaseUrl = backendBaseUrl;
   }
 
   /**
@@ -49,7 +51,7 @@ export class ChatBot {
   private async initUI(): Promise<void> {
     try {
       const response = await callApi(
-        `${process.env.SDK_BASE_URL}/api/v1/tenants/test_api_key/initialize`,
+        `${isNonEmptyString(this.backendBaseUrl) ? this.backendBaseUrl : process.env.SDK_BASE_URL}/api/v1/tenants/test_api_key/initialize`,
         HttpMethodOptions.POST
       );
 
@@ -71,12 +73,18 @@ export class ChatBot {
 
         document.body.appendChild(container);
 
+        const mergedSettings = {
+          ...DEFAULT_SETTINGS,
+          ...(isNonEmptyObject(configData?.tenant?.settings) && configData?.tenant?.settings),
+          ...this.settingsConfig
+        };
+
         render(
           <ChatBotUI
             config={chatBotConfig}
-            settings={configData?.tenant?.settings}
-            theme={this.theme}
+            settings={mergedSettings}
             chat={configData?.chat}
+            backendBaseUrl={this.backendBaseUrl}
           />,
           container
         );

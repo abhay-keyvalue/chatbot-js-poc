@@ -1,6 +1,6 @@
 import type { JSX } from 'preact';
 
-import { DEFAULT_THEME, en } from '@constants';
+import { DEFAULT_THEME } from '@constants';
 import type { ChatInputProps } from '@types';
 
 import './styles.css';
@@ -16,11 +16,20 @@ import './styles.css';
  * @param {boolean} props.isDisabled - Indicates if the input is disabled.
  * @param {string} props.sendIcon - Url for sendIcon.
  * @param {theme} props.theme - The chat theme.
+ * @param {string} props.placeholder - The placeholder for the input field.
  * @returns {JSX.Element} The rendered component.
  */
 
 const ChatInput = (props: ChatInputProps) => {
-  const { handleSendMessage, input, setInput, isDisabled, sendIcon, theme = DEFAULT_THEME } = props;
+  const {
+    handleSendMessage,
+    input,
+    setInput,
+    isDisabled,
+    sendIcon,
+    theme = DEFAULT_THEME,
+    placeholder
+  } = props;
   const styles = {
     sendButton: {
       backgroundColor: theme?.secondaryColor
@@ -44,7 +53,7 @@ const ChatInput = (props: ChatInputProps) => {
         onInput={onChangeInput}
         onKeyUp={handleKeyDown}
         className='input-field'
-        placeholder={en.chatbot_placeholder}
+        placeholder={placeholder}
       />
       <button
         className={isDisabled ? 'disabled-send-button' : 'send-button'}

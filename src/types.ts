@@ -5,19 +5,27 @@ export type Theme = {
   textColor?: string;
 };
 
+export type Settings = {
+  chatTitle?: string;
+  chatPlaceholder?: string;
+  logEnabled?: boolean;
+  logo?: string;
+  banner?: string;
+  botIcon?: string;
+  sendIcon?: string;
+  closeIcon?: string;
+  position?: {
+    bottom?: string | number;
+    right?: string | number;
+  };
+  theme?: Theme;
+};
+
 export type ChatBotOptions = {
   apiKey: string;
   agentType: string;
-  theme?: Theme;
-  settings?: {
-    position?: {
-      bottom?: string | number;
-      right?: string | number;
-    };
-    title?: string;
-    placeholderText?: string;
-    logEnabled?: boolean;
-  };
+  backendBaseUrl?: string;
+  settings?: Settings;
 };
 
 export type GetCookieTypes = {
@@ -44,15 +52,8 @@ export interface ChatBotUIProps {
     apiKey: string;
     agentType: string;
   };
-  settings?: {
-    logo?: string;
-    botIcon?: string;
-    banner?: string;
-    sendIcon?: string;
-    closeIcon?: string;
-    theme?: Theme;
-  };
-  theme?: Theme;
+  backendBaseUrl?: string;
+  settings?: Settings;
   chat?: {
     id?: string;
     history?: Message[];
@@ -66,12 +67,14 @@ export interface ChatInputProps {
   isDisabled: boolean;
   sendIcon?: string;
   theme?: Theme;
+  placeholder?: string;
 }
 
 export interface ChatHeaderProps {
   toggleChatWindow: () => void;
   botIcon?: string;
   closeIcon?: string;
+  chatTitle?: string;
   theme?: Theme;
 }
 

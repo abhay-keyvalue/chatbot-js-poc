@@ -1,6 +1,7 @@
 import { COLORS } from './colors';
 import {
   COOKIE_EXPIRATION_TIME_IN_DAYS,
+  DEFAULT_SETTINGS,
   DEFAULT_THEME,
   ErrorLevelType,
   ErrorMap,
@@ -21,5 +22,6 @@ export {
   ErrorTypes,
   LogLevel,
   logMessages,
-  COLORS
+  COLORS,
+  DEFAULT_SETTINGS
 };
