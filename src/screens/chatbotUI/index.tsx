@@ -13,7 +13,7 @@ import {
   logMessages,
   MessageTypes
 } from '../../constants';
-import { useOutsideClickAlerter } from '../../hooks/useOutsideClickAlerter';
+import { useOutsideClickAlerter } from '../../hooks';
 import type { ChatBotUIProps, Message, MessageData } from '../../types';
 import { getFormattedDate, isNonEmptyString, logger } from '../../utils';
 
@@ -261,7 +261,13 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     };
 
     return (
-      <ChatBubble message={currentMessageData} index={-1} theme={botTheme} event={currentEvent} />
+      <ChatBubble
+        message={currentMessageData}
+        index={-1}
+        theme={botTheme}
+        event={currentEvent}
+        botIcon={settings?.botIcon}
+      />
     );
   }, [currentMessage]);
 
@@ -303,7 +309,13 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     const groupedMessages = groupMessagesByDate(messages);
 
     return groupedMessages?.map((msg, index) => (
-      <ChatBubble message={msg} index={index} theme={botTheme} event={currentEvent} />
+      <ChatBubble
+        message={msg}
+        index={index}
+        theme={botTheme}
+        event={currentEvent}
+        botIcon={settings?.botIcon}
+      />
     ));
   }, [messages, currentMessage]);
 

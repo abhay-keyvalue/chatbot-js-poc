@@ -25,7 +25,7 @@ const ChatInput = (props: ChatInputProps) => {
     handleSendMessage,
     input,
     setInput,
-    isDisabled,
+    isDisabled = false,
     sendIcon,
     theme = DEFAULT_THEME,
     placeholder

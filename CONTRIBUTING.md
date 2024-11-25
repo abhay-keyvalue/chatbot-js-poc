@@ -2,14 +2,6 @@
 
 To maintain a smooth development process, please adhere to the following guidelines.
 
-## Pull Request Guidelines
-
-1. No Breaking Changes: Ensure your proposal does not radically change current functionality or introduce breaking changes without prior discussion.
-2. Thorough Documentation: Document all changes thoroughly, including updates to code comments, README files, or other relevant documentation.
-3. Test Coverage: Include tests for any new functionality or changes to existing functionality.
-4. Descriptive Title: Use a descriptive title for your pull request that summarizes the change.
-5. Pull Request Target: Only create pull requests against the parent branch, not feature branches or other temporary branches.
-
 ## Branch Naming Conventions
 
 Follow these conventions to name your branches for better organization:
@@ -35,22 +27,30 @@ Use the following format for commit messages to maintain a consistent history:
 
 #### Commit Types
 
-1. feat: A new feature
-   Example: feat(auth): add user login functionality
-2. fix: A bug fix
-   Example: fix(api): handle null response error
-3. docs: Documentation updates
-   Example: docs(README): update installation guide
-4. style: Code style changes (formatting, missing semi-colons, etc.)
-   Example: style(lint): fix eslint warnings
-5. refactor: Code refactoring without functional changes
-   Example: refactor(auth): simplify token validation logic
-6. test: Adding or updating tests
-   Example: test(utils): add tests for date parser
-7. chore: Maintenance or dependency updates
-   Example: chore(deps): bump axios to 1.3.0
+1. Feat: A new feature
+   Example: Feat(auth): add user login functionality
+2. Fix: A bug fix
+   Example: Fix(api): handle null response error
+3. Docs: Documentation updates
+   Example: Docs(README): update installation guide
+4. Style: Code style changes (formatting, missing semi-colons, etc.)
+   Example: Style(lint): fix eslint warnings
+5. Refactor: Code refactoring without functional changes
+   Example: Refactor(auth): simplify token validation logic
+6. Test: Adding or updating tests
+   Example: Test(utils): add tests for date parser
+7. Chore: Maintenance or dependency updates
+   Example: Chore(deps): bump axios to 1.3.0
 
-## Pull Request Review Checklist
+## Pull Request Guidelines
+
+1. No Breaking Changes: Ensure your proposal does not radically change current functionality or introduce breaking changes without prior discussion.
+2. Thorough Documentation: Document all changes thoroughly, including updates to code comments, README files, or other relevant documentation.
+3. Test Coverage: Include tests for any new functionality or changes to existing functionality.
+4. Descriptive Title: Use a descriptive title for your pull request that summarizes the change.
+5. Pull Request Target: Only create pull requests against the parent branch, not feature branches or other temporary branches.
+
+#### Pull Request Review Checklist
 
 To increase the likelihood of your pull request being approved:
 
