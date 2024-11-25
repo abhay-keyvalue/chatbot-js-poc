@@ -79,6 +79,11 @@ export const logMessages = {
 export const RETRY_COUNT = 3;
 export const RETRY_DELAY = 1000;
 
+export const AccessibilityKeys = {
+  openChatBot: 'c',
+  closeChatBot: 'Escape'
+};
+
 export const MessageTypes = {
   BOT: 'bot',
   USER: 'user',

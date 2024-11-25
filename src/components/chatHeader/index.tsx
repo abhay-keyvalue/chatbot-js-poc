@@ -27,9 +27,14 @@ const ChatHeader = (props: ChatHeaderProps) => {
     <div className='chat-header' style={styles.header}>
       <img src={botIcon} alt='Bot' className='header-image' width={30} height={30} />
       <span>{chatTitle}</span>
-      <div className='close-icon' onClick={toggleChatWindow}>
+      <div
+        className='close-icon'
+        onClick={toggleChatWindow}
+        aria-label='Click to close the chat'
+        data-testid='chat-close-icon'
+      >
         {closeIcon?.length ? (
-          <img src={closeIcon} alt='close' className='close-icon' width={25} height={25} />
+          <img src={closeIcon} alt='Close icon' className='close-icon' width={25} height={25} />
         ) : (
           'X'
         )}
