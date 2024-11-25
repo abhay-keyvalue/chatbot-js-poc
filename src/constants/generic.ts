@@ -48,7 +48,8 @@ export const DEFAULT_THEME = {
   primaryColor: COLORS.primary,
   secondaryColor: COLORS.secondary,
   chatWindowColor: COLORS.white,
-  textColor: COLORS.primaryText
+  textColor: COLORS.primaryText,
+  chatBubbleColor: COLORS.bubble
 };
 
 export const DEFAULT_SETTINGS = {

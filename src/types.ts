@@ -2,6 +2,7 @@ export type Theme = {
   primaryColor?: string;
   secondaryColor?: string;
   chatWindowColor?: string;
+  chatBubbleColor?: string;
   textColor?: string;
 };
 
@@ -16,6 +17,7 @@ export type Settings = {
   closeIcon?: string;
   downIcon?: string;
   maximizeIcon?: string;
+  minimizeIcon?: string;
   position?: {
     bottom?: string | number;
     right?: string | number;
@@ -77,12 +79,13 @@ export interface ChatHeaderProps {
   toggleChatWindow: () => void;
   toggleSize: () => void;
   settings?: Settings;
+  expanded?: boolean;
 }
 
 export interface ChatBubbleProps {
   message: Message;
   index: number;
-  theme?: Theme;
+  theme: Theme;
   event?: string;
   botIcon?: string;
 }
@@ -108,5 +111,5 @@ export interface TableComponentProps {
 }
 
 export interface TypingBubbleProps {
-  dotColor: string;
+  theme: Theme;
 }
