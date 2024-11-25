@@ -83,3 +83,9 @@ export const AccessibilityKeys = {
   openChatBot: 'c',
   closeChatBot: 'Escape'
 };
+
+export const MessageTypes = {
+  BOT: 'bot',
+  USER: 'user',
+  DATE: 'date'
+};

@@ -10,6 +10,7 @@ import {
   HttpMethodOptions,
   LogLevel,
   logMessages,
+  MessageTypes,
   RETRY_COUNT,
   RETRY_DELAY
 } from './generic';
@@ -27,6 +28,7 @@ export {
   LogLevel,
   logMessages,
   COLORS,
+  MessageTypes,
   RETRY_COUNT,
   RETRY_DELAY,
   AccessibilityKeys
