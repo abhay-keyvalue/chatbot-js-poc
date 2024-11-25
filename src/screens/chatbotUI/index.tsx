@@ -54,7 +54,6 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
 
   let newMessage = '';
   let currentTableData = {};
-  let previousSSEEvent = '';
 
   // Refs
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -106,7 +105,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     try {
       await getBotResponse(
         input,
-        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/api/v1/conversations/start?chatIntent=init`,
+        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/milestone-ai-svc/stream`,
         onStreamMessage,
         onStreamMessageError
       );
@@ -142,7 +141,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       setStreaming(true);
       await getBotResponse(
         input,
-        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/api/v1/conversations/start`,
+        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/milestone-ai-svc/stream`,
         onStreamMessage,
         onStreamMessageError
       );
@@ -158,10 +157,10 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     const eventText = messageData?.data || '';
     const event = messageData?.event || '';
 
-    if (event) previousSSEEvent = event;
-    const isComplete = previousSSEEvent === '[end]';
-    const isInit = previousSSEEvent === '[init]';
-    const isDelta = previousSSEEvent === '[delta]';
+    const isComplete = event === 'end';
+    const isInit = event === 'init';
+    const isDelta = event === 'delta';
+    const isFinal = event === 'final';
     const newMessageData = {
       text: newMessage,
       type: MessageTypes.BOT,
@@ -178,7 +177,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       currentTableData = {};
       setCurrentMessage('');
       setStreaming(false);
-    } else if (eventText?.length > 0 && !event) {
+    } else if (eventText?.length > 0) {
       try {
         if (isInit) {
           newMessage = eventText;
@@ -186,8 +185,16 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
         } else if (isDelta) {
           const deltaData = JSON.parse(eventText);
 
-          newMessage += marked(deltaData?.text);
+          newMessage += deltaData?.content;
           setCurrentMessage(newMessage);
+        } else if (isFinal) {
+          const finalData = JSON.parse(eventText);
+
+          const newTempMessage = marked(finalData?.content);
+
+          newMessage = newTempMessage as string;
+          setCurrentMessage(newMessage);
+          currentTableData = finalData?.data;
         }
       } catch (error) {
         console.warn(ErrorMap[ErrorTypes.ERROR_IN_PARSING]?.message, error);

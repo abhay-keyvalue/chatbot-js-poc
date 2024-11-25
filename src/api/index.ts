@@ -76,6 +76,14 @@ export const getBotResponse = async (
 ): Promise<void> => {
   console.log(userMessage);
   await fetchEventSource(apiUrl, {
+    method: HttpMethodOptions.POST,
+    body: JSON.stringify({
+      threadid: '5c4a27d3-2c52-4301-a6cf-f2e7a1404e53',
+      message: userMessage || ''
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    },
     onmessage(event) {
       onStreamMessage(event);
     },
