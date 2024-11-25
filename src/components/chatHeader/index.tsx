@@ -1,5 +1,7 @@
-import { DEFAULT_THEME } from '@constants';
-import type { ChatHeaderProps } from '@types';
+import { useMemo } from 'preact/hooks';
+
+import { DEFAULT_THEME } from '../../constants';
+import type { ChatHeaderProps } from '../../types';
 
 import './styles.css';
 
@@ -23,21 +25,19 @@ const ChatHeader = (props: ChatHeaderProps) => {
     }
   };
 
+  const renderCloseIcon = useMemo(() => {
+    if (closeIcon?.length)
+      return <img src={closeIcon} alt='close' className='close-icon' width={25} height={25} />;
+
+    return 'X';
+  }, [closeIcon]);
+
   return (
     <div className='chat-header' style={styles.header}>
       <img src={botIcon} alt='Bot' className='header-image' width={30} height={30} />
       <span>{chatTitle}</span>
-      <div
-        className='close-icon'
-        onClick={toggleChatWindow}
-        aria-label='Click to close the chat'
-        data-testid='chat-close-icon'
-      >
-        {closeIcon?.length ? (
-          <img src={closeIcon} alt='Close icon' className='close-icon' width={25} height={25} />
-        ) : (
-          'X'
-        )}
+      <div className='close-icon' onClick={toggleChatWindow}>
+        {renderCloseIcon}
       </div>
     </div>
   );

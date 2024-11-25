@@ -1,31 +1,27 @@
 {
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
-    "noImplicitAny": true,
-    "sourceMap": false,
-    "declaration": true,
     "allowSyntheticDefaultImports": true,
-    "strictNullChecks": true,
-    "rootDir": "src",
-    "target": "es5",
-    "module": "esnext",
-    "outDir": "dist",
-    "strict": true,
     "esModuleInterop": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "lib": ["ES2017", "dom"],
-    "baseUrl": ".",
+    "strict": true,
+    "baseUrl": "./",
+    "types": ["vite/client"],
     "paths": {
-      "@api": ["src/api/index"],
+      "preact/*": ["./node_modules/preact/*"],
       "@components": ["src/components"],
       "@screens/*": ["src/screens/*"],
       "@constants": ["src/constants"],
-      "@hooks/*": ["src/hooks/*"],
+      "@hooks": ["src/hooks"],
       "@types": ["src/types"],
       "@utils": ["src/utils"]
-    }
+    },
+    "skipLibCheck": true,
+    "lib": ["dom", "esnext", "WebWorker"] // Add these
   }
 }

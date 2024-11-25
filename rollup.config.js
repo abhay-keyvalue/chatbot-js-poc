@@ -1,40 +1,46 @@
 import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
-import image from '@rollup/plugin-image';
-import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
-import typescript from '@rollup/plugin-typescript';
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
+import typescript from 'rollup-plugin-typescript2';
+
+dotenv.config();
 
 export default {
-  input: 'src/index.tsx',
+  input: 'src/app.tsx',
   output: [
     {
       file: 'example/dist/esm/Milestone.js',
       format: 'esm',
-      name: 'Milestone',
-      sourcemap: false
+      sourcemap: true
     },
     {
       file: 'example/dist/umd/Milestone.js',
       format: 'umd',
-      name: 'Milestone',
-      sourcemap: false
+      name: 'ChatBotSDK',
+      sourcemap: true,
+      globals: {
+        preact: 'Preact',
+        'preact/hooks': 'PreactHooks',
+        'preact/jsx-runtime': 'PreactJSXRuntime'
+      }
     }
   ],
   plugins: [
+    peerDepsExternal(),
+    typescript({
+      tsconfig: './tsconfig.json'
+    }),
     resolve({
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       moduleDirectories: ['node_modules']
     }),
     commonjs(),
-    json(),
-    typescript({
-      tsconfig: './tsconfig.json'
-    }),
+    postcss(),
     babel({
       presets: [['@babel/preset-env', { targets: '> 0.25%, not dead' }]],
       plugins: [['@babel/plugin-transform-react-jsx', { pragma: 'h' }]],
@@ -42,12 +48,11 @@ export default {
       exclude: 'node_modules/**'
     }),
     terser(),
-    image(),
-    postcss(),
     replace({
       preventAssignment: true, // Prevent variable reassignment
       values: {
-        'process.env.SDK_BASE_URL': JSON.stringify(process.env.SDK_BASE_URL)
+        // Replace environment variables with actual values
+        'import.meta.env.VITE_APP_SDK_BASE_URL': JSON.stringify(process.env.VITE_APP_SDK_BASE_URL)
       }
     })
   ],

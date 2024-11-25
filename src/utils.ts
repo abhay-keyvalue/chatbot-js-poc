@@ -1,8 +1,7 @@
 import dateFormat from 'dateformat';
 
-import type { GetCookieTypes, SetCookieTypes } from '@types';
-
 import { LogLevel } from './constants';
+import type { GetCookieTypes, SetCookieTypes } from './types';
 
 /**
  * Retrieves the value of a cookie by its name.

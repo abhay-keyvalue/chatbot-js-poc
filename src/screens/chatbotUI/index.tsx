@@ -2,8 +2,8 @@ import { marked } from 'marked';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import type { JSX } from 'preact/jsx-runtime';
 
-import { getBotResponse } from '@api';
-import { ChatBubble, ChatHeader, ChatInput } from '@components';
+import { getBotResponse } from '../../api';
+import { ChatBubble, ChatHeader, ChatInput } from '../../components';
 import {
   AccessibilityKeys,
   DEFAULT_THEME,
@@ -12,10 +12,10 @@ import {
   ErrorTypes,
   logMessages,
   MessageTypes
-} from '@constants';
-import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
-import type { ChatBotUIProps, Message, MessageData } from '@types';
-import { getFormattedDate, isNonEmptyString, logger } from '@utils';
+} from '../../constants';
+import { useOutsideClickAlerter } from '../../hooks';
+import type { ChatBotUIProps, Message, MessageData } from '../../types';
+import { getFormattedDate, isNonEmptyString, logger } from '../../utils';
 
 import './styles.css';
 
@@ -54,7 +54,6 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
 
   let newMessage = '';
   let currentTableData = {};
-  let previousSSEEvent = '';
 
   // Refs
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -70,6 +69,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     startConversations();
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAccessibility = (event: any) => {
     if (event.key === AccessibilityKeys.closeChatBot && isOpen) {
       event.preventDefault();
@@ -105,7 +105,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     try {
       await getBotResponse(
         input,
-        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : process.env.SDK_BASE_URL}/api/v1/conversations/start?chatIntent=init`,
+        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/milestone-ai-svc/stream`,
         onStreamMessage,
         onStreamMessageError
       );
@@ -141,7 +141,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       setStreaming(true);
       await getBotResponse(
         input,
-        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : process.env.SDK_BASE_URL}/api/v1/conversations/start`,
+        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/milestone-ai-svc/stream`,
         onStreamMessage,
         onStreamMessageError
       );
@@ -157,10 +157,10 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     const eventText = messageData?.data || '';
     const event = messageData?.event || '';
 
-    if (event) previousSSEEvent = event;
-    const isComplete = previousSSEEvent === '[end]';
-    const isInit = previousSSEEvent === '[init]';
-    const isDelta = previousSSEEvent === '[delta]';
+    const isComplete = event === 'end';
+    const isInit = event === 'init';
+    const isDelta = event === 'delta';
+    const isFinal = event === 'final';
     const newMessageData = {
       text: newMessage,
       type: MessageTypes.BOT,
@@ -177,7 +177,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       currentTableData = {};
       setCurrentMessage('');
       setStreaming(false);
-    } else if (eventText?.length > 0 && !event) {
+    } else if (eventText?.length > 0) {
       try {
         if (isInit) {
           newMessage = eventText;
@@ -185,8 +185,16 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
         } else if (isDelta) {
           const deltaData = JSON.parse(eventText);
 
-          newMessage += marked(deltaData?.text);
+          newMessage += deltaData?.content;
           setCurrentMessage(newMessage);
+        } else if (isFinal) {
+          const finalData = JSON.parse(eventText);
+
+          const newTempMessage = marked(finalData?.content);
+
+          newMessage = newTempMessage as string;
+          setCurrentMessage(newMessage);
+          currentTableData = finalData?.data;
         }
       } catch (error) {
         console.warn(ErrorMap[ErrorTypes.ERROR_IN_PARSING]?.message, error);
@@ -260,7 +268,13 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     };
 
     return (
-      <ChatBubble message={currentMessageData} index={-1} theme={botTheme} event={currentEvent} />
+      <ChatBubble
+        message={currentMessageData}
+        index={-1}
+        theme={botTheme}
+        event={currentEvent}
+        botIcon={settings?.botIcon}
+      />
     );
   }, [currentMessage]);
 
@@ -302,7 +316,13 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     const groupedMessages = groupMessagesByDate(messages);
 
     return groupedMessages?.map((msg, index) => (
-      <ChatBubble message={msg} index={index} theme={botTheme} event={currentEvent} />
+      <ChatBubble
+        message={msg}
+        index={index}
+        theme={botTheme}
+        event={currentEvent}
+        botIcon={settings?.botIcon}
+      />
     ));
   }, [messages, currentMessage]);
 

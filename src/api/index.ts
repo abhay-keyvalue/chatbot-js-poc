@@ -1,12 +1,21 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * This module provides functions for making API calls and getting bot responses.
  */
 import 'whatwg-fetch';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 
-import { en, ErrorMap, ErrorTypes, HttpMethodOptions, RETRY_COUNT, RETRY_DELAY } from '@constants';
-import type { MessageData } from '@types';
-import { isEmptyObject } from '@utils';
+import {
+  en,
+  ErrorMap,
+  ErrorTypes,
+  HttpMethodOptions,
+  RETRY_COUNT,
+  RETRY_DELAY
+} from '../constants';
+import type { MessageData } from '../types';
+import { isEmptyObject } from '../utils';
 
 /**
  * Makes an API call to the specified URL with the given method and body.
@@ -65,7 +74,16 @@ export const getBotResponse = async (
   onStreamMessage: (event: MessageData) => void,
   onStreamMessageError: (error: string) => void
 ): Promise<void> => {
+  console.log(userMessage);
   await fetchEventSource(apiUrl, {
+    method: HttpMethodOptions.POST,
+    body: JSON.stringify({
+      threadid: '5c4a27d3-2c52-4301-a6cf-f2e7a1404e53',
+      message: userMessage || ''
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    },
     onmessage(event) {
       onStreamMessage(event);
     },

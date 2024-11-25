@@ -1,14 +1,14 @@
 /**
- * @file This file entry p[oint of sdf contains the implementation of the ChatBot class and its dependencies.
+ * @file This file entry point of sdk contains the implementation of the ChatBot class and its dependencies.
  */
 
 import { render } from 'preact';
 
-import { callApi } from '@api';
-import { DEFAULT_SETTINGS, HttpMethodOptions, logMessages } from '@constants';
-import ChatBotUI from '@screens/chatbotUI';
-import type { ChatBotOptions, Settings } from '@types';
-import { isNonEmptyObject, isNonEmptyString, logger } from '@utils';
+import { callApi } from './api';
+import { DEFAULT_SETTINGS, HttpMethodOptions, logMessages } from './constants';
+import ChatBotUI from './screens/chatbotUI';
+import type { ChatBotOptions, Settings } from './types';
+import { isNonEmptyObject, isNonEmptyString, logger } from './utils';
 
 /**
  * Represents a ChatBot instance.
@@ -26,13 +26,13 @@ export class ChatBot {
   constructor(props: ChatBotOptions) {
     const { apiKey, agentType, settings = {}, backendBaseUrl = '' } = props;
 
-    this.initUI();
-    this.setLoggerFlag(settings?.logEnabled);
-
     this.settingsConfig = settings;
     this.apiKey = apiKey;
     this.agentType = agentType;
     this.backendBaseUrl = backendBaseUrl;
+
+    this.setLoggerFlag(settings?.logEnabled);
+    this.initUI();
   }
 
   /**
@@ -51,7 +51,7 @@ export class ChatBot {
   private async initUI(): Promise<void> {
     try {
       const response = await callApi(
-        `${isNonEmptyString(this.backendBaseUrl) ? this.backendBaseUrl : process.env.SDK_BASE_URL}/api/v1/tenants/test_api_key/initialize`,
+        `${isNonEmptyString(this.backendBaseUrl) ? this.backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/api/v1/tenants/test_api_key/initialize`,
         HttpMethodOptions.POST
       );
 

@@ -1,7 +1,7 @@
 import type { JSX } from 'preact';
 
-import { DEFAULT_THEME } from '@constants';
-import type { ChatInputProps } from '@types';
+import { DEFAULT_THEME } from '../../constants';
+import type { ChatInputProps } from '../../types';
 
 import './styles.css';
 
@@ -25,7 +25,7 @@ const ChatInput = (props: ChatInputProps) => {
     handleSendMessage,
     input,
     setInput,
-    isDisabled,
+    isDisabled = false,
     sendIcon,
     theme = DEFAULT_THEME,
     placeholder
