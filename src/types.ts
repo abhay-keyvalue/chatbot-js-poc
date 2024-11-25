@@ -14,6 +14,7 @@ export type Settings = {
   botIcon?: string;
   sendIcon?: string;
   closeIcon?: string;
+  downIcon?: string;
   position?: {
     bottom?: string | number;
     right?: string | number;

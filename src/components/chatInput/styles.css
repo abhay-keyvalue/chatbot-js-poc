@@ -6,13 +6,14 @@
   border-radius: 25px;
   margin: 15px;
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   justify-content: space-between;
   align-items: center;
 }
 
 .input-field {
   border: 1px solid transparent;
+  background-color: transparent;
   border-radius: 25px;
 }
 
