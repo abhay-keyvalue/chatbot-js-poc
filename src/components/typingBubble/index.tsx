@@ -8,8 +8,8 @@ const TypingBubble = (props: TypingBubbleProps) => {
 
   return (
     <div className='dot-container' style={{ backgroundColor: COLORS.bubble }}>
-      {[0, 1, 2].map((it) => (
-        <span key={it} className='dot' style={{ backgroundColor: dotColor }} />
+      {Array.from({ length: 3 }, (_, index) => (
+        <span key={index} className='dot' style={{ backgroundColor: dotColor }} />
       ))}
     </div>
   );
