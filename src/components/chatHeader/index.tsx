@@ -11,20 +11,15 @@ import './styles.css';
  * @component
  * @param {Object} props - The component props.
  * @param {Function} props.toggleChatWindow - The function to toggle the chat window.
- * @param {Object} props.theme - The object to specify theme.
- * @param {String} props.chatTitle - The title of the chat window.
+ * @param {Object} props.settings - The object to specify settings.
  * @returns {JSX.Element} The rendered component.
  */
 
 const ChatHeader = (props: ChatHeaderProps) => {
-  const {
-    toggleChatWindow,
-    botIcon,
-    closeIcon,
-    theme = DEFAULT_THEME,
-    chatTitle,
-    toggleSize
-  } = props;
+  const { toggleChatWindow, settings, toggleSize } = props;
+
+  const { chatTitle, closeIcon, botIcon, maximizeIcon, theme = DEFAULT_THEME } = settings || {};
+
   const styles = {
     header: {
       backgroundColor: theme.primaryColor,
@@ -39,12 +34,26 @@ const ChatHeader = (props: ChatHeaderProps) => {
     return 'X';
   }, [closeIcon]);
 
+  const renderMaximize = useMemo(() => {
+    if (maximizeIcon?.length)
+      return <img src={maximizeIcon} alt='close' className='close-icon' width={25} height={25} />;
+
+    return 'O';
+  }, [maximizeIcon]);
+
   return (
-    <div className='chat-header' style={styles.header} onClick={toggleSize}>
-      <img src={botIcon} alt='Bot' className='header-image' width={30} height={30} />
-      <span>{chatTitle}</span>
-      <div className='close-icon' onClick={toggleChatWindow}>
-        {renderCloseIcon}
+    <div className='chat-header' style={styles.header}>
+      <div className='header-row'>
+        <img src={botIcon} alt='Bot' className='header-image' width={30} height={30} />
+        <span>{chatTitle}</span>
+      </div>
+      <div className='header-row'>
+        <div className='minimize-icon' onClick={toggleSize}>
+          {renderMaximize}
+        </div>
+        <div className='close-icon' onClick={toggleChatWindow}>
+          {renderCloseIcon}
+        </div>
       </div>
     </div>
   );

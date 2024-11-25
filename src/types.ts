@@ -15,6 +15,7 @@ export type Settings = {
   sendIcon?: string;
   closeIcon?: string;
   downIcon?: string;
+  maximizeIcon?: string;
   position?: {
     bottom?: string | number;
     right?: string | number;
@@ -74,11 +75,8 @@ export interface ChatInputProps {
 
 export interface ChatHeaderProps {
   toggleChatWindow: () => void;
-  botIcon?: string;
-  closeIcon?: string;
-  chatTitle?: string;
-  theme?: Theme;
   toggleSize: () => void;
+  settings?: Settings;
 }
 
 export interface ChatBubbleProps {

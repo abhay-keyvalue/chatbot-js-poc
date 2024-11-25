@@ -406,11 +406,8 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       >
         <ChatHeader
           toggleChatWindow={toggleChatWindow}
-          botIcon={settings?.botIcon}
-          theme={botTheme}
-          closeIcon={settings?.closeIcon}
-          chatTitle={settings?.chatTitle}
           toggleSize={toggleSize}
+          settings={settings}
         />
         <div className='chat-display' ref={chatContainerRef} style={styles.display}>
           {renderPreviousMessages}
