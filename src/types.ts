@@ -106,3 +106,7 @@ export interface TableComponentProps {
   columns: Column[];
   rows: Row[];
 }
+
+export interface TypingBubbleProps {
+  dotColor: string;
+}
