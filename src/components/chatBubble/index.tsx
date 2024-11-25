@@ -28,8 +28,8 @@ const ChatBubble = (props: ChatBubbleProps) => {
       data-testId='chat-bot-message-bubble'
     >
       <div className='chat-row'>
-        <div>
-          <img src={botIcon} alt='Bot' className='bot-avatar' width={30} height={30} />
+        <div className='bot-avatar'>
+          <img src={botIcon} alt='Bot' />
         </div>
         <div className='chat-message bot-message' style={styles.bubble}>
           <div dangerouslySetInnerHTML={{ __html: marked(message.text) as string }} />

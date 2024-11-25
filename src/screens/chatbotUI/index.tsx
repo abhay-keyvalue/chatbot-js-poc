@@ -51,6 +51,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   const [currentEvent, setCurrentEvent] = useState('');
   const [input, setInput] = useState('');
   const [streaming, setStreaming] = useState(false);
+  const [isAtBottom, setIsAtBottom] = useState(true);
 
   let newMessage = '';
   let currentTableData = {};
@@ -68,6 +69,29 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   useEffect(() => {
     startConversations();
   }, []);
+
+  // Add a scroll listener to the chat container
+  useEffect(() => {
+    const chatContainer = chatContainerRef.current;
+
+    if (chatContainer) chatContainer.addEventListener('scroll', handleScroll);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      if (chatContainer) chatContainer.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  /**
+   * Updates the scroll position state based on user interaction.
+   */
+  const handleScroll = (): void => {
+    if (chatContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+
+      setIsAtBottom(scrollTop + clientHeight >= scrollHeight - 5);
+    }
+  };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAccessibility = (event: any) => {
@@ -345,6 +369,22 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     ));
   }, [messages, currentMessage, streaming]);
 
+  const renderDownArrow = useMemo(() => {
+    if (isAtBottom || streaming) return null;
+
+    return (
+      <div className='down-arrow' onClick={scrollToBottom}>
+        <img src={settings?.downIcon} alt='Down Arrow' width={30} height={30} />
+      </div>
+    );
+  }, [isAtBottom]);
+
+  const poweredBy = (
+    <div className='powered-by'>
+      <span>Powered by</span> <span className='milestone-bold'>{` Milestone`}</span>
+    </div>
+  );
+
   return (
     <div>
       {renderChatBotIcon}
@@ -364,7 +404,9 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
         <div className='chat-display' ref={chatContainerRef} style={styles.display}>
           {renderPreviousMessages}
           {renderCurrentMessage}
+          {}
         </div>
+        {renderDownArrow}
         <ChatInput
           handleSendMessage={handleSendMessage}
           input={input}
@@ -374,6 +416,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
           sendIcon={settings?.sendIcon}
           theme={botTheme}
         />
+        {poweredBy}
       </div>
     </div>
   );
