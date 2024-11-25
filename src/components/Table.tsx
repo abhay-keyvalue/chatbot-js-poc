@@ -1,5 +1,5 @@
 // Define types for columns and rows
-import type { TableComponentProps } from '@types';
+import type { TableComponentProps } from '.././types';
 
 export const Table = ({ columns, rows }: TableComponentProps) => (
   <div style={{ overflowX: 'auto', margin: '20px 0' }}>

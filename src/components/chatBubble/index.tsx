@@ -1,17 +1,11 @@
 import dateFormat from 'dateformat';
 import { marked } from 'marked';
 
-import { COLORS, MessageTypes } from '@constants';
-import type { ChatBubbleProps } from '@types';
-
-import { Table } from '../Table';
+import { COLORS, MessageTypes } from '../../constants';
+import type { ChatBubbleProps } from '../../types';
 import './styles.css';
+import { Table } from '../Table';
 
-/**
- * Represents a chat bubble component.
- * @param {ChatBubbleProps} props - The props for the chat bubble component.
- * @returns {JSX.Element} The rendered chat bubble component.
- */
 const ChatBubble = (props: ChatBubbleProps) => {
   const { message, index, theme } = props;
   const styles = {
@@ -28,7 +22,11 @@ const ChatBubble = (props: ChatBubbleProps) => {
   );
 
   const renderBotMessage = () => (
-    <div key={index} className='chat-message-container chat-message-bot' data-testId='chat-bot-message-bubble'>
+    <div
+      key={index}
+      className='chat-message-container chat-message-bot'
+      data-testId='chat-bot-message-bubble'
+    >
       <div className='chat-message bot-message' style={styles.bubble}>
         <div dangerouslySetInnerHTML={{ __html: marked(message.text) as string }} />
         {(message.data?.columns?.length || 0) > 0 && (
@@ -40,7 +38,11 @@ const ChatBubble = (props: ChatBubbleProps) => {
   );
 
   const renderUserMessage = () => (
-    <div key={index} className='chat-message-container chat-message-user' data-testId='chat-user-message-bubble'>
+    <div
+      key={index}
+      className='chat-message-container chat-message-user'
+      data-testId='chat-user-message-bubble'
+    >
       <div className='chat-message' style={styles.bubble}>
         {message.text}
       </div>

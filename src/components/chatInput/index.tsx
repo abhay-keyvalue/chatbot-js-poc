@@ -1,7 +1,7 @@
 import type { JSX } from 'preact';
 
-import { DEFAULT_THEME } from '@constants';
-import type { ChatInputProps } from '@types';
+import { DEFAULT_THEME } from '../../constants';
+import type { ChatInputProps } from '../../types';
 
 import './styles.css';
 
