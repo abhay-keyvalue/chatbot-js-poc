@@ -15,7 +15,7 @@
   align-items: flex-start;
 }
 
-.chat-message-container  h1 {
+.chat-message-container h1 {
   font-size: 18px;
 }
 
@@ -38,7 +38,6 @@
 .chat-message-container table {
   border: 1px solid black;
 }
-
 
 .chat-message-user {
   align-items: flex-end;
