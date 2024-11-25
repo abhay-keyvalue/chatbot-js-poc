@@ -26,13 +26,13 @@ export class ChatBot {
   constructor(props: ChatBotOptions) {
     const { apiKey, agentType, settings = {}, backendBaseUrl = '' } = props;
 
-    this.initUI();
-    this.setLoggerFlag(settings?.logEnabled);
-
     this.settingsConfig = settings;
     this.apiKey = apiKey;
     this.agentType = agentType;
     this.backendBaseUrl = backendBaseUrl;
+
+    this.setLoggerFlag(settings?.logEnabled);
+    this.initUI();
   }
 
   /**

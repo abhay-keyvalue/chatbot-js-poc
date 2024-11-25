@@ -65,7 +65,7 @@ export interface ChatInputProps {
   handleSendMessage: () => void;
   input: string;
   setInput: (text: string) => void;
-  isDisabled: boolean;
+  isDisabled?: boolean;
   sendIcon?: string;
   theme?: Theme;
   placeholder?: string;
@@ -82,8 +82,9 @@ export interface ChatHeaderProps {
 export interface ChatBubbleProps {
   message: Message;
   index: number;
-  theme: Theme;
-  event: string;
+  theme?: Theme;
+  event?: string;
+  botIcon?: string;
 }
 
 export interface MessageData {
