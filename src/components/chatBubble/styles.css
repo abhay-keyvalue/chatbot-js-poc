@@ -15,30 +15,6 @@
   align-items: flex-start;
 }
 
-.chat-message-container h1 {
-  font-size: 18px;
-}
-
-.chat-message-container h2 {
-  font-size: 16px;
-}
-
-.chat-message-container h3 {
-  font-size: 14px;
-}
-
-.bot-message img {
-  max-width: 50%;
-}
-
-.chat-message-container table {
-  max-width: 200px;
-}
-
-.chat-message-container table {
-  border: 1px solid black;
-}
-
 .chat-message-user {
   align-items: flex-end;
 }
@@ -47,9 +23,11 @@
   padding: 10px;
   border-radius: 10px;
   max-width: 70%;
+  overflow-wrap: anywhere;
 }
 
 .bot-message {
+  max-width: 70%;
   padding-top: 0px;
   padding-bottom: 0px;
   overflow: auto;
@@ -91,5 +69,37 @@
 .chat-date {
   width: 100%;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+/* Add the following styles for overwrite markdown styles from chatbot */
+.bot-message h1 {
+  font-size: 17px;
+}
+
+.bot-message h2 {
+  font-size: 15px;
+}
+
+.bot-message h3 {
+  font-size: 13px;
+}
+
+.bot-message img {
+  max-width: 50%;
+}
+
+.bot-message table {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+.bot-message table td,
+th {
+  border: 1px solid black;
+  padding: 8px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
 }

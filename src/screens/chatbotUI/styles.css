@@ -59,6 +59,7 @@
   flex: 1;
   padding: 15px;
   overflow-y: auto;
+  overflow-x: hidden;
   font-size: 15px;
   scroll-behavior: smooth;
   scrollbar-width: 3px;
