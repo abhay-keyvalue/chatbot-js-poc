@@ -78,3 +78,9 @@ export const logMessages = {
 
 export const RETRY_COUNT = 3;
 export const RETRY_DELAY = 1000;
+
+export const MessageTypes = {
+  BOT: 'bot',
+  USER: 'user',
+  DATE: 'date'
+};
