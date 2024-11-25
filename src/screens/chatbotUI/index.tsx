@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import type { JSX } from 'preact/jsx-runtime';
 
 import { getBotResponse } from '../../api';
-import { ChatBubble, ChatHeader, ChatInput } from '../../components';
+import { ChatBubble, ChatHeader, ChatInput, TypingBubble } from '../../components';
 import {
   AccessibilityKeys,
   DEFAULT_THEME,
@@ -103,6 +103,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    */
   const startConversations = async (): Promise<void> => {
     try {
+      setStreaming(true);
       await getBotResponse(
         input,
         `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/milestone-ai-svc/stream`,
@@ -111,6 +112,8 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       );
     } catch {
       logger.error(logMessages.errorStartingConversation);
+    } finally {
+      setStreaming(false);
     }
   };
 
@@ -139,12 +142,16 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       setMessages((prevMessages) => [...prevMessages, userMessage]);
       setInput('');
       setStreaming(true);
-      await getBotResponse(
-        input,
-        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/milestone-ai-svc/stream`,
-        onStreamMessage,
-        onStreamMessageError
-      );
+      try {
+        await getBotResponse(
+          input,
+          `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/milestone-ai-svc/stream`,
+          onStreamMessage,
+          onStreamMessageError
+        );
+      } finally {
+        setStreaming(false);
+      }
     }
   };
 
@@ -259,24 +266,36 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    * @returns The rendered ChatBubble component or null if the current message is empty.
    */
   const renderCurrentMessage = useMemo(() => {
-    if (currentMessage?.length === 0) return null;
+    if (streaming && !currentMessage?.length)
+      return (
+        <div className='typing-row'>
+          <div>
+            <img src={settings?.botIcon} alt='Bot' className='bot-avatar' width={30} height={30} />
+          </div>
+          <TypingBubble dotColor={botTheme.textColor} />
+        </div>
+      );
 
-    const currentMessageData = {
-      text: currentMessage,
-      type: MessageTypes.BOT,
-      timestamp: new Date().getTime()
-    };
+    if (currentMessage?.length > 0) {
+      const currentMessageData = {
+        text: currentMessage,
+        type: MessageTypes.BOT,
+        timestamp: new Date().getTime()
+      };
 
-    return (
-      <ChatBubble
-        message={currentMessageData}
-        index={-1}
-        theme={botTheme}
-        event={currentEvent}
-        botIcon={settings?.botIcon}
-      />
-    );
-  }, [currentMessage]);
+      return (
+        <ChatBubble
+          message={currentMessageData}
+          index={-1}
+          theme={botTheme}
+          event={currentEvent}
+          botIcon={settings?.botIcon}
+        />
+      );
+    }
+
+    return null;
+  }, [streaming, currentMessage]);
 
   /**
    * Groups messages by date and inserts date messages.
@@ -310,7 +329,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    * @returns JSX.Element | null - The rendered previous messages or a start conversation message if there are no messages.
    */
   const renderPreviousMessages = useMemo(() => {
-    if (messages?.length === 0 && !currentMessage)
+    if (messages?.length === 0 && !currentMessage && !streaming)
       return <div className='start-conversation'>{en.empty_screen_message}</div>;
 
     const groupedMessages = groupMessagesByDate(messages);
@@ -324,7 +343,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
         botIcon={settings?.botIcon}
       />
     ));
-  }, [messages, currentMessage]);
+  }, [messages, currentMessage, streaming]);
 
   return (
     <div>

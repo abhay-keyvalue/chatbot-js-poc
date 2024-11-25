@@ -72,3 +72,9 @@
   justify-content: center;
   align-items: center;
 }
+
+.typing-row {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+}
