@@ -31,7 +31,7 @@ jobs:
       # Create .env file with GitHub Secrets
       - name: Create .env File
         run: |
-          echo "SDK_BASE_URL=${{ secrets.SDK_BASE_URL }}" > .env
+          echo "VITE_APP_SDK_BASE_URL=${{ secrets.VITE_APP_SDK_BASE_URL }}" > .env
 
       # Clean build directory
       - name: Clean Build Directory

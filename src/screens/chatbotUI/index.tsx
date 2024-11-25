@@ -2,8 +2,8 @@ import { marked } from 'marked';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import type { JSX } from 'preact/jsx-runtime';
 
-import { getBotResponse } from '@api';
-import { ChatBubble, ChatHeader, ChatInput } from '@components';
+import { getBotResponse } from '../../api';
+import { ChatBubble, ChatHeader, ChatInput } from '../../components';
 import {
   AccessibilityKeys,
   DEFAULT_THEME,
@@ -12,10 +12,10 @@ import {
   ErrorTypes,
   logMessages,
   MessageTypes
-} from '@constants';
-import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
-import type { ChatBotUIProps, Message, MessageData } from '@types';
-import { getFormattedDate, isNonEmptyString, logger } from '@utils';
+} from '../../constants';
+import { useOutsideClickAlerter } from '../../hooks/useOutsideClickAlerter';
+import type { ChatBotUIProps, Message, MessageData } from '../../types';
+import { getFormattedDate, isNonEmptyString, logger } from '../../utils';
 
 import './styles.css';
 
@@ -70,6 +70,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     startConversations();
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAccessibility = (event: any) => {
     if (event.key === AccessibilityKeys.closeChatBot && isOpen) {
       event.preventDefault();
@@ -105,7 +106,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     try {
       await getBotResponse(
         input,
-        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : process.env.SDK_BASE_URL}/api/v1/conversations/start?chatIntent=init`,
+        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/api/v1/conversations/start?chatIntent=init`,
         onStreamMessage,
         onStreamMessageError
       );
@@ -141,7 +142,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       setStreaming(true);
       await getBotResponse(
         input,
-        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : process.env.SDK_BASE_URL}/api/v1/conversations/start`,
+        `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/api/v1/conversations/start`,
         onStreamMessage,
         onStreamMessageError
       );

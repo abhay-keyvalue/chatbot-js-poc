@@ -1,5 +1,5 @@
-import { DEFAULT_THEME } from '@constants';
-import type { ChatHeaderProps } from '@types';
+import { DEFAULT_THEME } from '../../constants';
+import type { ChatHeaderProps } from '../../types';
 
 import './styles.css';
 
