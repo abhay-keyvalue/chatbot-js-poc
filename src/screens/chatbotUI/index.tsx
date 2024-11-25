@@ -266,7 +266,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    * @returns The rendered ChatBubble component or null if the current message is empty.
    */
   const renderCurrentMessage = useMemo(() => {
-    if (streaming)
+    if (streaming && !currentMessage?.length)
       return (
         <div className='typing-row'>
           <div>
