@@ -1,44 +1,63 @@
+import dateFormat from 'dateformat';
 import { marked } from 'marked';
 
-import { COLORS } from '@constants';
+import { COLORS, MessageTypes } from '@constants';
 import type { ChatBubbleProps } from '@types';
 
-import './styles.css';
 import { Table } from '../Table';
+import './styles.css';
 
 /**
  * Represents a chat bubble component.
  * @param {ChatBubbleProps} props - The props for the chat bubble component.
  * @returns {JSX.Element} The rendered chat bubble component.
  */
-
 const ChatBubble = (props: ChatBubbleProps) => {
   const { message, index, theme } = props;
   const styles = {
     bubble: {
-      backgroundColor: message.isBot ? COLORS.bubble : theme.primaryColor,
-      color: message.isBot ? theme.textColor : COLORS.white
+      backgroundColor: message.type === MessageTypes.BOT ? COLORS.bubble : theme.primaryColor,
+      color: message.type === MessageTypes.BOT ? theme.textColor : COLORS.white
     }
   };
 
-  return (
-    <div
-      key={index}
-      className={`chat-message-container ${message.isBot ? 'chat-message-bot' : 'chat-message-user'}`}
-    >
-      <div className={`chat-message ${message.isBot && 'bot-message'}`} style={styles.bubble}>
-        {/* {event?.length > 0 && index === -1 && <div className='event-title'>{`${event}...`}</div>} */}
-        {message.isBot ? (
-          <div dangerouslySetInnerHTML={{ __html: marked(message.text) as string }} />
-        ) : (
-          message.text
-        )}
+  const renderDateMessage = () => (
+    <div key={index} className='chat-date'>
+      {message.text}
+    </div>
+  );
+
+  const renderBotMessage = () => (
+    <div key={index} className='chat-message-container chat-message-bot'>
+      <div className='chat-message bot-message' style={styles.bubble}>
+        <div dangerouslySetInnerHTML={{ __html: marked(message.text) as string }} />
         {(message.data?.columns?.length || 0) > 0 && (
           <Table columns={message?.data?.columns || []} rows={message?.data?.rows || []} />
         )}
       </div>
+      <div className='chat-timestamp'>{dateFormat(message.timestamp, 'h:MM')}</div>
     </div>
   );
+
+  const renderUserMessage = () => (
+    <div key={index} className='chat-message-container chat-message-user'>
+      <div className='chat-message' style={styles.bubble}>
+        {message.text}
+      </div>
+      <div className='chat-timestamp'>{dateFormat(message.timestamp, 'h:MM')}</div>
+    </div>
+  );
+
+  switch (message.type) {
+    case MessageTypes.DATE:
+      return renderDateMessage();
+    case MessageTypes.BOT:
+      return renderBotMessage();
+    case MessageTypes.USER:
+      return renderUserMessage();
+    default:
+      return null;
+  }
 };
 
 export default ChatBubble;

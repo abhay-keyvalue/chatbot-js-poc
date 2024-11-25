@@ -4,10 +4,10 @@ import type { JSX } from 'preact/jsx-runtime';
 
 import { getBotResponse } from '@api';
 import { ChatBubble, ChatHeader, ChatInput } from '@components';
-import { DEFAULT_THEME, en, ErrorMap, ErrorTypes, logMessages } from '@constants';
+import { DEFAULT_THEME, en, ErrorMap, ErrorTypes, logMessages, MessageTypes } from '@constants';
 import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
 import type { ChatBotUIProps, Message, MessageData } from '@types';
-import { isNonEmptyString, logger } from '@utils';
+import { getFormattedDate, isNonEmptyString, logger } from '@utils';
 
 import './styles.css';
 
@@ -108,7 +108,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    */
   const handleSendMessage = async (): Promise<void> => {
     if (input.trim()?.length > 0 && !streaming) {
-      const userMessage = { text: input, isBot: false };
+      const userMessage = { text: input, type: MessageTypes.USER, timestamp: new Date().getTime() };
 
       logger.info(`${logMessages.sendMessageToBot} ${input}`);
 
@@ -137,7 +137,12 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     const isComplete = previousSSEEvent === '[end]';
     const isInit = previousSSEEvent === '[init]';
     const isDelta = previousSSEEvent === '[delta]';
-    const newMessageData = { text: newMessage, isBot: true, data: currentTableData };
+    const newMessageData = {
+      text: newMessage,
+      type: MessageTypes.BOT,
+      timestamp: new Date().getTime(),
+      data: currentTableData
+    };
 
     if (event.length > 0) setCurrentEvent(event);
 
@@ -180,7 +185,11 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
    * Pushes an error message to the messages state.
    */
   const pushErrorMessage = (): void => {
-    const errorMessageData = { text: en.error_message_generic, isBot: true };
+    const errorMessageData = {
+      text: en.error_message_generic,
+      type: MessageTypes.BOT,
+      timestamp: new Date().getTime()
+    };
 
     setMessages((prevMessages) => [...prevMessages, errorMessageData]);
   };
@@ -220,12 +229,42 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   const renderCurrentMessage = useMemo(() => {
     if (currentMessage?.length === 0) return null;
 
-    const currentMessageData = { text: currentMessage, isBot: true };
+    const currentMessageData = {
+      text: currentMessage,
+      type: MessageTypes.BOT,
+      timestamp: new Date().getTime()
+    };
 
     return (
       <ChatBubble message={currentMessageData} index={-1} theme={botTheme} event={currentEvent} />
     );
   }, [currentMessage]);
+
+  /**
+   * Groups messages by date and inserts date messages.
+   * @param {Message[]} messages - The array of messages to group.
+   * @returns {Message[]} - The grouped messages with date separators.
+   */
+  const groupMessagesByDate = (messages: Message[]): Message[] => {
+    const groupedMessages: Message[] = [];
+    let lastDate = '';
+
+    messages.forEach((msg) => {
+      const msgDate = getFormattedDate(msg.timestamp);
+
+      if (msgDate !== lastDate) {
+        groupedMessages.push({
+          text: msgDate,
+          type: MessageTypes.DATE,
+          timestamp: msg.timestamp
+        });
+        lastDate = msgDate;
+      }
+      groupedMessages.push(msg);
+    });
+
+    return groupedMessages;
+  };
 
   /**
    * Renders the previous messages in the chatbot UI.
@@ -236,7 +275,9 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     if (messages?.length === 0 && !currentMessage)
       return <div className='start-conversation'>{en.empty_screen_message}</div>;
 
-    return messages?.map((msg, index) => (
+    const groupedMessages = groupMessagesByDate(messages);
+
+    return groupedMessages?.map((msg, index) => (
       <ChatBubble message={msg} index={index} theme={botTheme} event={currentEvent} />
     ));
   }, [messages, currentMessage]);
