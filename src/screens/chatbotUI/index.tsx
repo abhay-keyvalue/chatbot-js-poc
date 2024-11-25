@@ -13,7 +13,6 @@ import {
   logMessages,
   MessageTypes
 } from '@constants';
-
 import { useOutsideClickAlerter } from '@hooks/useOutsideClickAlerter';
 import type { ChatBotUIProps, Message, MessageData } from '@types';
 import { getFormattedDate, isNonEmptyString, logger } from '@utils';
