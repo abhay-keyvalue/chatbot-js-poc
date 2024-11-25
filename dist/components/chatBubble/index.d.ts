@@ -5,5 +5,5 @@ import './styles.css';
  * @param {ChatBubbleProps} props - The props for the chat bubble component.
  * @returns {JSX.Element} The rendered chat bubble component.
  */
-declare const ChatBubble: (props: ChatBubbleProps) => import("preact").JSX.Element;
+declare const ChatBubble: (props: ChatBubbleProps) => import("preact").JSX.Element | null;
 export default ChatBubble;

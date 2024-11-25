@@ -35,7 +35,8 @@ export type SetCookieTypes = {
 };
 export interface Message {
     text: string;
-    isBot: boolean;
+    type: string;
+    timestamp: number;
     data?: {
         columns?: Column[];
         rows?: Row[];

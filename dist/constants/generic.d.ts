@@ -59,7 +59,8 @@ export declare const logMessages: {
 };
 export declare const RETRY_COUNT = 3;
 export declare const RETRY_DELAY = 1000;
-export declare const AccessibilityKeys: {
-    openChatBot: string;
-    closeChatBot: string;
+export declare const MessageTypes: {
+    BOT: string;
+    USER: string;
+    DATE: string;
 };
