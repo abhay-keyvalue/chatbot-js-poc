@@ -17,7 +17,14 @@ import './styles.css';
  */
 
 const ChatHeader = (props: ChatHeaderProps) => {
-  const { toggleChatWindow, botIcon, closeIcon, theme = DEFAULT_THEME, chatTitle } = props;
+  const {
+    toggleChatWindow,
+    botIcon,
+    closeIcon,
+    theme = DEFAULT_THEME,
+    chatTitle,
+    toggleSize
+  } = props;
   const styles = {
     header: {
       backgroundColor: theme.primaryColor,
@@ -33,7 +40,7 @@ const ChatHeader = (props: ChatHeaderProps) => {
   }, [closeIcon]);
 
   return (
-    <div className='chat-header' style={styles.header}>
+    <div className='chat-header' style={styles.header} onClick={toggleSize}>
       <img src={botIcon} alt='Bot' className='header-image' width={30} height={30} />
       <span>{chatTitle}</span>
       <div className='close-icon' onClick={toggleChatWindow}>

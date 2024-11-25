@@ -78,6 +78,7 @@ export interface ChatHeaderProps {
   closeIcon?: string;
   chatTitle?: string;
   theme?: Theme;
+  toggleSize: () => void;
 }
 
 export interface ChatBubbleProps {

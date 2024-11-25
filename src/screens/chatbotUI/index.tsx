@@ -41,7 +41,9 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       right: settings?.position?.right
     },
     display: { backgroundColor: botTheme.chatWindowColor },
-    window: { backgroundColor: botTheme.chatWindowColor }
+    window: { backgroundColor: botTheme.chatWindowColor },
+    small: { maxWidth: '400px', minWidth: '300px' },
+    large: { maxWidth: '700px', minWidth: '400px' }
   };
 
   // State variables
@@ -52,6 +54,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   const [input, setInput] = useState('');
   const [streaming, setStreaming] = useState(false);
   const [isAtBottom, setIsAtBottom] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   let newMessage = '';
   let currentTableData = {};
@@ -266,6 +269,13 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   };
 
   /**
+   * Toggles the size of chat window.
+   */
+  const toggleSize = (): void => {
+    setIsExpanded((prev) => !prev);
+  };
+
+  /**
    * Renders the chatbot icon. The icon is a button that toggles the chat window.
    *
    * @returns The JSX element representing the chatbot icon.
@@ -391,7 +401,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       <div
         className={`chat-window ${isOpen && 'open'}`}
         ref={chatBotWindowRef}
-        style={styles.window}
+        style={{ ...styles.window, ...(isExpanded ? styles.large : styles.small) }}
         data-testid='chat-window'
       >
         <ChatHeader
@@ -400,6 +410,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
           theme={botTheme}
           closeIcon={settings?.closeIcon}
           chatTitle={settings?.chatTitle}
+          toggleSize={toggleSize}
         />
         <div className='chat-display' ref={chatContainerRef} style={styles.display}>
           {renderPreviousMessages}
