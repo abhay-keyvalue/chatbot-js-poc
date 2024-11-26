@@ -53,7 +53,7 @@ const ChatHeader = (props: ChatHeaderProps) => {
         />
       );
 
-    return 'O';
+    return 'o';
   }, [maximizeIcon, expanded]);
 
   return (
