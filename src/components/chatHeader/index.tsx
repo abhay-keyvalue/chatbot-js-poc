@@ -16,9 +16,16 @@ import './styles.css';
  */
 
 const ChatHeader = (props: ChatHeaderProps) => {
-  const { toggleChatWindow, settings, toggleSize } = props;
+  const { toggleChatWindow, settings, toggleSize, expanded } = props;
 
-  const { chatTitle, closeIcon, botIcon, maximizeIcon, theme = DEFAULT_THEME } = settings || {};
+  const {
+    chatTitle,
+    closeIcon,
+    botIcon,
+    maximizeIcon,
+    minimizeIcon,
+    theme = DEFAULT_THEME
+  } = settings || {};
 
   const styles = {
     header: {
@@ -36,10 +43,18 @@ const ChatHeader = (props: ChatHeaderProps) => {
 
   const renderMaximize = useMemo(() => {
     if (maximizeIcon?.length)
-      return <img src={maximizeIcon} alt='close' className='close-icon' width={25} height={25} />;
+      return (
+        <img
+          src={expanded ? minimizeIcon : maximizeIcon}
+          alt='close'
+          className='close-icon'
+          width={25}
+          height={25}
+        />
+      );
 
-    return 'O';
-  }, [maximizeIcon]);
+    return 'o';
+  }, [maximizeIcon, expanded]);
 
   return (
     <div className='chat-header' style={styles.header}>

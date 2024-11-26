@@ -1,15 +1,14 @@
-import { COLORS } from '../../constants';
 import type { TypingBubbleProps } from '../../types';
 
 import './styles.css';
 
 const TypingBubble = (props: TypingBubbleProps) => {
-  const { dotColor } = props;
+  const { theme } = props;
 
   return (
-    <div className='dot-container' style={{ backgroundColor: COLORS.bubble }}>
+    <div className='dot-container' style={{ backgroundColor: theme.chatBubbleColor }}>
       {Array.from({ length: 3 }, (_, index) => (
-        <span key={index} className='dot' style={{ backgroundColor: dotColor }} />
+        <span key={index} className='dot' style={{ backgroundColor: theme?.textColor }} />
       ))}
     </div>
   );

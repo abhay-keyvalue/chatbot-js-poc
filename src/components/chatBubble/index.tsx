@@ -10,8 +10,9 @@ const ChatBubble = (props: ChatBubbleProps) => {
   const { message, index, theme, botIcon } = props;
   const styles = {
     bubble: {
-      backgroundColor: message.type === MessageTypes.BOT ? COLORS.bubble : theme?.primaryColor,
-      color: message.type === MessageTypes.BOT ? theme?.textColor : COLORS.white
+      backgroundColor:
+        message.type === MessageTypes.BOT ? theme.chatBubbleColor : theme.primaryColor,
+      color: message.type === MessageTypes.BOT ? theme.textColor : COLORS.white
     }
   };
 

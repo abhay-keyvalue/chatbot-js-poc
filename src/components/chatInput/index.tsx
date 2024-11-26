@@ -53,6 +53,7 @@ const ChatInput = (props: ChatInputProps) => {
         onInput={onChangeInput}
         onKeyUp={handleKeyDown}
         className='input-field'
+        style={{ color: theme?.primaryColor }}
         placeholder={placeholder}
         aria-label='Type your message to send here'
         aria-disabled={isDisabled}

@@ -14,7 +14,7 @@ import {
   MessageTypes
 } from '../../constants';
 import { useOutsideClickAlerter } from '../../hooks';
-import type { ChatBotUIProps, Message, MessageData } from '../../types';
+import type { ChatBotUIProps, Message, MessageData, Theme } from '../../types';
 import { getFormattedDate, isNonEmptyString, logger } from '../../utils';
 
 import './styles.css';
@@ -33,7 +33,7 @@ import './styles.css';
 const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
   const { settings, chat, backendBaseUrl } = props;
   const settingsTheme = settings?.theme || {};
-  const botTheme = { ...DEFAULT_THEME, ...settingsTheme };
+  const botTheme: Theme = { ...DEFAULT_THEME, ...settingsTheme };
   const styles = {
     button: {
       backgroundColor: botTheme.primaryColor,
@@ -42,8 +42,8 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     },
     display: { backgroundColor: botTheme.chatWindowColor },
     window: { backgroundColor: botTheme.chatWindowColor },
-    small: { maxWidth: '400px', minWidth: '300px' },
-    large: { maxWidth: '700px', minWidth: '400px' }
+    small: { maxWidth: '400px' },
+    large: { maxWidth: '700px' }
   };
 
   // State variables
@@ -306,7 +306,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
           <div>
             <img src={settings?.botIcon} alt='Bot' className='bot-avatar' width={30} height={30} />
           </div>
-          <TypingBubble dotColor={botTheme.textColor} />
+          <TypingBubble theme={botTheme} />
         </div>
       );
 
@@ -408,11 +408,11 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
           toggleChatWindow={toggleChatWindow}
           toggleSize={toggleSize}
           settings={settings}
+          expanded={isExpanded}
         />
         <div className='chat-display' ref={chatContainerRef} style={styles.display}>
           {renderPreviousMessages}
           {renderCurrentMessage}
-          {}
         </div>
         {renderDownArrow}
         <ChatInput
