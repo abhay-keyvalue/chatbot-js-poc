@@ -93,6 +93,10 @@
   max-width: 50%;
 }
 
+.bot-message p {
+  margin: 0;
+}
+
 .bot-message table {
   border-collapse: collapse;
   border: 1px solid black;
