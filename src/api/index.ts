@@ -74,7 +74,6 @@ export const getBotResponse = async (
   onStreamMessage: (event: MessageData) => void,
   onStreamMessageError: (error: string) => void
 ): Promise<void> => {
-  console.log(userMessage);
   await fetchEventSource(apiUrl, {
     method: HttpMethodOptions.POST,
     body: JSON.stringify({
