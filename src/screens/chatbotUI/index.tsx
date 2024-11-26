@@ -108,6 +108,22 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     ) {
       event.preventDefault();
       setIsOpen(true);
+    } else if (
+      event.altKey &&
+      event.key.toLowerCase() === AccessibilityKeys.adjustSizeOfChat &&
+      !isExpanded
+    ) {
+      logger.info(`${logMessages.maximizingChatWindow}`);
+      event.preventDefault();
+      setIsExpanded(true);
+    } else if (
+      event.altKey &&
+      event.key.toLowerCase() === AccessibilityKeys.adjustSizeOfChat &&
+      isExpanded
+    ) {
+      logger.info(`${logMessages.minimizingChatWindow}`);
+      event.preventDefault();
+      setIsExpanded(false);
     }
   };
 

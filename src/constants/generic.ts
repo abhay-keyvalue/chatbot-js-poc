@@ -74,7 +74,9 @@ export const logMessages = {
   togglingChatWindow: 'Toggling chat window:',
   receivedMessageFromBot: 'Received complete message from bot:',
   sendMessageToBot: 'Sending message to bot:',
-  errorStartingConversation: 'Error starting conversation:'
+  errorStartingConversation: 'Error starting conversation:',
+  minimizingChatWindow: 'Minimizing chat window',
+  maximizingChatWindow: 'Maximizing chat window'
 };
 
 export const RETRY_COUNT = 3;
@@ -82,7 +84,8 @@ export const RETRY_DELAY = 1000;
 
 export const AccessibilityKeys = {
   openChatBot: 'c',
-  closeChatBot: 'Escape'
+  closeChatBot: 'Escape',
+  adjustSizeOfChat: 'm'
 };
 
 export const MessageTypes = {

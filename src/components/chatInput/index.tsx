@@ -58,6 +58,7 @@ const ChatInput = (props: ChatInputProps) => {
         aria-label='Type your message to send here'
         aria-disabled={isDisabled}
         data-testid='chat-input-field'
+        autoFocus
       />
       <button
         className={isDisabled ? 'disabled-send-button' : 'send-button'}
