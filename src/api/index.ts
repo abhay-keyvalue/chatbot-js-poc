@@ -69,6 +69,7 @@ export async function callApi(
  * @returns A Promise that resolves when the SSE connection is established.
  */
 export const getBotResponse = async (
+  chatId: string,
   userMessage: string,
   apiUrl: string,
   onStreamMessage: (event: MessageData) => void,
@@ -77,7 +78,7 @@ export const getBotResponse = async (
   await fetchEventSource(apiUrl, {
     method: HttpMethodOptions.POST,
     body: JSON.stringify({
-      threadid: '5c4a27d3-2c52-4301-a6cf-f2e7a1404e53',
+      threadid: chatId,
       message: userMessage || ''
     }),
     headers: {

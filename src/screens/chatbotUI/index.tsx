@@ -148,6 +148,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
     try {
       setStreaming(true);
       await getBotResponse(
+        chat?.id || '',
         input,
         `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/milestone-ai-svc/stream`,
         onStreamMessage,
@@ -187,6 +188,7 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
       setStreaming(true);
       try {
         await getBotResponse(
+          chat?.id || '',
           input,
           `${isNonEmptyString(backendBaseUrl) ? backendBaseUrl : import.meta.env.VITE_APP_SDK_BASE_URL}/milestone-ai-svc/stream`,
           onStreamMessage,
