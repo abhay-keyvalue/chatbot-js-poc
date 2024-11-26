@@ -73,6 +73,8 @@ export interface ChatInputProps {
   sendIcon?: string;
   theme?: Theme;
   placeholder?: string;
+  isOpen: boolean;
+  isExpanded: boolean;
 }
 
 export interface ChatHeaderProps {

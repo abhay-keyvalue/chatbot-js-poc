@@ -1,4 +1,5 @@
 import type { JSX } from 'preact';
+import { useEffect, useRef } from 'preact/hooks';
 
 import { DEFAULT_THEME } from '../../constants';
 import type { ChatInputProps } from '../../types';
@@ -28,13 +29,22 @@ const ChatInput = (props: ChatInputProps) => {
     isDisabled = false,
     sendIcon,
     theme = DEFAULT_THEME,
-    placeholder
+    placeholder,
+    isOpen,
+    isExpanded
   } = props;
   const styles = {
     sendButton: {
       backgroundColor: theme?.secondaryColor
     }
   };
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef?.current && isOpen) inputRef?.current?.focus();
+  }, [isOpen, isExpanded]);
+
   const onChangeInput = (e: JSX.TargetedEvent<HTMLInputElement>) => {
     const eventTarget = e?.target as HTMLInputElement;
 
@@ -58,7 +68,7 @@ const ChatInput = (props: ChatInputProps) => {
         aria-label='Type your message to send here'
         aria-disabled={isDisabled}
         data-testid='chat-input-field'
-        autoFocus
+        ref={inputRef}
       />
       <button
         className={isDisabled ? 'disabled-send-button' : 'send-button'}

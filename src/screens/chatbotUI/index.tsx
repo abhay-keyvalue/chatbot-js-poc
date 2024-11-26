@@ -439,6 +439,8 @@ const ChatBotUI = (props: ChatBotUIProps): JSX.Element => {
           placeholder={settings?.chatPlaceholder}
           sendIcon={settings?.sendIcon}
           theme={botTheme}
+          isOpen={isOpen}
+          isExpanded={isExpanded}
         />
         {poweredBy}
       </div>
