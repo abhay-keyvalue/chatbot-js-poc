@@ -29,7 +29,9 @@ const ChatInput = (props: ChatInputProps) => {
     isDisabled = false,
     sendIcon,
     theme = DEFAULT_THEME,
-    placeholder
+    placeholder,
+    isOpen,
+    isExpanded
   } = props;
   const styles = {
     sendButton: {
@@ -37,11 +39,11 @@ const ChatInput = (props: ChatInputProps) => {
     }
   };
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (inputRef.current) inputRef.current.focus();
-  });
+    if (inputRef?.current && isOpen) inputRef?.current?.focus();
+  }, [isOpen, isExpanded]);
 
   const onChangeInput = (e: JSX.TargetedEvent<HTMLInputElement>) => {
     const eventTarget = e?.target as HTMLInputElement;

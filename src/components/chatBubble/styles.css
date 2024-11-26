@@ -28,9 +28,8 @@
 
 .bot-message {
   max-width: 70%;
-  padding-top: 5px;
-  padding-bottom: 0px;
   overflow: auto;
+  padding: 16px;
 }
 
 .event-title {
@@ -46,13 +45,15 @@
 
 .chat-bot-timestamp {
   font-size: 11px;
-  margin-top: 5px;
+  margin-top: 3px;
   margin-left: 36px;
+  opacity: 60%;
 }
 
 .chat-user-timestamp {
   font-size: 11px;
-  margin-top: 5px;
+  margin-top: 3px;
+  opacity: 60%;
 }
 
 .bot-avatar {
@@ -75,18 +76,25 @@
 /* Add the following styles for overwrite markdown styles from chatbot */
 .bot-message h1 {
   font-size: 17px;
+  font-weight: 700;
 }
 
 .bot-message h2 {
   font-size: 15px;
+  font-weight: 600;
 }
 
 .bot-message h3 {
   font-size: 13px;
+  font-weight: 600;
 }
 
 .bot-message img {
   max-width: 50%;
+}
+
+.bot-message p {
+  margin: 0;
 }
 
 .bot-message table {
@@ -102,4 +110,8 @@ th {
 table {
   border-collapse: collapse;
   width: 100%;
+}
+
+.bot-message ol {
+  padding-left: 16px;
 }
